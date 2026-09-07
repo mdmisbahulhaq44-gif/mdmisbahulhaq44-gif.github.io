@@ -2044,10 +2044,18 @@ unlockBodyScrollIfNoneOpen()
 // × button. Ignored when the touch starts inside something that already
 // has its own horizontal swipe (the image gallery, the hero carousel).
 let panelSwipeStartX = 0, panelSwipeStartY = 0
+// Reserved width (px) on either screen edge left to the phone's own
+// gesture-nav back swipe. Touches starting inside this zone are ignored
+// here, because the OS already calls history.back() for that gesture —
+// handling it a second time in this listener caused a double back-step
+// (skipping a page, or exiting the site entirely when history ran out).
+const EDGE_ZONE = 24
 document.addEventListener('touchstart', e => {
 const panel = e.target.closest('.panel.show')
 if(!panel || e.target.closest('.pdGalleryTrack, .heroTrack')){ panelSwipeStartX = 0; return }
-panelSwipeStartX = e.touches[0].clientX
+const x = e.touches[0].clientX
+if(x < EDGE_ZONE || x > window.innerWidth - EDGE_ZONE){ panelSwipeStartX = 0; return }
+panelSwipeStartX = x
 panelSwipeStartY = e.touches[0].clientY
 }, { passive:true })
 document.addEventListener('touchend', e => {
