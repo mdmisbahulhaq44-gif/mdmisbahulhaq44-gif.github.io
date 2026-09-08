@@ -223,9 +223,13 @@ transition:transform .4s ease
 }
 .heroSlide{
 min-width:100%;height:100%;
-background-size:cover;
-background-position:center;
+position:relative;
 cursor:pointer
+}
+.heroSlide img{
+width:100%;height:100%;
+object-fit:cover;
+display:block
 }
 .heroArrow{
 position:absolute;top:50%;transform:translateY(-50%);
@@ -1133,13 +1137,13 @@ good for many categories). Tapping a tile drills further in. -->
 </div>
 </div>
 
-<div class="filters" id="genderTabs" style="margin-bottom:16px">
+<div class="filters" id="genderTabs" style="margin-bottom:16px;display:none">
 <button class="filter active" data-gender="ALL" onclick="filterByGender('ALL', this)">ALL</button>
 <button class="filter" data-gender="men" onclick="filterByGender('men', this)">MEN</button>
 <button class="filter" data-gender="women" onclick="filterByGender('women', this)">WOMEN</button>
 </div>
 
-<div style="display:flex;justify-content:flex-end;align-items:center;gap:10px;margin-bottom:30px;flex-wrap:wrap">
+<div style="display:none;justify-content:flex-end;align-items:center;gap:10px;margin-bottom:30px;flex-wrap:wrap">
 <div class="filters" id="filters" style="margin-bottom:0;display:none">
 <button class="filter active" data-cat="ALL">ALL</button>
 </div>
@@ -3292,7 +3296,7 @@ const track = $("heroTrack")
 if(!track) return
 
 track.innerHTML = heroSlides.map((s, i) =>
-`<div class="heroSlide" style="background-image:url('${cldOpt(s.image, 1200).replace(/'/g,"\\'")}')" onclick="onHeroSlideClick(${i})"></div>`
+`<div class="heroSlide" onclick="onHeroSlideClick(${i})"><img src="${cldOpt(s.image, 1200)}" alt="" loading="${i===0?'eager':'lazy'}" ${i===0?'fetchpriority="high"':''} decoding="async"></div>`
 ).join('')
 
 const dotsWrap = $("heroDots")
@@ -3402,7 +3406,7 @@ $("women").style.display = mode === 'home' ? '' : 'none'
 $("categoryHub").style.display = mode === 'hub' ? '' : 'none'
 $("new").style.display = mode === 'hub' ? 'none' : ''
 $("shopBreadcrumb").style.display = mode === 'category' ? 'block' : 'none'
-$("genderTabs").style.display = mode === 'category' ? 'none' : ''
+$("genderTabs").style.display = 'none'
 $("filters").style.display = 'none'
 const features = document.querySelector('.features')
 if(features) features.style.display = mode === 'home' ? '' : 'none'
