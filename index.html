@@ -2716,8 +2716,14 @@ $("pdSizeSelectWrap").style.display = "none"
 $("pdSizePills").innerHTML = ""
 }
 
-// Related products — same category, excluding current
-const related = allProducts.filter(p => p.cat === product.cat && p.id !== product.id).slice(0, 4)
+// Related products — this same design's opposite-gender twin (the one
+// the homepage's "ALL" view hides as a duplicate, e.g. viewing the Men's
+// listing should surface the Women's version here, and vice versa) comes
+// first if one exists; the rest of the slots fill with same-category
+// products as before.
+const twin = allProducts.find(p => p.id !== product.id && p.name === product.name && p.gender !== product.gender)
+const sameCategory = allProducts.filter(p => p.cat === product.cat && p.id !== product.id && (!twin || p.id !== twin.id))
+const related = (twin ? [twin] : []).concat(sameCategory).slice(0, 4)
 $("pdRelatedWrap").innerHTML = related.length
 ? `<div class="products" style="grid-template-columns:repeat(2,1fr);gap:12px">${related.map(productCardHTML).join('')}</div>`
 : ""
@@ -4566,6 +4572,16 @@ submitBtn.disabled = false
 submitBtn.textContent = "PLACE ORDER"
 return
 }
+
+// Order rows are saved — now reduce stock for each item bought. Done via
+// an atomic DB-side function (not a read-then-write here) so two
+// customers buying the last unit at the same time can't both succeed.
+// The order itself is already placed at this point either way, so a
+// stock-update hiccup is only logged, not shown as an order failure.
+await Promise.all(cart.map(item =>
+supabaseClient.rpc('decrement_product_stock', { p_product_id: item.id, p_qty: item.qty })
+.then(({ error }) => { if(error) console.error('Stock update failed for', item.id, error) })
+))
 
 // The real order id is now stored in every row as order_ref — the
 // customer can use this exact number in Track Order to pull up their
