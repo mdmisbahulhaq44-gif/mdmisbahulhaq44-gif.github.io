@@ -362,14 +362,41 @@ border-radius:18px
 }
 .hubTiles .catText{
 display:inline-block;
+max-width:100%;
 background:rgba(0,0,0,.3);
 backdrop-filter:blur(3px);
 -webkit-backdrop-filter:blur(3px);
 border-radius:8px;
-padding:8px 12px
+padding:6px 10px
 }
-.hubTiles .catText h3{font-size:13px;letter-spacing:1px}
+.hubTiles .catText h3{
+font-size:11px;letter-spacing:.5px;
+display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
+overflow:hidden
+}
 .hubTiles .catText span{font-size:9px}
+
+/* Single-product hub tiles (leaf groups) — shown as a plain card with
+   the image on top and the name/price below it, like a normal product
+   card, instead of text stacked over the photo. */
+.hubTiles .leafTile{
+background:none;padding:0;display:block;
+aspect-ratio:auto;color:#111;border-radius:0
+}
+.hubTiles .leafTile:after{display:none}
+.hubTiles .leafImg{
+aspect-ratio:3/4;
+background:#f4f4f4 no-repeat center/cover;
+border-radius:6px
+}
+.hubTiles .leafInfo{padding:10px 2px 0}
+.hubTiles .leafInfo h3{
+font-size:12.5px;font-weight:400;letter-spacing:0;
+text-transform:none;color:#333;
+margin-bottom:3px;
+white-space:nowrap;overflow:hidden;text-overflow:ellipsis
+}
+.hubTiles .leafInfo .leafPrice{font-weight:700;font-size:13.5px;color:#111}
 
 .breadcrumb{font-size:12px;color:var(--muted);margin-bottom:14px}
 .breadcrumb a{color:var(--muted);text-decoration:none}
@@ -3376,20 +3403,8 @@ route = { gender: parts[1], path: parts.slice(2).map(decodeURIComponent) }
 return { route, productId }
 }
 
-// Remembers a product we just auto-closed via back-navigation, so the
-// single-product "skip straight to it" shortcut below doesn't immediately
-// re-open the very product the user just backed out of (which would make
-// back navigation look stuck/broken for any category with only 1 item).
-let lastClosedProductId = null
-
 function renderRoute(){
 const { route, productId } = parseRoute()
-
-if(!productId && document.getElementById("productPanel").classList.contains("show")){
-lastClosedProductId = pdCurrentProduct ? pdCurrentProduct.id : null
-}else if(productId){
-lastClosedProductId = null
-}
 
 // Close the panel (and unlock body scroll) BEFORE rendering the page
 // underneath — otherwise a scroll-to-top there would still be blocked by
@@ -3474,12 +3489,18 @@ const subs = getSubcategories(gender, path)
 if(subs.length){ showHubView(gender, path, subs); return }
 
 const products = getProductsAtPath(gender, path)
-// Skip the auto-open shortcut exactly once if we just backed out of this
-// very product — otherwise back navigation would bounce straight back in.
-const skipShortcut = products.length === 1 && products[0].id === lastClosedProductId
-lastClosedProductId = null
-if(products.length === 1 && !skipShortcut){
-openProductDetail(products[0].id)
+if(products.length === 1){
+// A single-product leaf category is just a thin wrapper around one
+// product. Swap this bare category URL for the product's own URL IN
+// PLACE (replaceState, not a push) so visiting it never costs more
+// than one slot on the back stack. Pushing a second entry here used
+// to leave this bare URL sitting behind the product's — and later,
+// swiping back through it while backing out of a *different* product
+// would silently re-trigger this same shortcut and reopen this one,
+// making an old product reappear out of nowhere.
+const newHash = window.location.hash.replace(/\/product\/[^/]+$/, '') + `/product/${products[0].id}`
+history.replaceState(null, '', newHash)
+renderProductDetail(products[0].id)
 const parentPath = path.slice(0, -1)
 showHubView(gender, parentPath, getSubcategories(gender, parentPath))
 return
@@ -3497,14 +3518,28 @@ function showHubView(gender, path, subs){
 $("hubHeading").textContent = path.length ? path[path.length - 1] : capitalize(gender)
 $("hubBreadcrumb").innerHTML = breadcrumbHTML(gender, path)
 
-$("hubTileGrid").innerHTML = subs.length ? subs.map(s => `
-<button class="category" style="${s.image ? `background-image:url('${cldOpt(s.image, 700).replace(/'/g,"\\'")}')` : 'background:#1a1a1a'}" onclick="window.location.hash='${buildShopHash(gender, [...path, s.seg])}'">
-<div class="catText">
+$("hubTileGrid").innerHTML = subs.length ? subs.map(s => {
+const href = `window.location.hash='${buildShopHash(gender, [...path, s.seg])}'`
+if(s.count === 1){
+return `
+<button class="category leafTile" onclick="${href}">
+<div class="leafImg" style="${s.image ? `background-image:url('${cldOpt(s.image, 500).replace(/'/g,"\\'")}')` : 'background:#f4f4f4'}"></div>
+<div class="leafInfo">
 <h3>${escapeHTML(s.seg)}</h3>
-<span>${s.count} PRODUCT${s.count===1?'':'S'}${s.minPrice!==null ? ' · FROM ৳'+s.minPrice : ''}</span>
+${s.minPrice!==null ? `<div class="leafPrice">৳${Number(s.minPrice).toLocaleString()}</div>` : ''}
 </div>
 </button>
-`).join('') : `<p style="color:var(--muted);font-size:13px">No products here yet — add some from the Admin Panel.</p>`
+`
+}
+return `
+<button class="category" style="${s.image ? `background-image:url('${cldOpt(s.image, 700).replace(/'/g,"\\'")}')` : 'background:#1a1a1a'}" onclick="${href}">
+<div class="catText">
+<h3>${escapeHTML(s.seg)}</h3>
+<span>${s.count} PRODUCTS${s.minPrice!==null ? ' · FROM ৳'+s.minPrice : ''}</span>
+</div>
+</button>
+`
+}).join('') : `<p style="color:var(--muted);font-size:13px">No products here yet — add some from the Admin Panel.</p>`
 
 setViewMode('hub')
 window.scrollTo(0, 0)
