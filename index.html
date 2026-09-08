@@ -3403,7 +3403,7 @@ $("categoryHub").style.display = mode === 'hub' ? '' : 'none'
 $("new").style.display = mode === 'hub' ? 'none' : ''
 $("shopBreadcrumb").style.display = mode === 'category' ? 'block' : 'none'
 $("genderTabs").style.display = mode === 'category' ? 'none' : ''
-$("filters").style.display = mode === 'category' ? 'none' : ''
+$("filters").style.display = 'none'
 const features = document.querySelector('.features')
 if(features) features.style.display = mode === 'home' ? '' : 'none'
 if(mode !== 'category') $("shopHeading").textContent = 'New Arrivals'
