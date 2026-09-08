@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mdmisbahulhaq44-gif.github.io/sitemap.xml
