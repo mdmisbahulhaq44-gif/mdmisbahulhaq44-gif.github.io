@@ -38,8 +38,7 @@
 }
 </script>
 
-<!-- Google Analytics — paste your GA4 Measurement ID below (starts with G-) to activate -->
-<!--
+<!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-X8PZ8E98GH"></script>
 <script>
 window.dataLayer = window.dataLayer || [];
@@ -47,10 +46,8 @@ function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', 'G-X8PZ8E98GH');
 </script>
--->
 
-<!-- Meta (Facebook) Pixel — paste your Pixel ID below to activate -->
-<!--
+<!-- Meta (Facebook) Pixel -->
 <script>
 !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
 n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
@@ -60,7 +57,6 @@ document,'script','https://connect.facebook.net/en_US/fbevents.js');
 fbq('init', '2395583730972279');
 fbq('track', 'PageView');
 </script>
--->
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -398,7 +394,10 @@ border-radius:6px
 font-size:12.5px;font-weight:400;letter-spacing:0;
 text-transform:none;color:#333;
 margin-bottom:3px;
-white-space:nowrap;overflow:hidden;text-overflow:ellipsis
+display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
+overflow:hidden;
+line-height:1.35;
+min-height:2.7em
 }
 .hubTiles .leafInfo .leafPrice{font-weight:700;font-size:13.5px;color:#111}
 
@@ -479,7 +478,10 @@ font-weight:400;
 margin-top:10px;
 margin-bottom:3px;
 color:#333;
-white-space:nowrap;overflow:hidden;text-overflow:ellipsis
+display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
+overflow:hidden;
+line-height:1.35;
+min-height:2.7em
 }
 .brand{display:none}
 .price{font-weight:700;font-size:13.5px;color:#111}
@@ -1137,8 +1139,8 @@ good for many categories). Tapping a tile drills further in. -->
 <button class="filter" data-gender="women" onclick="filterByGender('women', this)">WOMEN</button>
 </div>
 
-<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:30px;flex-wrap:wrap">
-<div class="filters" id="filters" style="margin-bottom:0">
+<div style="display:flex;justify-content:flex-end;align-items:center;gap:10px;margin-bottom:30px;flex-wrap:wrap">
+<div class="filters" id="filters" style="margin-bottom:0;display:none">
 <button class="filter active" data-cat="ALL">ALL</button>
 </div>
 <div style="display:flex;gap:8px;flex-wrap:wrap">
@@ -2470,7 +2472,7 @@ return
 }
 
 allProducts = data || []
-renderProductGrid(allProducts)
+applyFiltersAndSort()
 renderFilters(allProducts)
 }catch(e){
 // A network hiccup here shouldn't take down the rest of the page —
@@ -2516,6 +2518,19 @@ if(currentCategory !== "ALL") list = list.filter(p=>p.cat===currentCategory)
 if(currentPrice !== "all"){
 const [min,max] = currentPrice.split('-').map(Number)
 list = list.filter(p=>Number(p.price)>=min && Number(p.price)<=max)
+}
+if(currentGender === "ALL"){
+// Men/Women tabs stay fully separate on purpose — this dedup only
+// applies to the combined "ALL" view, where the same product added
+// once for men and once for women would otherwise show as two
+// identical cards side by side. Keep just the first one seen; the
+// product page's "related" section already surfaces the other gender.
+const seenNames = new Set()
+list = list.filter(p => {
+if(seenNames.has(p.name)) return false
+seenNames.add(p.name)
+return true
+})
 }
 renderProductGrid(applySort(list))
 }
