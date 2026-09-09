@@ -2646,6 +2646,9 @@ function renderProductDetail(productId){
 const product = allProducts.find(p => p.id == productId)
 if(!product){ toast("Product not found."); return }
 
+if(typeof fbq === 'function') fbq('track', 'ViewContent', { content_ids:[String(product.id)], content_type:'product', content_name:product.name, value:Number(product.price), currency:'BDT' })
+if(typeof gtag === 'function') gtag('event', 'view_item', { currency:'BDT', value:Number(product.price), items:[{ item_id:String(product.id), item_name:product.name, price:Number(product.price) }] })
+
 // Always start a product's panel from the top — without this, tapping a
 // "related product" card while scrolled down (e.g. to Related Products)
 // swapped in the new product's data but kept the old scroll position,
@@ -2745,9 +2748,17 @@ loadReviews(product.id)
 // closes the panel and returns to exactly where you were — instead of
 // leaving the site, since showing the panel alone never touched history.
 function openProductDetail(productId){
+const alreadyOnAProduct = /\/product\/[^/]+$/.test(window.location.hash)
 const base = window.location.hash.replace(/\/product\/[^/]+$/, '')
 const newHash = (base && base !== '#') ? `${base}/product/${productId}` : `#/product/${productId}`
 if(window.location.hash === newHash){
+renderProductDetail(productId)
+}else if(alreadyOnAProduct){
+// Already viewing a product and jumping straight to another one (e.g.
+// via Related Products) — swap the hash in place rather than pushing a
+// new entry, so the back button/gesture returns to wherever browsing
+// started instead of replaying every product viewed along the way.
+history.replaceState(null, '', newHash)
 renderProductDetail(productId)
 }else{
 window.location.hash = newHash
@@ -3160,6 +3171,9 @@ qty: 1
 }
 saveCart(cart)
 toast(product.name + (size ? ` (Size: ${size})` : '') + " added to cart")
+
+if(typeof fbq === 'function') fbq('track', 'AddToCart', { content_ids:[String(product.id)], content_type:'product', content_name:product.name, value:Number(product.price), currency:'BDT' })
+if(typeof gtag === 'function') gtag('event', 'add_to_cart', { currency:'BDT', value:Number(product.price), items:[{ item_id:String(product.id), item_name:product.name, price:Number(product.price) }] })
 }
 
 function changeQty(productId, size, delta){
@@ -3433,6 +3447,12 @@ route = { gender: parts[1], path: parts.slice(2).map(decodeURIComponent) }
 return { route, productId }
 }
 
+function routeKey(route){
+return route ? `${route.gender}::${route.path.join('/')}` : 'home'
+}
+
+let lastRenderedRouteKey = null
+
 function renderRoute(){
 const { route, productId } = parseRoute()
 
@@ -3443,8 +3463,12 @@ if(!productId && document.getElementById("productPanel").classList.contains("sho
 closePanels()
 }
 
+const key = routeKey(route)
+if(key !== lastRenderedRouteKey){
+lastRenderedRouteKey = key
 if(route) showCategoryPage(route.gender, route.path)
 else showHomeView()
+}
 
 if(productId) renderProductDetail(productId)
 }
@@ -4583,6 +4607,10 @@ supabaseClient.rpc('decrement_product_stock', { p_product_id: item.id, p_qty: it
 .then(({ error }) => { if(error) console.error('Stock update failed for', item.id, error) })
 ))
 
+const purchaseTotal = subtotal - discount + charge
+if(typeof fbq === 'function') fbq('track', 'Purchase', { value:purchaseTotal, currency:'BDT', content_ids:cart.map(i=>String(i.id)), content_type:'product', num_items:cart.reduce((s,i)=>s+i.qty,0) })
+if(typeof gtag === 'function') gtag('event', 'purchase', { transaction_id:orderRef, value:purchaseTotal, currency:'BDT', items:cart.map(i=>({ item_id:String(i.id), item_name:i.name, price:i.price, quantity:i.qty })) })
+
 // The real order id is now stored in every row as order_ref — the
 // customer can use this exact number in Track Order to pull up their
 // full itemized order at any time.
@@ -5107,8 +5135,14 @@ const baseHash = originalHash.replace(/\/product\/[^/]+$/, '')
 history.replaceState(null, '', baseHash || (window.location.pathname + window.location.search))
 history.pushState(null, '', originalHash)
 } else if(originalHash === "#admin"){
+// A PWA relaunch from the home-screen icon can restore the exact hash
+// it was last closed on. If that happened to be admin (app closed
+// while still there), landing straight back in admin on a brand-new
+// launch felt like a random glitch to what should be a normal storefront
+// visit — so reset to the storefront here and let the homepage's own
+// buffer-entry guard apply, same as any other plain load.
 history.replaceState(null, '', window.location.pathname + window.location.search)
-history.pushState(null, '', originalHash)
+history.pushState({homeGuard:true}, '', window.location.pathname + window.location.search)
 } else if(!originalHash){
 // Plain homepage load: push one extra "buffer" entry under it. A
 // back-swipe here has nothing else to land on otherwise, so instead
