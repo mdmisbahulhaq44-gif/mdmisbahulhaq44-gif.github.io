@@ -2050,20 +2050,7 @@ return url.replace('/upload/', `/upload/w_${width}/`)
 /* ============================================================
    PANELS
    ============================================================ */
-// Plain `overflow:hidden` on <body> makes mobile browsers snap the page's
-// scroll position back to the top the instant it's applied (and again when
-// it's removed) — that's the jump-to-top-on-open/close bug. Pinning the body
-// with `position:fixed` at a negative top offset equal to the current scroll
-// position freezes the view exactly where it was, with no jump; restoring
-// scrollTo() with that same offset on unlock puts the visitor back exactly
-// where they were instead of at the top.
 function lockBodyScroll(){
-const scrollY = window.scrollY
-document.body.dataset.lockScrollY = scrollY
-document.body.style.position = "fixed"
-document.body.style.top = `-${scrollY}px`
-document.body.style.left = "0"
-document.body.style.right = "0"
 document.body.style.overflow = "hidden"
 $("bottomNav").style.display = "none"
 }
@@ -2071,14 +2058,7 @@ $("bottomNav").style.display = "none"
 function unlockBodyScrollIfNoneOpen(){
 const anyOpen = document.querySelector(".panel.show, .drawer.show")
 if(!anyOpen){
-const scrollY = parseInt(document.body.dataset.lockScrollY || "0", 10)
-document.body.style.position = ""
-document.body.style.top = ""
-document.body.style.left = ""
-document.body.style.right = ""
 document.body.style.overflow = ""
-delete document.body.dataset.lockScrollY
-window.scrollTo(0, scrollY)
 if($("shopPage").style.display !== "none") $("bottomNav").style.display = "flex"
 }
 }
@@ -3501,7 +3481,11 @@ else showHomeView()
 // Closed a product back into the same list it was opened from — put
 // the scroll back where it was instead of leaving it wherever the
 // browser's default behavior happened to land it.
-window.scrollTo(0, savedListScrollY)
+// behavior:'instant' overrides the page's global smooth-scroll CSS —
+// without it this call inherits that smoothness and visibly slides down
+// from the top to the saved position, which reads as its own glitch
+// even though the final position is correct.
+window.scrollTo({ top: savedListScrollY, left: 0, behavior: 'instant' })
 savedListScrollY = null
 }
 
@@ -5165,20 +5149,7 @@ await Promise.all([loadProducts(), loadCategoryImages()])
 {
 const originalHash = window.location.hash
 const initialParsed = parseRoute()
-// True only when running as the installed home-screen app (not a normal
-// browser tab) — that's the case where the OS/browser silently restores
-// whatever hash was open when the app was last closed.
-const isStandaloneApp = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true
-if(initialParsed.productId && isStandaloneApp){
-// Relaunching the installed app from its icon can restore the exact
-// product hash it was last closed on, so every relaunch dumped the
-// visitor back on whatever they were last looking at instead of a
-// fresh storefront. A genuine shared product link is opened in the
-// browser (not the installed app), so this only catches the relaunch
-// case and leaves real shared links working below.
-history.replaceState(null, '', window.location.pathname + window.location.search)
-history.pushState({homeGuard:true}, '', window.location.pathname + window.location.search)
-} else if(initialParsed.productId){
+if(initialParsed.productId){
 const baseHash = originalHash.replace(/\/product\/[^/]+$/, '')
 history.replaceState(null, '', baseHash || (window.location.pathname + window.location.search))
 history.pushState(null, '', originalHash)
