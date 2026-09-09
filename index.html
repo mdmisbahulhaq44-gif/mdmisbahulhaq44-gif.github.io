@@ -2050,15 +2050,34 @@ return url.replace('/upload/', `/upload/w_${width}/`)
 /* ============================================================
    PANELS
    ============================================================ */
+// Locking scroll with just `overflow:hidden` on body doesn't reliably stop
+// background touch-scrolling on mobile, and — more importantly — some
+// mobile browsers don't reliably keep the page at the same scrollY once
+// overflow is toggled back afterward. That's what made closing a product
+// (opened from partway down a category list) land back at the top instead
+// of where the list actually was. Pinning the body with position:fixed at
+// its exact current offset, then explicitly scrolling back to that offset
+// on unlock, is the standard, reliable fix for both problems.
+let lockedScrollY = 0
 function lockBodyScroll(){
-document.body.style.overflow = "hidden"
+lockedScrollY = window.scrollY
+document.body.style.position = "fixed"
+document.body.style.top = `-${lockedScrollY}px`
+document.body.style.left = "0"
+document.body.style.right = "0"
+document.body.style.width = "100%"
 $("bottomNav").style.display = "none"
 }
 
 function unlockBodyScrollIfNoneOpen(){
 const anyOpen = document.querySelector(".panel.show, .drawer.show")
 if(!anyOpen){
-document.body.style.overflow = ""
+document.body.style.position = ""
+document.body.style.top = ""
+document.body.style.left = ""
+document.body.style.right = ""
+document.body.style.width = ""
+window.scrollTo(0, lockedScrollY)
 if($("shopPage").style.display !== "none") $("bottomNav").style.display = "flex"
 }
 }
@@ -2117,6 +2136,34 @@ else closePanels()
 }
 panelSwipeStartX = 0
 }, { passive:true })
+
+// Fixes the "flinging through Sub Category / product tiles auto-opens
+// one of them" bug. Those tiles are plain <button>/<div onclick="..">
+// elements covering the full card, so a fast scroll fling that starts and
+// ends over the same (or another) tile was being read as a tap on it —
+// the page hadn't moved much *yet* at touchend, so a click fired and
+// jumped straight into that tile's category/product. Any touch that moves
+// more than a few px before lifting is a scroll, not a tap, so its click
+// gets swallowed here before it ever reaches the tile's onclick.
+let touchGuardX = 0, touchGuardY = 0, touchGuardWasScroll = false
+document.addEventListener('touchstart', e => {
+touchGuardX = e.touches[0].clientX
+touchGuardY = e.touches[0].clientY
+touchGuardWasScroll = false
+}, { passive:true, capture:true })
+document.addEventListener('touchmove', e => {
+if(!e.touches[0]) return
+const dx = Math.abs(e.touches[0].clientX - touchGuardX)
+const dy = Math.abs(e.touches[0].clientY - touchGuardY)
+if(dx > 10 || dy > 10) touchGuardWasScroll = true
+}, { passive:true, capture:true })
+document.addEventListener('click', e => {
+if(touchGuardWasScroll){
+touchGuardWasScroll = false
+e.preventDefault()
+e.stopPropagation()
+}
+}, { capture:true })
 
 function openAccount(){
 openPanel("accountPanel")
@@ -3467,21 +3514,12 @@ route = { gender: parts[1], path: parts.slice(2).map(decodeURIComponent) }
 return { route, productId }
 }
 
-// TEMPORARY — diagnostic overlay to see exactly what's happening on the
-// actual device for the category-scroll bug. Safe to remove once found.
+// Was a TEMPORARY on-screen overlay used to diagnose the category-scroll
+// bug on-device. The bug is fixed now (see the touch-scroll click guard
+// below), so this no longer draws anything on the page — it just logs to
+// the console in case it's ever needed again.
 function debugLog(msg){
-let el = document.getElementById('dbgOverlay')
-if(!el){
-el = document.createElement('div')
-el.id = 'dbgOverlay'
-el.style.cssText = 'position:fixed;bottom:56px;left:0;right:0;background:rgba(0,0,0,.88);color:#5f5;font:11px/1.4 monospace;padding:6px 8px;z-index:999999;max-height:110px;overflow:auto;white-space:pre-wrap'
-document.body.appendChild(el)
-}
-const line = document.createElement('div')
-line.textContent = msg
-el.appendChild(line)
-while(el.children.length > 7) el.removeChild(el.firstChild)
-el.scrollTop = el.scrollHeight
+console.debug(msg)
 }
 
 function routeKey(route){
@@ -3608,7 +3646,7 @@ const newHash = window.location.hash.replace(/\/product\/[^/]+$/, '') + `/produc
 history.replaceState(null, '', newHash)
 renderProductDetail(products[0].id)
 const parentPath = path.slice(0, -1)
-showHubView(gender, parentPath, getSubcategories(gender, parentPath))
+showHubView(gender, parentPath, getSubcategories(gender, parentPath), true)
 return
 }
 if(!products.length && path.length){
@@ -3620,7 +3658,7 @@ return
 showProductsView(gender, path, products)
 }
 
-function showHubView(gender, path, subs){
+function showHubView(gender, path, subs, keepScroll){
 const heading = path.length ? path[path.length - 1] : capitalize(gender)
 $("hubHeading").textContent = heading
 $("hubBreadcrumb").innerHTML = breadcrumbHTML(gender, path)
@@ -3650,7 +3688,11 @@ return `
 }).join('') : `<p style="color:var(--muted);font-size:13px">No products here yet — add some from the Admin Panel.</p>`
 
 setViewMode('hub')
-window.scrollTo(0, 0)
+// keepScroll=true means this call is just re-syncing the hub grid behind
+// an already-open product panel (the single-product shortcut below) —
+// not an actual navigation to this hub — so the visitor's scroll
+// position here must be left alone instead of snapping back to the top.
+if(!keepScroll) window.scrollTo(0, 0)
 }
 
 function showProductsView(gender, path, products){
