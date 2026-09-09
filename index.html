@@ -2780,6 +2780,7 @@ history.replaceState(null, '', newHash)
 renderProductDetail(productId)
 }else{
 savedListScrollY = window.scrollY
+debugLog(`OPEN fresh id=${productId} save=${savedListScrollY} hash->${newHash}`)
 window.location.hash = newHash
 }
 }
@@ -3466,6 +3467,23 @@ route = { gender: parts[1], path: parts.slice(2).map(decodeURIComponent) }
 return { route, productId }
 }
 
+// TEMPORARY — diagnostic overlay to see exactly what's happening on the
+// actual device for the category-scroll bug. Safe to remove once found.
+function debugLog(msg){
+let el = document.getElementById('dbgOverlay')
+if(!el){
+el = document.createElement('div')
+el.id = 'dbgOverlay'
+el.style.cssText = 'position:fixed;bottom:56px;left:0;right:0;background:rgba(0,0,0,.88);color:#5f5;font:11px/1.4 monospace;padding:6px 8px;z-index:999999;max-height:110px;overflow:auto;white-space:pre-wrap'
+document.body.appendChild(el)
+}
+const line = document.createElement('div')
+line.textContent = msg
+el.appendChild(line)
+while(el.children.length > 7) el.removeChild(el.firstChild)
+el.scrollTop = el.scrollHeight
+}
+
 function routeKey(route){
 return route ? `${route.gender}::${route.path.join('/')}` : 'home'
 }
@@ -3474,6 +3492,7 @@ let lastRenderedRouteKey = null
 
 function renderRoute(){
 const { route, productId } = parseRoute()
+debugLog(`ROUTE hash=${location.hash||'(empty)'} pid=${productId||'-'} scrollY=${Math.round(window.scrollY)}`)
 
 // Close the panel (and unlock body scroll) BEFORE rendering the page
 // underneath — otherwise a scroll-to-top there would still be blocked by
@@ -3483,7 +3502,9 @@ closePanels()
 }
 
 const key = routeKey(route)
+debugLog(`  key=${key} last=${lastRenderedRouteKey} saved=${savedListScrollY}`)
 if(key !== lastRenderedRouteKey){
+debugLog(`  -> RE-RENDER (key changed) scrollTop(0,0)`)
 lastRenderedRouteKey = key
 if(route) showCategoryPage(route.gender, route.path)
 else showHomeView()
@@ -3495,6 +3516,7 @@ else showHomeView()
 // without it this call inherits that smoothness and visibly slides down
 // from the top to the saved position, which reads as its own glitch
 // even though the final position is correct.
+debugLog(`  -> RESTORE to ${savedListScrollY}`)
 window.scrollTo({ top: savedListScrollY, left: 0, behavior: 'instant' })
 savedListScrollY = null
 }
