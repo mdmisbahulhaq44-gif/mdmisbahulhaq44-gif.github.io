@@ -2747,6 +2747,14 @@ loadReviews(product.id)
 // route we're currently on, so the browser's own back button/gesture
 // closes the panel and returns to exactly where you were — instead of
 // leaving the site, since showing the panel alone never touched history.
+// Remembers the list's scroll position from just before a product was
+// opened. scrollRestoration is 'manual' (see above) specifically so nothing
+// restores scroll automatically — but that means WE have to do it, or
+// closing a product leaves the scroll wherever the browser's default
+// (inconsistent) behavior happens to land it instead of back where the
+// visitor was browsing.
+let savedListScrollY = null
+
 function openProductDetail(productId){
 const alreadyOnAProduct = /\/product\/[^/]+$/.test(window.location.hash)
 const base = window.location.hash.replace(/\/product\/[^/]+$/, '')
@@ -2761,6 +2769,7 @@ renderProductDetail(productId)
 history.replaceState(null, '', newHash)
 renderProductDetail(productId)
 }else{
+savedListScrollY = window.scrollY
 window.location.hash = newHash
 }
 }
@@ -3468,6 +3477,12 @@ if(key !== lastRenderedRouteKey){
 lastRenderedRouteKey = key
 if(route) showCategoryPage(route.gender, route.path)
 else showHomeView()
+}else if(!productId && savedListScrollY !== null){
+// Closed a product back into the same list it was opened from — put
+// the scroll back where it was instead of leaving it wherever the
+// browser's default behavior happened to land it.
+window.scrollTo(0, savedListScrollY)
+savedListScrollY = null
 }
 
 if(productId) renderProductDetail(productId)
