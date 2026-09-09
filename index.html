@@ -1572,7 +1572,7 @@ CONTINUE SHOPPING
 
 <div class="panelHead">
 <h2>Product Details</h2>
-<button class="close" onclick="closePanels()">×</button>
+<button class="close" onclick="closeProductPanel()">×</button>
 </div>
 
 <a href="https://wa.me/8801877270165" target="_blank" class="pdWhatsapp" title="Ask about this product on WhatsApp">
@@ -2074,6 +2074,16 @@ function closePanels(){
 $("overlay").classList.remove("show")
 document.querySelectorAll(".panel").forEach(x=>x.classList.remove("show"))
 unlockBodyScrollIfNoneOpen()
+}
+
+// The product panel's own × button needs to go back through the hash
+// (like the swipe-to-close gesture already does) rather than just hiding
+// itself — otherwise the URL stays stuck on the product's hash after
+// closing, and the scroll-position restore (and anything else keyed off
+// hash changes) never runs.
+function closeProductPanel(){
+if(window.location.hash.includes('/product/')) history.back()
+else closePanels()
 }
 
 // Swipe-right-to-close on any open panel — lets you dismiss the product
@@ -5131,25 +5141,22 @@ $("adminOrdersBody").innerHTML = recent.length
    ============================================================ */
 (async function init(){
 updateCartBadge()
-// Fire all independent homepage data requests together instead of one
-// after another — loadHeroBanner/loadTestimonials/loadHomeCategories used
-// to only start after loadProducts finished, which is what made the hero
-// banner take an extra network round-trip to appear.
-loadHeroBanner()
-loadTestimonials()
-loadHomeCategories()
-await Promise.all([loadProducts(), loadCategoryImages()])
 
-// If the page loaded directly on a product URL (a refresh while a product
-// was open, a shared link, etc.), there'd be no "base" entry underneath it
-// in this tab's history — so the very first back-press/swipe would leave
-// the site entirely instead of just closing the product panel. Split it
-// into two history entries (base, then product) so back always has
-// somewhere safe to land first.
+// This history guard has to run unconditionally before anything that
+// touches the network below — it previously ran after the product-data
+// fetch finished, so a slow or failed request meant it (and the popstate
+// listener that stops the back gesture from exiting the site) might
+// never register at all.
 {
 const originalHash = window.location.hash
 const initialParsed = parseRoute()
 if(initialParsed.productId){
+// If the page loaded directly on a product URL (a refresh while a
+// product was open, a shared link, etc.), there'd be no "base" entry
+// underneath it in this tab's history — so the very first back-press/
+// swipe would leave the site entirely instead of just closing the
+// product panel. Split it into two history entries (base, then
+// product) so back always has somewhere safe to land first.
 const baseHash = originalHash.replace(/\/product\/[^/]+$/, '')
 history.replaceState(null, '', baseHash || (window.location.pathname + window.location.search))
 history.pushState(null, '', originalHash)
@@ -5178,6 +5185,15 @@ window.scrollTo({top:0, behavior:'smooth'})
 history.pushState({homeGuard:true}, '', window.location.pathname + window.location.search)
 }
 })
+
+// Fire all independent homepage data requests together instead of one
+// after another — loadHeroBanner/loadTestimonials/loadHomeCategories used
+// to only start after loadProducts finished, which is what made the hero
+// banner take an extra network round-trip to appear.
+loadHeroBanner()
+loadTestimonials()
+loadHomeCategories()
+await Promise.all([loadProducts(), loadCategoryImages()])
 
 // Admin isn't part of the #/shop/... route parser below — it's a simple
 // hash flag. Route every hash change through here first so that leaving
