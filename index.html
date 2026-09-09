@@ -1281,7 +1281,7 @@ your signature style.
 </div>
 
 <!-- OVERLAY -->
-<div class="overlay" id="overlay" onclick="closePanels()"></div>
+<div class="overlay" id="overlay" onclick="closeProductPanel()"></div>
 
 <!-- ACCOUNT -->
 <div class="panel" id="accountPanel">
@@ -2077,7 +2077,7 @@ document.body.style.top = ""
 document.body.style.left = ""
 document.body.style.right = ""
 document.body.style.width = ""
-window.scrollTo(0, lockedScrollY)
+window.scrollTo({ top: lockedScrollY, left: 0, behavior: "instant" })
 if($("shopPage").style.display !== "none") $("bottomNav").style.display = "flex"
 }
 }
@@ -2095,11 +2095,13 @@ document.querySelectorAll(".panel").forEach(x=>x.classList.remove("show"))
 unlockBodyScrollIfNoneOpen()
 }
 
-// The product panel's own × button needs to go back through the hash
-// (like the swipe-to-close gesture already does) rather than just hiding
-// itself — otherwise the URL stays stuck on the product's hash after
-// closing, and the scroll-position restore (and anything else keyed off
-// hash changes) never runs.
+// Used by the product panel's own × button, its swipe-to-close gesture,
+// and the shared dark overlay's tap-outside-to-close — all three need to
+// go back through the hash rather than just hiding the panel, otherwise
+// the URL stays stuck on the product's hash after closing, and the
+// scroll-position restore (and anything else keyed off hash changes)
+// never runs. For every other panel (cart, wishlist, login, ...) this
+// just falls through to a plain closePanels().
 function closeProductPanel(){
 if(window.location.hash.includes('/product/')) history.back()
 else closePanels()
