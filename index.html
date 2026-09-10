@@ -3572,6 +3572,13 @@ return route ? `${route.gender}::${route.path.join('/')}` : 'home'
 }
 
 let lastRenderedRouteKey = null
+// Tracks whether the page a moment ago (before whatever just triggered
+// this render) had a product open. The popstate listener needs this to
+// tell "the back gesture just closed a product panel" apart from
+// "the back gesture hit the actual floor of history" — both can land on
+// the homepage, but only the second one should trigger the home-floor
+// bounce/reset below.
+let lastProductId = null
 
 // Remembers scroll position per route (hub, or a leaf products list) so
 // that returning to a page you'd already scrolled down in — most commonly
@@ -3623,6 +3630,7 @@ savedListScrollY = null
 }
 
 if(productId) renderProductDetail(productId)
+lastProductId = productId
 }
 
 function showHomeView(){
@@ -5324,8 +5332,9 @@ history.pushState({homeGuard:true}, '', originalPath)
 // navigations left that we don't trigger ourselves via navigateTo) has to
 // explicitly re-render here.
 window.addEventListener('popstate', (e) => {
+const wasOnProduct = !!lastProductId
 routeChanged()
-if((location.pathname === '/' || location.pathname === '/index.html') && $("adminPage").style.display !== "block"){
+if((location.pathname === '/' || location.pathname === '/index.html') && $("adminPage").style.display !== "block" && !wasOnProduct){
 window.scrollTo({top:0, behavior:'smooth'})
 history.pushState({homeGuard:true}, '', location.pathname + location.search)
 }
