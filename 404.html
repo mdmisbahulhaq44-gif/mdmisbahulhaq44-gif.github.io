@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VENOM</title>
+<script>
+// GitHub Pages serves this file for any path that isn't an actual file in
+// the repo — which, for a single-page app like VENOM, is every product
+// and category URL (e.g. /shop/men/shirt/..., /shop/.../product/123).
+// Since the real page for all of those is index.html, this just
+// remembers the path that was actually requested and hands off there —
+// index.html's own redirect-restore snippet reads it back and puts the
+// visitor exactly where the link pointed, instead of showing GitHub's
+// generic 404.
+try{
+sessionStorage.setItem('venomRedirectPath', location.pathname + location.search + location.hash)
+}catch(e){}
+location.replace('/')
+</script>
+</head>
+<body></body>
+</html>
