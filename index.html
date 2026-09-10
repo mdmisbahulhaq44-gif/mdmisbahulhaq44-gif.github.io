@@ -3530,6 +3530,23 @@ return route ? `${route.gender}::${route.path.join('/')}` : 'home'
 
 let lastRenderedRouteKey = null
 
+// Remembers scroll position per route (hub, or a leaf products list) so
+// that returning to a page you'd already scrolled down in — most commonly
+// via the back button — puts you back where you were instead of
+// resetting to the top every time. A route with no memory yet (the usual
+// case for a fresh forward tap into a page you haven't seen before) still
+// starts at the top, same as before.
+let hubScrollMemory = {}
+
+function rememberAndScroll(key, keepScroll){
+if(keepScroll) return
+if(hubScrollMemory[key] !== undefined){
+window.scrollTo({ top: hubScrollMemory[key], left: 0, behavior: 'instant' })
+}else{
+window.scrollTo(0, 0)
+}
+}
+
 function renderRoute(){
 const { route, productId } = parseRoute()
 debugLog(`ROUTE hash=${location.hash||'(empty)'} pid=${productId||'-'} scrollY=${Math.round(window.scrollY)}`)
@@ -3544,7 +3561,8 @@ closePanels()
 const key = routeKey(route)
 debugLog(`  key=${key} last=${lastRenderedRouteKey} saved=${savedListScrollY}`)
 if(key !== lastRenderedRouteKey){
-debugLog(`  -> RE-RENDER (key changed) scrollTop(0,0)`)
+debugLog(`  -> RE-RENDER (key changed)`)
+if(lastRenderedRouteKey !== null) hubScrollMemory[lastRenderedRouteKey] = window.scrollY
 lastRenderedRouteKey = key
 if(route) showCategoryPage(route.gender, route.path)
 else showHomeView()
@@ -3569,7 +3587,7 @@ setViewMode('home')
 document.title = "VENOM — Premium Fashion in Bangladesh"
 const allBtn = document.querySelector('#genderTabs [data-gender="ALL"]')
 if(allBtn) filterByGender('ALL', allBtn)
-window.scrollTo(0, 0)
+rememberAndScroll('home', false)
 }
 
 // Distinct next-level category names directly under `path` for this
@@ -3694,7 +3712,7 @@ setViewMode('hub')
 // an already-open product panel (the single-product shortcut below) —
 // not an actual navigation to this hub — so the visitor's scroll
 // position here must be left alone instead of snapping back to the top.
-if(!keepScroll) window.scrollTo(0, 0)
+rememberAndScroll(routeKey({ gender, path }), keepScroll)
 }
 
 function showProductsView(gender, path, products){
@@ -3704,7 +3722,7 @@ const heading = path.length ? path[path.length - 1] : capitalize(gender)
 $("shopHeading").textContent = heading
 document.title = `${heading} — VENOM`
 renderProductGrid(products)
-window.scrollTo(0, 0)
+rememberAndScroll(routeKey({ gender, path }), false)
 }
 
 let editingHeroSlides = []
