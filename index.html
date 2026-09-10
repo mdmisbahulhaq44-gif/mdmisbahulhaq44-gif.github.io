@@ -2050,34 +2050,30 @@ return url.replace('/upload/', `/upload/w_${width}/`)
 /* ============================================================
    PANELS
    ============================================================ */
-// Locking scroll with just `overflow:hidden` on body doesn't reliably stop
-// background touch-scrolling on mobile, and — more importantly — some
-// mobile browsers don't reliably keep the page at the same scrollY once
-// overflow is toggled back afterward. That's what made closing a product
-// (opened from partway down a category list) land back at the top instead
-// of where the list actually was. Pinning the body with position:fixed at
-// its exact current offset, then explicitly scrolling back to that offset
-// on unlock, is the standard, reliable fix for both problems.
-let lockedScrollY = 0
+// The router (renderRoute / rememberAndScroll / the savedListScrollY
+// restore) already explicitly puts the page back at the exact right
+// scroll position whenever a panel closes — that's handled independently
+// of whatever this lock does. So this only needs to stop the background
+// from visibly scrolling while a panel is open, not remember or restore
+// anything itself. A plain `overflow:hidden` does that: the panel and its
+// full-screen dark overlay already physically cover the whole viewport,
+// so there's no exposed background area left for a finger to scroll in
+// the first place. (An earlier version pinned body with `position:fixed`
+// and a negative `top` offset instead, which is the standard trick for
+// pages where the background IS still reachable — but it has a
+// well-known side effect: the instant `position:fixed` applies, scrollY
+// snaps to 0 and only *looks* right again once the compensating `top`
+// offset paints, which showed up as a visible jump/flash right when a
+// product opened. Not needed here, so removed.)
 function lockBodyScroll(){
-lockedScrollY = window.scrollY
-document.body.style.position = "fixed"
-document.body.style.top = `-${lockedScrollY}px`
-document.body.style.left = "0"
-document.body.style.right = "0"
-document.body.style.width = "100%"
+document.body.style.overflow = "hidden"
 $("bottomNav").style.display = "none"
 }
 
 function unlockBodyScrollIfNoneOpen(){
 const anyOpen = document.querySelector(".panel.show, .drawer.show")
 if(!anyOpen){
-document.body.style.position = ""
-document.body.style.top = ""
-document.body.style.left = ""
-document.body.style.right = ""
-document.body.style.width = ""
-window.scrollTo({ top: lockedScrollY, left: 0, behavior: "instant" })
+document.body.style.overflow = ""
 if($("shopPage").style.display !== "none") $("bottomNav").style.display = "flex"
 }
 }
