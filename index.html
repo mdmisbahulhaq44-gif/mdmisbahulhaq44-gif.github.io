@@ -39,6 +39,7 @@ history.replaceState(null, '', redirectPath)
 <meta property="og:title" content="VENOM — Premium Fashion in Bangladesh">
 <meta property="og:description" content="Shop premium men's and women's fashion online in Bangladesh with nationwide cash-on-delivery.">
 <meta property="og:url" content="https://mdmisbahulhaq44-gif.github.io/">
+<meta property="og:image" content="https://res.cloudinary.com/dtdztxbfg/image/upload/w_1200/v1787488489/IMG_20260823_183338_ge9det.png">
 
 <!-- Structured data: Organization -->
 <script type="application/ld+json">
@@ -2760,7 +2761,13 @@ track.style.transform = 'translateX(0%)'
 
 $("pdBrand").textContent = product.brand || ""
 $("pdName").textContent = product.name
-document.title = `${product.name} — VENOM`
+const pdFirstImg = images.length ? cldOpt(images[0], 1200) : null
+updatePageSEO({
+title: `${product.name} — VENOM`,
+description: `${product.name}${product.brand ? ' by ' + product.brand : ''} — ৳${Number(product.price).toLocaleString()} at VENOM. ${Number(product.stock) > 0 ? 'In stock now' : 'Currently out of stock'}, nationwide cash-on-delivery in Bangladesh.`,
+image: pdFirstImg,
+product
+})
 const oldPrice = product.old ? ` <span class="old">৳${Number(product.old).toLocaleString()}</span>` : ""
 $("pdPrice").innerHTML = `৳${Number(product.price).toLocaleString()}${oldPrice}`
 
@@ -3597,6 +3604,94 @@ window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
 }
 }
 
+const DEFAULT_SEO_TITLE = "VENOM — Premium Fashion in Bangladesh"
+const DEFAULT_SEO_DESC = "VENOM — Premium men's and women's clothing in Bangladesh. Shirts, pants, polos and more with nationwide cash-on-delivery. Shop the latest collection online."
+const DEFAULT_OG_IMAGE = "https://res.cloudinary.com/dtdztxbfg/image/upload/w_1200/v1787488489/IMG_20260823_183338_ge9det.png"
+
+function setMetaTag(attrName, attrValue, content){
+let el = document.querySelector(`meta[${attrName}="${attrValue}"]`)
+if(!el){
+el = document.createElement('meta')
+el.setAttribute(attrName, attrValue)
+document.head.appendChild(el)
+}
+el.setAttribute('content', content)
+}
+
+function setCanonicalLink(href){
+let el = document.querySelector('link[rel="canonical"]')
+if(!el){
+el = document.createElement('link')
+el.setAttribute('rel', 'canonical')
+document.head.appendChild(el)
+}
+el.setAttribute('href', href)
+}
+
+// Product pages get their own Schema.org Product block (name, image, price,
+// stock) so Google can show rich results (price/availability) for them —
+// removed again once you're not looking at a product, so it never lingers
+// and describes the wrong page.
+function setProductStructuredData(product){
+let el = document.getElementById('productStructuredData')
+if(!product){
+if(el) el.remove()
+return
+}
+const images = (product.imgs ? product.imgs.split(',').map(s => s.trim()).filter(Boolean) : []).map(u => cldOpt(u, 1200))
+const data = {
+"@context": "https://schema.org",
+"@type": "Product",
+"name": product.name,
+"image": images,
+"brand": { "@type": "Brand", "name": product.brand || "VENOM" },
+"offers": {
+"@type": "Offer",
+"priceCurrency": "BDT",
+"price": String(product.price),
+"availability": Number(product.stock) > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+"url": window.location.href
+}
+}
+if(!el){
+el = document.createElement('script')
+el.type = 'application/ld+json'
+el.id = 'productStructuredData'
+document.head.appendChild(el)
+}
+el.textContent = JSON.stringify(data)
+}
+
+// Updates every SEO-relevant tag (title, description, canonical, Open
+// Graph) for whatever page is now showing. url always reflects the
+// CURRENT address bar — call this only after the path itself is already
+// correct (routeChanged/navigateTo always update the URL before calling
+// into any render function).
+function updatePageSEO({ title, description, image, product } = {}){
+const fullTitle = title || DEFAULT_SEO_TITLE
+const desc = description || DEFAULT_SEO_DESC
+const url = window.location.origin + window.location.pathname
+document.title = fullTitle
+setMetaTag('name', 'description', desc)
+setMetaTag('property', 'og:type', product ? 'product' : 'website')
+setMetaTag('property', 'og:title', fullTitle)
+setMetaTag('property', 'og:description', desc)
+setMetaTag('property', 'og:url', url)
+setMetaTag('property', 'og:image', image || DEFAULT_OG_IMAGE)
+setCanonicalLink(url)
+setProductStructuredData(product || null)
+}
+
+// Whatever the last hub/products-list/home page set its SEO tags to.
+// Closing a product panel often lands back on a page whose route key
+// hasn't changed (so nothing re-renders it, see renderRoute below) — this
+// is what renderRoute re-applies in that case, so the tags don't stay
+// stuck describing the product you just closed.
+let currentListSEO = null
+function applyCurrentListSEO(){
+if(currentListSEO) updatePageSEO(currentListSEO)
+}
+
 function renderRoute(){
 const { route, productId } = parseRoute()
 debugLog(`ROUTE path=${location.pathname} pid=${productId||'-'} scrollY=${Math.round(window.scrollY)}`)
@@ -3629,13 +3724,15 @@ window.scrollTo({ top: savedListScrollY, left: 0, behavior: 'instant' })
 savedListScrollY = null
 }
 
+if(!productId) applyCurrentListSEO()
 if(productId) renderProductDetail(productId)
 lastProductId = productId
 }
 
 function showHomeView(){
 setViewMode('home')
-document.title = "VENOM — Premium Fashion in Bangladesh"
+currentListSEO = {}
+updatePageSEO(currentListSEO)
 const allBtn = document.querySelector('#genderTabs [data-gender="ALL"]')
 if(allBtn) filterByGender('ALL', allBtn)
 rememberAndScroll('home', false)
@@ -3735,7 +3832,15 @@ function showHubView(gender, path, subs, keepScroll){
 const heading = path.length ? path[path.length - 1] : capitalize(gender)
 $("hubHeading").textContent = heading
 $("hubBreadcrumb").innerHTML = breadcrumbHTML(gender, path)
-document.title = `${heading} — VENOM`
+
+if(!keepScroll){
+currentListSEO = {
+title: `${heading} — VENOM`,
+description: `Shop ${heading} for ${gender === 'women' ? "women's" : "men's"} fashion at VENOM — premium quality, nationwide cash-on-delivery in Bangladesh.`,
+image: subs.find(s => s.image) ? cldOpt(subs.find(s => s.image).image, 1200) : null
+}
+updatePageSEO(currentListSEO)
+}
 
 $("hubTileGrid").innerHTML = subs.length ? subs.map(s => {
 const targetPath = buildShopPath(gender, [...path, s.seg])
@@ -3774,7 +3879,13 @@ setViewMode('category')
 $("shopBreadcrumb").innerHTML = breadcrumbHTML(gender, path)
 const heading = path.length ? path[path.length - 1] : capitalize(gender)
 $("shopHeading").textContent = heading
-document.title = `${heading} — VENOM`
+const firstImg = products.find(p => p.imgs)
+currentListSEO = {
+title: `${heading} — VENOM`,
+description: `Shop ${heading} for ${gender === 'women' ? "women's" : "men's"} fashion at VENOM — ${products.length} product${products.length===1?'':'s'} available with nationwide cash-on-delivery in Bangladesh.`,
+image: firstImg ? cldOpt(firstImg.imgs.split(',')[0].trim(), 1200) : null
+}
+updatePageSEO(currentListSEO)
 renderProductGrid(products)
 rememberAndScroll(routeKey({ gender, path }), false)
 }
