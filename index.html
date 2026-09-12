@@ -1165,6 +1165,39 @@ good for many categories). Tapping a tile drills further in. -->
 <button class="filter" data-gender="women" onclick="filterByGender('women', this)">WOMEN</button>
 </div>
 
+<div id="catFilterBar" style="display:none;align-items:center;justify-content:space-between;gap:10px;margin-bottom:16px;flex-wrap:wrap">
+<button id="catFilterToggleBtn" onclick="toggleCatFilterBox()" style="border:1px solid var(--line);border-radius:30px;padding:9px 16px;font-size:11px;letter-spacing:.5px;background:white;display:flex;align-items:center;gap:6px;cursor:pointer">
+<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
+FILTER <span id="catFilterCount" style="display:none"></span>
+</button>
+<select id="catSortSelect" onchange="onCatSortChange()" style="border:1px solid var(--line);border-radius:30px;padding:9px 14px;font-size:11px;background:white">
+<option value="newest">Newest First</option>
+<option value="price_low">Price: Low to High</option>
+<option value="price_high">Price: High to Low</option>
+</select>
+</div>
+
+<div id="catFilterBox" style="display:none;background:#faf9f6;border:1px solid var(--line);border-radius:10px;padding:16px;margin-bottom:20px">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+<strong style="font-size:12px;letter-spacing:.5px">PRICE RANGE (৳)</strong>
+</div>
+<div style="display:flex;gap:10px;align-items:center;margin-bottom:18px">
+<input id="catMinPrice" type="number" placeholder="Min" style="width:100%;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:13px">
+<span style="color:var(--muted)">—</span>
+<input id="catMaxPrice" type="number" placeholder="Max" style="width:100%;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:13px">
+</div>
+<div style="margin-bottom:6px"><strong style="font-size:12px;letter-spacing:.5px">SIZE</strong></div>
+<div id="catSizeOptions" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px"></div>
+<label style="display:flex;align-items:center;gap:8px;font-size:13px;margin-bottom:20px;cursor:pointer">
+<input id="catInStockOnly" type="checkbox" style="width:16px;height:16px">
+In Stock Only
+</label>
+<div style="display:flex;gap:10px">
+<button onclick="clearCatFilters()" style="flex:1;padding:11px;border:1px solid var(--black);border-radius:30px;background:white;font-size:12px;letter-spacing:.5px;cursor:pointer">CLEAR</button>
+<button onclick="applyCatFilterBox()" style="flex:1;padding:11px;border:0;border-radius:30px;background:var(--black);color:white;font-size:12px;letter-spacing:.5px;cursor:pointer">APPLY</button>
+</div>
+</div>
+
 <div style="display:none;justify-content:flex-end;align-items:center;gap:10px;margin-bottom:30px;flex-wrap:wrap">
 <div class="filters" id="filters" style="margin-bottom:0;display:none">
 <button class="filter active" data-cat="ALL">ALL</button>
@@ -2583,6 +2616,87 @@ let currentGender = "ALL"
 let currentPrice = "all"
 let currentSort = "newest"
 
+// Category (leaf products list) filter/sort — kept entirely separate from
+// the flat home-page filtering above, since it filters whatever `products`
+// array showProductsView was given for THIS category, not all of
+// allProducts, and its own bar/box UI is only shown in 'category' mode.
+let currentCategoryProducts = []
+let catFilters = { sort: "newest", minPrice: null, maxPrice: null, sizes: [], inStockOnly: false }
+
+function renderCatSizeOptions(products){
+const allSizes = [...new Set(products.flatMap(p => Array.isArray(p.sizes) ? p.sizes : []))]
+$("catSizeOptions").innerHTML = allSizes.length ? allSizes.map(s => `
+<button type="button" class="catSizeChip" data-size="${escapeHTML(s)}" onclick="toggleCatSizeChip(this)" style="border:1px solid var(--line);border-radius:6px;padding:7px 14px;font-size:12px;background:white;cursor:pointer">${escapeHTML(s)}</button>
+`).join('') : `<span style="font-size:12px;color:var(--muted)">No size data for these products</span>`
+}
+
+function toggleCatSizeChip(btn){
+btn.classList.toggle("active")
+btn.style.background = btn.classList.contains("active") ? "var(--black)" : "white"
+btn.style.color = btn.classList.contains("active") ? "white" : "var(--black)"
+}
+
+function toggleCatFilterBox(){
+const box = $("catFilterBox")
+box.style.display = box.style.display === "none" ? "block" : "none"
+}
+
+function updateCatFilterCount(){
+let n = 0
+if(catFilters.minPrice !== null || catFilters.maxPrice !== null) n++
+if(catFilters.sizes.length) n++
+if(catFilters.inStockOnly) n++
+const el = $("catFilterCount")
+el.style.display = n ? "inline" : "none"
+el.textContent = n ? `(${n})` : ""
+}
+
+function applyCatFilterBox(){
+const min = $("catMinPrice").value
+const max = $("catMaxPrice").value
+catFilters.minPrice = min !== "" ? Number(min) : null
+catFilters.maxPrice = max !== "" ? Number(max) : null
+catFilters.sizes = [...document.querySelectorAll("#catSizeOptions .catSizeChip.active")].map(b => b.dataset.size)
+catFilters.inStockOnly = $("catInStockOnly").checked
+updateCatFilterCount()
+$("catFilterBox").style.display = "none"
+renderCategoryProducts()
+}
+
+function clearCatFilters(){
+catFilters.minPrice = null
+catFilters.maxPrice = null
+catFilters.sizes = []
+catFilters.inStockOnly = false
+$("catMinPrice").value = ""
+$("catMaxPrice").value = ""
+$("catInStockOnly").checked = false
+document.querySelectorAll("#catSizeOptions .catSizeChip.active").forEach(b => toggleCatSizeChip(b))
+updateCatFilterCount()
+$("catFilterBox").style.display = "none"
+renderCategoryProducts()
+}
+
+function onCatSortChange(){
+catFilters.sort = $("catSortSelect").value
+renderCategoryProducts()
+}
+
+function renderCategoryProducts(){
+let list = currentCategoryProducts
+if(catFilters.minPrice !== null) list = list.filter(p => Number(p.price) >= catFilters.minPrice)
+if(catFilters.maxPrice !== null) list = list.filter(p => Number(p.price) <= catFilters.maxPrice)
+if(catFilters.sizes.length) list = list.filter(p => Array.isArray(p.sizes) && catFilters.sizes.some(s => p.sizes.includes(s)))
+if(catFilters.inStockOnly) list = list.filter(p => Number(p.stock) > 0)
+
+const sorted = [...list]
+if(catFilters.sort === "price_low") sorted.sort((a,b) => Number(a.price) - Number(b.price))
+else if(catFilters.sort === "price_high") sorted.sort((a,b) => Number(b.price) - Number(a.price))
+else sorted.sort((a,b) => new Date(b.created_at||0) - new Date(a.created_at||0))
+
+renderProductGrid(sorted)
+}
+
 function applySort(list){
 const sorted = [...list]
 if(currentSort === "price_low") sorted.sort((a,b)=>Number(a.price)-Number(b.price))
@@ -3547,6 +3661,8 @@ $("new").style.display = mode === 'hub' ? 'none' : ''
 $("shopBreadcrumb").style.display = mode === 'category' ? 'block' : 'none'
 $("genderTabs").style.display = 'none'
 $("filters").style.display = 'none'
+$("catFilterBar").style.display = mode === 'category' ? 'flex' : 'none'
+$("catFilterBox").style.display = 'none'
 const features = document.querySelector('.features')
 if(features) features.style.display = mode === 'home' ? '' : 'none'
 if(mode !== 'category') $("shopHeading").textContent = 'New Arrivals'
@@ -3886,7 +4002,15 @@ description: `Shop ${heading} for ${gender === 'women' ? "women's" : "men's"} fa
 image: firstImg ? cldOpt(firstImg.imgs.split(',')[0].trim(), 1200) : null
 }
 updatePageSEO(currentListSEO)
-renderProductGrid(products)
+currentCategoryProducts = products
+catFilters = { sort: "newest", minPrice: null, maxPrice: null, sizes: [], inStockOnly: false }
+$("catMinPrice").value = ""
+$("catMaxPrice").value = ""
+$("catInStockOnly").checked = false
+$("catSortSelect").value = "newest"
+updateCatFilterCount()
+renderCatSizeOptions(products)
+renderCategoryProducts()
 rememberAndScroll(routeKey({ gender, path }), false)
 }
 
