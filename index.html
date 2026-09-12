@@ -1503,10 +1503,26 @@ This lets you track your orders anytime.
 
 <label>PAYMENT METHOD</label>
 <div class="radioRow" style="flex-direction:column;align-items:flex-start;gap:10px">
-<label><input type="radio" name="coPayment" value="COD" checked> 💵 Cash on Delivery</label>
-<label style="opacity:.45;cursor:not-allowed">
-<input type="radio" name="coPayment" value="bkash" disabled> 📱 bKash / Nagad <span style="font-size:10px;background:#eee;padding:2px 8px;border-radius:20px;margin-left:4px">Coming Soon</span>
-</label>
+<label><input type="radio" name="coPayment" value="COD" checked onchange="onPaymentMethodChange()"> 💵 Cash on Delivery</label>
+<label><input type="radio" name="coPayment" value="bKash" onchange="onPaymentMethodChange()"> 📱 bKash</label>
+<label><input type="radio" name="coPayment" value="Nagad" onchange="onPaymentMethodChange()"> 📱 Nagad</label>
+<label><input type="radio" name="coPayment" value="Rocket" onchange="onPaymentMethodChange()"> 📱 Rocket</label>
+<label><input type="radio" name="coPayment" value="Upay" onchange="onPaymentMethodChange()"> 📱 Upay</label>
+<label><input type="radio" name="coPayment" value="Tap" onchange="onPaymentMethodChange()"> 📱 Tap</label>
+</div>
+
+<!-- Shown only when a mobile wallet is picked above — there's no merchant/
+gateway account set up yet, so payment is a manual Send Money to a
+personal wallet number, verified by the admin against the transaction ID
+the customer provides here before the order ships. -->
+<div id="mobilePaymentBox" style="display:none;background:#f7f5f0;border:1px solid var(--line);border-radius:10px;padding:16px;margin-top:-6px;margin-bottom:16px">
+<p style="font-size:13px;margin-bottom:10px">
+Send <strong id="mpAmount">৳0</strong> via <strong id="mpMethodName">bKash</strong> "Send Money" to:
+</p>
+<p style="font-size:18px;font-weight:600;letter-spacing:1px;margin-bottom:12px">+880 1877-270165</p>
+<label style="font-size:12px">TRANSACTION ID</label>
+<input type="text" id="coTrxId" placeholder="e.g. 8N7A2K9XYZ" style="text-transform:uppercase">
+<p style="font-size:11.5px;color:var(--muted);margin-top:8px">After sending money, enter the Transaction ID from the confirmation SMS. We'll verify it before your order ships.</p>
 </div>
 
 <div id="homeDeliveryFields">
@@ -1983,11 +1999,11 @@ Your wishlist is currently empty.
 <table>
 <thead>
 <tr>
-<th>Order</th><th>Customer</th><th>Phone</th><th>Total</th><th>Status</th><th>Rider</th><th>Date</th>
+<th>Order</th><th>Customer</th><th>Phone</th><th>Total</th><th>Payment</th><th>Status</th><th>Rider</th><th>Date</th>
 </tr>
 </thead>
 <tbody id="adminAllOrdersBody">
-<tr><td colspan="7">Loading...</td></tr>
+<tr><td colspan="8">Loading...</td></tr>
 </tbody>
 </table>
 </div>
@@ -4894,6 +4910,23 @@ $("coDiscountRow").style.display = "none"
 }
 
 $("coTotal").textContent = "৳" + (subtotal - discount + charge).toLocaleString()
+updatePaymentInstructions(subtotal - discount + charge)
+}
+
+function updatePaymentInstructions(total){
+const method = document.querySelector('input[name="coPayment"]:checked').value
+const box = $("mobilePaymentBox")
+if(method === 'COD'){
+box.style.display = "none"
+return
+}
+box.style.display = "block"
+$("mpMethodName").textContent = method
+$("mpAmount").textContent = "৳" + Math.max(0, Math.round(total || 0)).toLocaleString()
+}
+
+function onPaymentMethodChange(){
+updatePaymentInstructions(Number(($("coTotal").textContent || "৳0").replace(/[^\d]/g, '')))
 }
 
 async function placeOrder(e){
@@ -4926,6 +4959,8 @@ const addressType = method === 'home_delivery'
 : ''
 const address = method === 'home_delivery' ? $("coAddress").value.trim() : deliverySettings.pickup_address
 const note = $("coNote").value.trim()
+const paymentMethod = document.querySelector('input[name="coPayment"]:checked').value
+const trxId = paymentMethod !== 'COD' ? $("coTrxId").value.trim().toUpperCase() : ''
 
 if(!name || !phone){
 toast("Please fill in your name and phone number.")
@@ -4934,6 +4969,11 @@ return
 
 if(method === 'home_delivery' && (!region || !cityValue || !area || !address)){
 toast("Please fill in region, city, area and address.")
+return
+}
+
+if(paymentMethod !== 'COD' && !trxId){
+toast(`Please enter your ${paymentMethod} Transaction ID.`)
 return
 }
 
@@ -4965,7 +5005,7 @@ user_id: userId,
 customer_id: profile.id,
 address: address,
 items: cart.map(i => `${i.name}${i.size ? ` (${i.size})` : ''} x${i.qty}`).join(', '),
-payment: 'COD',
+payment: paymentMethod,
 status: 'Pending',
 date: new Date().toISOString(),
 order_ref: orderRef,
@@ -4978,6 +5018,7 @@ delivery_note: [
 subArea ? `${cityValue === DHAKA_CITY_VALUE ? 'Sub Area' : 'Union'}: ${subArea}` : '',
 addressType ? `Address Type: ${addressType}` : '',
 couponCode ? `Coupon: ${couponCode} (−৳${discount.toLocaleString()})` : '',
+trxId ? `${paymentMethod} TrxID: ${trxId} (unverified)` : '',
 note
 ].filter(Boolean).join(' | '),
 delivery_charge: idx === 0 ? charge : 0,
@@ -5021,6 +5062,7 @@ const methodLabel = method === 'pickup' ? 'Store Pickup (Mirpur 12)' : `Home Del
 
 // Build a WhatsApp message so the customer can confirm the order
 // instantly with the shop owner — no backend/SMS service needed.
+const paymentLabel = paymentMethod === 'COD' ? 'Cash on Delivery' : `${paymentMethod}${trxId ? ` — TrxID: ${trxId}` : ''}`
 const waText = encodeURIComponent(
 `New Order #${orderRef}\n` +
 `Name: ${name}\n` +
@@ -5029,7 +5071,7 @@ const waText = encodeURIComponent(
 `Delivery: ${methodLabel}\n` +
 (address ? `Address: ${address}\n` : '') +
 (note ? `Note: ${note}\n` : '') +
-`Total: ৳${total.toLocaleString()} (COD)`
+`Total: ৳${total.toLocaleString()} (${paymentLabel})`
 )
 const waNumber = (deliverySettings.whatsapp_number || '8801877270165').replace(/\D/g,'')
 $("successWhatsapp").href = `https://wa.me/${waNumber}?text=${waText}`
@@ -5338,16 +5380,30 @@ $("adminProductCount").textContent = allProducts.length
 
 let adminOrdersCache = []
 
+// Mobile wallet payments (bKash/Nagad/Rocket/Upay/Tap) are manual Send
+// Money to a personal number, not a real payment gateway — there's no
+// merchant account yet to confirm them automatically. The transaction ID
+// the customer typed at checkout got folded into delivery_note (to avoid
+// needing a new database column); this pulls it back out so an admin can
+// see it here and verify it manually (check the wallet's transaction
+// history) before marking the order as processing/shipped.
+function paymentCellHTML(o){
+if(!o.payment || o.payment === 'COD') return '💵 COD'
+const m = (o.delivery_note || '').match(new RegExp(`${o.payment} TrxID: (\\S+)`))
+if(!m) return `📱 ${escapeHTML(o.payment)}`
+return `📱 ${escapeHTML(o.payment)}<br><span style="font-size:10.5px;color:var(--muted)">TrxID: ${escapeHTML(m[1])}</span>`
+}
+
 async function loadAllOrders(skipFetch){
 if(!skipFetch){
 const { data: orders, error } = await supabaseClient
 .from('orders')
-.select('id,customer,phone,total_amount,status,created_at,order_ref,rider_name,rider_phone')
+.select('id,customer,phone,total_amount,status,created_at,order_ref,rider_name,rider_phone,payment,delivery_note')
 .order('created_at', { ascending:false })
 .limit(100)
 
 if(error){
-$("adminAllOrdersBody").innerHTML = `<tr><td colspan="7">Could not load orders.</td></tr>`
+$("adminAllOrdersBody").innerHTML = `<tr><td colspan="8">Could not load orders.</td></tr>`
 return
 }
 adminOrdersCache = orders || []
@@ -5365,6 +5421,7 @@ $("adminAllOrdersBody").innerHTML = list.length
 <td>${o.customer||'—'}</td>
 <td>${o.phone||'—'}</td>
 <td>৳${Number(o.total_amount||0).toLocaleString()}</td>
+<td>${paymentCellHTML(o)}</td>
 <td>
 <select class="statusSelect" onchange="updateOrderStatus(${o.id}, this.value, ${o.order_ref ? `'${o.order_ref}'` : 'null'})" style="font-size:11px;padding:5px 8px;border-radius:8px;border:1px solid var(--line);background:#fff">
 ${['Pending','Processing','Shipped','Delivered','Cancelled'].map(s =>
@@ -5379,7 +5436,7 @@ ${o.rider_name ? `🛵 ${o.rider_name}` : '+ Add Rider'}
 </td>
 <td>${new Date(o.created_at).toLocaleDateString()}</td>
 </tr>`).join("")
-: `<tr><td colspan="7">${q ? 'No orders match your search.' : 'No orders yet'}</td></tr>`
+: `<tr><td colspan="8">${q ? 'No orders match your search.' : 'No orders yet'}</td></tr>`
 }
 
 async function setOrderRider(orderId, orderRef){
