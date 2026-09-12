@@ -162,6 +162,9 @@ fs.rmSync(GENERATED_ROOT, { recursive: true, force: true })
 }
 
 const sitemapUrls = [SITE_URL + '/']
+for(const p of ['privacy.html', 'terms.html', 'refund-policy.html', 'contact.html']){
+if(fs.existsSync(path.join(REPO_ROOT, p))) sitemapUrls.push(`${SITE_URL}/${p}`)
+}
 let count = 0
 
 for(const product of products){
