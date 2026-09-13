@@ -2589,8 +2589,10 @@ async function loadProducts(){
 $("productsGrid").innerHTML = Array(8).fill(0).map(()=>`
 <div class="product skeletonCard">
 <div class="productImage"></div>
+<div class="skeletonLine" style="width:40%"></div>
 <div class="skeletonLine"></div>
 <div class="skeletonLine short"></div>
+<div class="skeletonLine" style="width:50%;margin-top:8px"></div>
 </div>
 `).join('')
 
