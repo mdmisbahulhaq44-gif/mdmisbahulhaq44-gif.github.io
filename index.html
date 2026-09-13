@@ -1504,11 +1504,11 @@ This lets you track your orders anytime.
 <label>PAYMENT METHOD</label>
 <div class="radioRow" style="flex-direction:column;align-items:flex-start;gap:10px">
 <label><input type="radio" name="coPayment" value="COD" checked onchange="onPaymentMethodChange()"> 💵 Cash on Delivery</label>
-<label><input type="radio" name="coPayment" value="bKash" onchange="onPaymentMethodChange()"> 📱 bKash</label>
-<label><input type="radio" name="coPayment" value="Nagad" onchange="onPaymentMethodChange()"> 📱 Nagad</label>
-<label><input type="radio" name="coPayment" value="Rocket" onchange="onPaymentMethodChange()"> 📱 Rocket</label>
-<label><input type="radio" name="coPayment" value="Upay" onchange="onPaymentMethodChange()"> 📱 Upay</label>
-<label><input type="radio" name="coPayment" value="Tap" onchange="onPaymentMethodChange()"> 📱 Tap</label>
+<label style="display:flex;align-items:center;gap:10px"><input type="radio" name="coPayment" value="bKash" onchange="onPaymentMethodChange()"> <span style="background:#E2136E;color:#fff;font-weight:700;font-size:12px;padding:4px 10px;border-radius:4px;letter-spacing:.3px">bKash</span></label>
+<label style="display:flex;align-items:center;gap:10px"><input type="radio" name="coPayment" value="Nagad" onchange="onPaymentMethodChange()"> <span style="background:#F6851F;color:#fff;font-weight:700;font-size:12px;padding:4px 10px;border-radius:4px;letter-spacing:.3px">Nagad</span></label>
+<label style="display:flex;align-items:center;gap:10px"><input type="radio" name="coPayment" value="Rocket" onchange="onPaymentMethodChange()"> <span style="background:#8C3494;color:#fff;font-weight:700;font-size:12px;padding:4px 10px;border-radius:4px;letter-spacing:.3px">Rocket</span></label>
+<label style="display:flex;align-items:center;gap:10px"><input type="radio" name="coPayment" value="Upay" onchange="onPaymentMethodChange()"> <span style="background:#00A99D;color:#fff;font-weight:700;font-size:12px;padding:4px 10px;border-radius:4px;letter-spacing:.3px">Upay</span></label>
+<label style="display:flex;align-items:center;gap:10px"><input type="radio" name="coPayment" value="Tap" onchange="onPaymentMethodChange()"> <span style="background:#0072BC;color:#fff;font-weight:700;font-size:12px;padding:4px 10px;border-radius:4px;letter-spacing:.3px">Tap</span></label>
 </div>
 
 <!-- Shown only when a mobile wallet is picked above — there's no merchant/
@@ -2059,6 +2059,7 @@ By default, a category's tile (Baggy, Shirt, etc — at any depth) uses one of i
 
 <!-- Supabase client library -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
 <script>
 
@@ -2066,6 +2067,9 @@ By default, a category's tile (Baggy, Shirt, etc — at any depth) uses one of i
    SUPABASE CONNECTION
    ============================================================ */
 const SUPABASE_URL = "https://otdbpahqfsarkzdpzwga.supabase.co";
+const EMAILJS_SERVICE_ID = "service_wmr228e"
+const EMAILJS_TEMPLATE_ID = "template_kv6boqn"
+if(typeof emailjs !== 'undefined') emailjs.init({ publicKey: "dSUNkmSfdWZJmS_Vo" })
 const SUPABASE_ANON_KEY = "sb_publishable_AykcRsZJ3KH1-pmmbbEOpA_-2Cb6NbR";
 
 if(typeof window.supabase === 'undefined'){
@@ -4913,6 +4917,13 @@ $("coTotal").textContent = "৳" + (subtotal - discount + charge).toLocaleString
 updatePaymentInstructions(subtotal - discount + charge)
 }
 
+const WALLET_COLORS = { bKash:'#E2136E', Nagad:'#F6851F', Rocket:'#8C3494', Upay:'#00A99D', Tap:'#0072BC' }
+
+function walletBadgeHTML(name){
+const color = WALLET_COLORS[name] || '#333'
+return `<span style="background:${color};color:#fff;font-weight:700;font-size:12px;padding:4px 10px;border-radius:4px;letter-spacing:.3px">${escapeHTML(name)}</span>`
+}
+
 function updatePaymentInstructions(total){
 const method = document.querySelector('input[name="coPayment"]:checked').value
 const box = $("mobilePaymentBox")
@@ -4921,7 +4932,7 @@ box.style.display = "none"
 return
 }
 box.style.display = "block"
-$("mpMethodName").textContent = method
+$("mpMethodName").innerHTML = walletBadgeHTML(method)
 $("mpAmount").textContent = "৳" + Math.max(0, Math.round(total || 0)).toLocaleString()
 }
 
@@ -5074,6 +5085,23 @@ const waText = encodeURIComponent(
 `Total: ৳${total.toLocaleString()} (${paymentLabel})`
 )
 const waNumber = (deliverySettings.whatsapp_number || '8801877270165').replace(/\D/g,'')
+
+// Email notification to the shop owner — best-effort only. The order is
+// already saved in Supabase at this point regardless, so a failure here
+// (EmailJS quota, network hiccup, etc.) is just logged, never shown to
+// the customer or allowed to block their order confirmation.
+if(typeof emailjs !== 'undefined'){
+emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+order_ref: orderRef,
+customer_name: name,
+customer_phone: phone,
+items_summary: cart.map(i => `${i.name}${i.size ? ` (${i.size})` : ''} x${i.qty}`).join(', '),
+delivery_method: methodLabel,
+delivery_address: address || '(Store Pickup)',
+payment_method: paymentLabel,
+total_amount: `৳${total.toLocaleString()}`
+}).catch(err => console.error('Order email notification failed:', err))
+}
 $("successWhatsapp").href = `https://wa.me/${waNumber}?text=${waText}`
 
 $("successOrderId").textContent = "#" + orderRef
@@ -5390,8 +5418,8 @@ let adminOrdersCache = []
 function paymentCellHTML(o){
 if(!o.payment || o.payment === 'COD') return '💵 COD'
 const m = (o.delivery_note || '').match(new RegExp(`${o.payment} TrxID: (\\S+)`))
-if(!m) return `📱 ${escapeHTML(o.payment)}`
-return `📱 ${escapeHTML(o.payment)}<br><span style="font-size:10.5px;color:var(--muted)">TrxID: ${escapeHTML(m[1])}</span>`
+if(!m) return walletBadgeHTML(o.payment)
+return `${walletBadgeHTML(o.payment)}<br><span style="font-size:10.5px;color:var(--muted)">TrxID: ${escapeHTML(m[1])}</span>`
 }
 
 async function loadAllOrders(skipFetch){
