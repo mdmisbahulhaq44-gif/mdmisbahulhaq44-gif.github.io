@@ -84,7 +84,7 @@ fbq('track', 'PageView');
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://res.cloudinary.com">
 <link rel="preconnect" href="https://otdbpahqfsarkzdpzwga.supabase.co">
-<link rel="preload" as="image" fetchpriority="high" href="https://res.cloudinary.com/dtdztxbfg/image/upload/w_1200/v1787488489/IMG_20260823_183338_ge9det.png">
+<link rel="preload" as="image" fetchpriority="high" href="https://res.cloudinary.com/dtdztxbfg/image/upload/w_1200,f_auto,q_auto/v1787488489/IMG_20260823_183338_ge9det.png">
 <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
@@ -2118,8 +2118,9 @@ return document.getElementById(id)
 // render at full/lossless quality, only their pixel dimensions are capped.
 function cldOpt(url, width){
 if(!url || !url.includes('res.cloudinary.com') || !url.includes('/upload/')) return url
-if(!width || url.includes('/upload/w_')) return url
-return url.replace('/upload/', `/upload/w_${width}/`)
+if(url.includes('/upload/w_') || url.includes('/upload/f_')) return url
+const transform = width ? `w_${width},f_auto,q_auto` : 'f_auto,q_auto'
+return url.replace('/upload/', `/upload/${transform}/`)
 }
 
 /* ============================================================
