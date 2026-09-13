@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * VENOM static SEO page generator — Phase 3.
+ * DEZIRE static SEO page generator — Phase 3.
  *
  * WHY THIS EXISTS: Facebook, WhatsApp, and other link-preview crawlers
  * never run JavaScript — they only ever see the raw HTML a URL returns.
@@ -88,9 +88,9 @@ return res.json()
 // the full HTML document (the index.html template with those tags swapped
 // in, plus a Product structured-data block appended before </head>).
 function renderProductPage(template, product, routePath){
-const title = `${product.name} — VENOM`
+const title = `${product.name} — DEZIRE`
 const priceStr = Number(product.price).toLocaleString()
-const desc = `${product.name}${product.brand ? ' by ' + product.brand : ''} — ৳${priceStr} at VENOM. ` +
+const desc = `${product.name}${product.brand ? ' by ' + product.brand : ''} — ৳${priceStr} at DEZIRE. ` +
 (Number(product.stock) > 0 ? 'In stock now' : 'Currently out of stock') +
 ', nationwide cash-on-delivery in Bangladesh.'
 const images = (product.imgs ? product.imgs.split(',').map(s => s.trim()).filter(Boolean) : [])
@@ -112,7 +112,7 @@ const ld = {
 "@type": "Product",
 "name": product.name,
 "image": images.map(u => cldOpt(u, 1200)),
-"brand": { "@type": "Brand", "name": product.brand || "VENOM" },
+"brand": { "@type": "Brand", "name": product.brand || "DEZIRE" },
 "offers": {
 "@type": "Offer",
 "priceCurrency": "BDT",

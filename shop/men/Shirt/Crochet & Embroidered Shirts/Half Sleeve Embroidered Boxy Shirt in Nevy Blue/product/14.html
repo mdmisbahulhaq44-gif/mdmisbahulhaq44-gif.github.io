@@ -24,9 +24,9 @@ history.replaceState(null, '', redirectPath)
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=resizes-content">
-<title>Half Sleeve Embroidered Boxy Shirt in Nevy Blue — VENOM</title>
-<meta name="description" content="Half Sleeve Embroidered Boxy Shirt in Nevy Blue by VENOM — ৳800 at VENOM. In stock now, nationwide cash-on-delivery in Bangladesh.">
-<meta name="keywords" content="VENOM, Bangladesh fashion, men's clothing BD, women's clothing BD, online shirt shop Bangladesh, premium fashion Dhaka">
+<title>Half Sleeve Embroidered Boxy Shirt in Nevy Blue — DEZIRE</title>
+<meta name="description" content="Half Sleeve Embroidered Boxy Shirt in Nevy Blue by VENOM — ৳800 at DEZIRE. In stock now, nationwide cash-on-delivery in Bangladesh.">
+<meta name="keywords" content="DEZIRE, Bangladesh fashion, men's clothing BD, women's clothing BD, online shirt shop Bangladesh, premium fashion Dhaka">
 <link rel="canonical" href="https://mdmisbahulhaq44-gif.github.io/shop/men/Shirt/Crochet%20%26%20Embroidered%20Shirts/Half%20Sleeve%20Embroidered%20Boxy%20Shirt%20in%20Nevy%20Blue/product/14">
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#111111">
@@ -35,9 +35,9 @@ history.replaceState(null, '', redirectPath)
 
 <!-- Open Graph / social sharing -->
 <meta property="og:type" content="product">
-<meta property="og:site_name" content="VENOM">
-<meta property="og:title" content="Half Sleeve Embroidered Boxy Shirt in Nevy Blue — VENOM">
-<meta property="og:description" content="Half Sleeve Embroidered Boxy Shirt in Nevy Blue by VENOM — ৳800 at VENOM. In stock now, nationwide cash-on-delivery in Bangladesh.">
+<meta property="og:site_name" content="DEZIRE">
+<meta property="og:title" content="Half Sleeve Embroidered Boxy Shirt in Nevy Blue — DEZIRE">
+<meta property="og:description" content="Half Sleeve Embroidered Boxy Shirt in Nevy Blue by VENOM — ৳800 at DEZIRE. In stock now, nationwide cash-on-delivery in Bangladesh.">
 <meta property="og:url" content="https://mdmisbahulhaq44-gif.github.io/shop/men/Shirt/Crochet%20%26%20Embroidered%20Shirts/Half%20Sleeve%20Embroidered%20Boxy%20Shirt%20in%20Nevy%20Blue/product/14">
 <meta property="og:image" content="https://res.cloudinary.com/dtdztxbfg/image/upload/w_1200/v1788712567/DSC0636-copy2_qsr1g3.jpg">
 
@@ -46,7 +46,7 @@ history.replaceState(null, '', redirectPath)
 {
 "@context": "https://schema.org",
 "@type": "ClothingStore",
-"name": "VENOM",
+"name": "DEZIRE",
 "url": "https://mdmisbahulhaq44-gif.github.io/",
 "description": "Premium men's and women's fashion retailer based in Dhaka, Bangladesh.",
 "address": {
@@ -1098,7 +1098,7 @@ font-size:12px
 <button class="hamburgerBtn" onclick="openDrawer()" aria-label="Open menu"><span></span><span></span><span></span></button>
 </div>
 
-<div class="logo">VENOM</div>
+<div class="logo">DEZIRE</div>
 
 <div class="navRightIcons">
 <button class="iconbtn" onclick="openSearch()" aria-label="Search">⌕</button>
@@ -1124,7 +1124,7 @@ Recommended: landscape photos, at least 1200px wide. -->
 <div class="overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
 <div class="drawer" id="drawer">
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:25px">
-<div class="logo" style="font-size:18px">VENOM</div>
+<div class="logo" style="font-size:18px">DEZIRE</div>
 <button class="close" onclick="closeDrawer()">×</button>
 </div>
 <a href="#new" onclick="closeDrawer()">New Arrivals</a>
@@ -1164,6 +1164,39 @@ good for many categories). Tapping a tile drills further in. -->
 <button class="filter active" data-gender="ALL" onclick="filterByGender('ALL', this)">ALL</button>
 <button class="filter" data-gender="men" onclick="filterByGender('men', this)">MEN</button>
 <button class="filter" data-gender="women" onclick="filterByGender('women', this)">WOMEN</button>
+</div>
+
+<div id="catFilterBar" style="display:none;align-items:center;justify-content:space-between;gap:10px;margin-bottom:16px;flex-wrap:wrap">
+<button id="catFilterToggleBtn" onclick="toggleCatFilterBox()" style="border:1px solid var(--line);border-radius:30px;padding:9px 16px;font-size:11px;letter-spacing:.5px;background:white;display:flex;align-items:center;gap:6px;cursor:pointer">
+<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
+FILTER <span id="catFilterCount" style="display:none"></span>
+</button>
+<select id="catSortSelect" onchange="onCatSortChange()" style="border:1px solid var(--line);border-radius:30px;padding:9px 14px;font-size:11px;background:white">
+<option value="newest">Newest First</option>
+<option value="price_low">Price: Low to High</option>
+<option value="price_high">Price: High to Low</option>
+</select>
+</div>
+
+<div id="catFilterBox" style="display:none;background:#faf9f6;border:1px solid var(--line);border-radius:10px;padding:16px;margin-bottom:20px">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+<strong style="font-size:12px;letter-spacing:.5px">PRICE RANGE (৳)</strong>
+</div>
+<div style="display:flex;gap:10px;align-items:center;margin-bottom:18px">
+<input id="catMinPrice" type="number" placeholder="Min" style="width:100%;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:13px">
+<span style="color:var(--muted)">—</span>
+<input id="catMaxPrice" type="number" placeholder="Max" style="width:100%;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:13px">
+</div>
+<div style="margin-bottom:6px"><strong style="font-size:12px;letter-spacing:.5px">SIZE</strong></div>
+<div id="catSizeOptions" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px"></div>
+<label style="display:flex;align-items:center;gap:8px;font-size:13px;margin-bottom:20px;cursor:pointer">
+<input id="catInStockOnly" type="checkbox" style="width:16px;height:16px">
+In Stock Only
+</label>
+<div style="display:flex;gap:10px">
+<button onclick="clearCatFilters()" style="flex:1;padding:11px;border:1px solid var(--black);border-radius:30px;background:white;font-size:12px;letter-spacing:.5px;cursor:pointer">CLEAR</button>
+<button onclick="applyCatFilterBox()" style="flex:1;padding:11px;border:0;border-radius:30px;background:var(--black);color:white;font-size:12px;letter-spacing:.5px;cursor:pointer">APPLY</button>
+</div>
 </div>
 
 <div style="display:none;justify-content:flex-end;align-items:center;gap:10px;margin-bottom:30px;flex-wrap:wrap">
@@ -1243,7 +1276,7 @@ good for many categories). Tapping a tile drills further in. -->
 <div class="footergrid">
 
 <div>
-<h3>VENOM</h3>
+<h3>DEZIRE</h3>
 <p>
 Modern fashion with timeless elegance.
 Discover our latest collections and find
@@ -1278,7 +1311,7 @@ your signature style.
 </div>
 
 <div class="copy">
-© 2026 VENOM. All rights reserved. · <a href="/privacy.html" style="color:#999">Privacy Policy</a> · <a href="/terms.html" style="color:#999">Terms & Conditions</a>
+© 2026 DEZIRE. All rights reserved. · <a href="/privacy.html" style="color:#999">Privacy Policy</a> · <a href="/terms.html" style="color:#999">Terms & Conditions</a>
 </div>
 </footer>
 
@@ -1471,10 +1504,26 @@ This lets you track your orders anytime.
 
 <label>PAYMENT METHOD</label>
 <div class="radioRow" style="flex-direction:column;align-items:flex-start;gap:10px">
-<label><input type="radio" name="coPayment" value="COD" checked> 💵 Cash on Delivery</label>
-<label style="opacity:.45;cursor:not-allowed">
-<input type="radio" name="coPayment" value="bkash" disabled> 📱 bKash / Nagad <span style="font-size:10px;background:#eee;padding:2px 8px;border-radius:20px;margin-left:4px">Coming Soon</span>
-</label>
+<label><input type="radio" name="coPayment" value="COD" checked onchange="onPaymentMethodChange()"> 💵 Cash on Delivery</label>
+<label style="display:flex;align-items:center;gap:10px"><input type="radio" name="coPayment" value="bKash" onchange="onPaymentMethodChange()"> <span style="background:#E2136E;color:#fff;font-weight:700;font-size:12px;padding:4px 10px;border-radius:4px;letter-spacing:.3px">bKash</span></label>
+<label style="display:flex;align-items:center;gap:10px"><input type="radio" name="coPayment" value="Nagad" onchange="onPaymentMethodChange()"> <span style="background:#F6851F;color:#fff;font-weight:700;font-size:12px;padding:4px 10px;border-radius:4px;letter-spacing:.3px">Nagad</span></label>
+<label style="display:flex;align-items:center;gap:10px"><input type="radio" name="coPayment" value="Rocket" onchange="onPaymentMethodChange()"> <span style="background:#8C3494;color:#fff;font-weight:700;font-size:12px;padding:4px 10px;border-radius:4px;letter-spacing:.3px">Rocket</span></label>
+<label style="display:flex;align-items:center;gap:10px"><input type="radio" name="coPayment" value="Upay" onchange="onPaymentMethodChange()"> <span style="background:#00A99D;color:#fff;font-weight:700;font-size:12px;padding:4px 10px;border-radius:4px;letter-spacing:.3px">Upay</span></label>
+<label style="display:flex;align-items:center;gap:10px"><input type="radio" name="coPayment" value="Tap" onchange="onPaymentMethodChange()"> <span style="background:#0072BC;color:#fff;font-weight:700;font-size:12px;padding:4px 10px;border-radius:4px;letter-spacing:.3px">Tap</span></label>
+</div>
+
+<!-- Shown only when a mobile wallet is picked above — there's no merchant/
+gateway account set up yet, so payment is a manual Send Money to a
+personal wallet number, verified by the admin against the transaction ID
+the customer provides here before the order ships. -->
+<div id="mobilePaymentBox" style="display:none;background:#f7f5f0;border:1px solid var(--line);border-radius:10px;padding:16px;margin-top:-6px;margin-bottom:16px">
+<p style="font-size:13px;margin-bottom:10px">
+Send <strong id="mpAmount">৳0</strong> via <strong id="mpMethodName">bKash</strong> "Send Money" to:
+</p>
+<p style="font-size:18px;font-weight:600;letter-spacing:1px;margin-bottom:12px">+880 1877-270165</p>
+<label style="font-size:12px">TRANSACTION ID</label>
+<input type="text" id="coTrxId" placeholder="e.g. 8N7A2K9XYZ" style="text-transform:uppercase">
+<p style="font-size:11.5px;color:var(--muted);margin-top:8px">After sending money, enter the Transaction ID from the confirmation SMS. We'll verify it before your order ships.</p>
 </div>
 
 <div id="homeDeliveryFields">
@@ -1687,7 +1736,7 @@ BUY NOW
 <input type="text" id="pfName" required>
 
 <label>BRAND</label>
-<input type="text" id="pfBrand" value="VENOM">
+<input type="text" id="pfBrand" value="DEZIRE">
 
 <label>CATEGORY</label>
 <div id="pfCatBuilder" style="margin-bottom:8px"></div>
@@ -1743,7 +1792,7 @@ BUY NOW
 </div>
 <div style="font-size:13px;line-height:1.9;color:#444">
 <p style="margin-bottom:16px">
-<b>VENOM</b> is a Bangladesh-based fashion brand built around clean silhouettes, honest fabric quality and everyday wearability. What started as a small local shop in Mirpur, Dhaka has grown into an online destination for people who want premium clothing without unnecessary noise.
+<b>DEZIRE</b> is a Bangladesh-based fashion brand built around clean silhouettes, honest fabric quality and everyday wearability. What started as a small local shop in Mirpur, Dhaka has grown into an online destination for people who want premium clothing without unnecessary noise.
 </p>
 <p style="margin-bottom:16px">
 Every piece we sell is chosen or made with the same question in mind: would we wear this ourselves? That's the standard we hold our shirts, pants and accessories to — considered fits, durable fabric, and prices that make sense for Bangladesh.
@@ -1752,7 +1801,7 @@ Every piece we sell is chosen or made with the same question in mind: would we w
 We ship cash-on-delivery to all 64 districts, and our Mirpur store is open for anyone who'd rather see and try before they buy.
 </p>
 <p style="font-size:11px;color:var(--muted)">
-Want to know more about our story, our factory, or the team behind VENOM? Reach out to us on WhatsApp — we'd love to share more.
+Want to know more about our story, our factory, or the team behind DEZIRE? Reach out to us on WhatsApp — we'd love to share more.
 </p>
 </div>
 </div>
@@ -1841,7 +1890,7 @@ Your wishlist is currently empty.
 
 <aside class="adminSide">
 
-<div class="adminLogo">VENOM ADMIN</div>
+<div class="adminLogo">DEZIRE ADMIN</div>
 
 <button class="active" id="navDashboard" onclick="adminNav('dashboard')">📊 Dashboard</button>
 <button id="navProducts" onclick="adminNav('products')">🛍️ Products</button>
@@ -1951,11 +2000,11 @@ Your wishlist is currently empty.
 <table>
 <thead>
 <tr>
-<th>Order</th><th>Customer</th><th>Phone</th><th>Total</th><th>Status</th><th>Rider</th><th>Date</th>
+<th>Order</th><th>Customer</th><th>Phone</th><th>Total</th><th>Payment</th><th>Status</th><th>Rider</th><th>Date</th>
 </tr>
 </thead>
 <tbody id="adminAllOrdersBody">
-<tr><td colspan="7">Loading...</td></tr>
+<tr><td colspan="8">Loading...</td></tr>
 </tbody>
 </table>
 </div>
@@ -2011,6 +2060,7 @@ By default, a category's tile (Baggy, Shirt, etc — at any depth) uses one of i
 
 <!-- Supabase client library -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
 <script>
 
@@ -2018,6 +2068,9 @@ By default, a category's tile (Baggy, Shirt, etc — at any depth) uses one of i
    SUPABASE CONNECTION
    ============================================================ */
 const SUPABASE_URL = "https://otdbpahqfsarkzdpzwga.supabase.co";
+const EMAILJS_SERVICE_ID = "service_wmr228e"
+const EMAILJS_TEMPLATE_ID = "template_kv6boqn"
+if(typeof emailjs !== 'undefined') emailjs.init({ publicKey: "dSUNkmSfdWZJmS_Vo" })
 const SUPABASE_ANON_KEY = "sb_publishable_AykcRsZJ3KH1-pmmbbEOpA_-2Cb6NbR";
 
 if(typeof window.supabase === 'undefined'){
@@ -2385,7 +2438,7 @@ return
 // before this metadata was attached.
 await supabaseClient.auth.updateUser({ data:{ full_name: pendingSignup.name, phone: pendingSignup.phone } })
 
-toast("Welcome to VENOM!")
+toast("Welcome to DEZIRE!")
 pendingSignup = null
 closePanels()
 }
@@ -2584,6 +2637,87 @@ let currentGender = "ALL"
 let currentPrice = "all"
 let currentSort = "newest"
 
+// Category (leaf products list) filter/sort — kept entirely separate from
+// the flat home-page filtering above, since it filters whatever `products`
+// array showProductsView was given for THIS category, not all of
+// allProducts, and its own bar/box UI is only shown in 'category' mode.
+let currentCategoryProducts = []
+let catFilters = { sort: "newest", minPrice: null, maxPrice: null, sizes: [], inStockOnly: false }
+
+function renderCatSizeOptions(products){
+const allSizes = [...new Set(products.flatMap(p => Array.isArray(p.sizes) ? p.sizes : []))]
+$("catSizeOptions").innerHTML = allSizes.length ? allSizes.map(s => `
+<button type="button" class="catSizeChip" data-size="${escapeHTML(s)}" onclick="toggleCatSizeChip(this)" style="border:1px solid var(--line);border-radius:6px;padding:7px 14px;font-size:12px;background:white;cursor:pointer">${escapeHTML(s)}</button>
+`).join('') : `<span style="font-size:12px;color:var(--muted)">No size data for these products</span>`
+}
+
+function toggleCatSizeChip(btn){
+btn.classList.toggle("active")
+btn.style.background = btn.classList.contains("active") ? "var(--black)" : "white"
+btn.style.color = btn.classList.contains("active") ? "white" : "var(--black)"
+}
+
+function toggleCatFilterBox(){
+const box = $("catFilterBox")
+box.style.display = box.style.display === "none" ? "block" : "none"
+}
+
+function updateCatFilterCount(){
+let n = 0
+if(catFilters.minPrice !== null || catFilters.maxPrice !== null) n++
+if(catFilters.sizes.length) n++
+if(catFilters.inStockOnly) n++
+const el = $("catFilterCount")
+el.style.display = n ? "inline" : "none"
+el.textContent = n ? `(${n})` : ""
+}
+
+function applyCatFilterBox(){
+const min = $("catMinPrice").value
+const max = $("catMaxPrice").value
+catFilters.minPrice = min !== "" ? Number(min) : null
+catFilters.maxPrice = max !== "" ? Number(max) : null
+catFilters.sizes = [...document.querySelectorAll("#catSizeOptions .catSizeChip.active")].map(b => b.dataset.size)
+catFilters.inStockOnly = $("catInStockOnly").checked
+updateCatFilterCount()
+$("catFilterBox").style.display = "none"
+renderCategoryProducts()
+}
+
+function clearCatFilters(){
+catFilters.minPrice = null
+catFilters.maxPrice = null
+catFilters.sizes = []
+catFilters.inStockOnly = false
+$("catMinPrice").value = ""
+$("catMaxPrice").value = ""
+$("catInStockOnly").checked = false
+document.querySelectorAll("#catSizeOptions .catSizeChip.active").forEach(b => toggleCatSizeChip(b))
+updateCatFilterCount()
+$("catFilterBox").style.display = "none"
+renderCategoryProducts()
+}
+
+function onCatSortChange(){
+catFilters.sort = $("catSortSelect").value
+renderCategoryProducts()
+}
+
+function renderCategoryProducts(){
+let list = currentCategoryProducts
+if(catFilters.minPrice !== null) list = list.filter(p => Number(p.price) >= catFilters.minPrice)
+if(catFilters.maxPrice !== null) list = list.filter(p => Number(p.price) <= catFilters.maxPrice)
+if(catFilters.sizes.length) list = list.filter(p => Array.isArray(p.sizes) && catFilters.sizes.some(s => p.sizes.includes(s)))
+if(catFilters.inStockOnly) list = list.filter(p => Number(p.stock) > 0)
+
+const sorted = [...list]
+if(catFilters.sort === "price_low") sorted.sort((a,b) => Number(a.price) - Number(b.price))
+else if(catFilters.sort === "price_high") sorted.sort((a,b) => Number(b.price) - Number(a.price))
+else sorted.sort((a,b) => new Date(b.created_at||0) - new Date(a.created_at||0))
+
+renderProductGrid(sorted)
+}
+
 function applySort(list){
 const sorted = [...list]
 if(currentSort === "price_low") sorted.sort((a,b)=>Number(a.price)-Number(b.price))
@@ -2764,8 +2898,8 @@ $("pdBrand").textContent = product.brand || ""
 $("pdName").textContent = product.name
 const pdFirstImg = images.length ? cldOpt(images[0], 1200) : null
 updatePageSEO({
-title: `${product.name} — VENOM`,
-description: `${product.name}${product.brand ? ' by ' + product.brand : ''} — ৳${Number(product.price).toLocaleString()} at VENOM. ${Number(product.stock) > 0 ? 'In stock now' : 'Currently out of stock'}, nationwide cash-on-delivery in Bangladesh.`,
+title: `${product.name} — DEZIRE`,
+description: `${product.name}${product.brand ? ' by ' + product.brand : ''} — ৳${Number(product.price).toLocaleString()} at DEZIRE. ${Number(product.stock) > 0 ? 'In stock now' : 'Currently out of stock'}, nationwide cash-on-delivery in Bangladesh.`,
 image: pdFirstImg,
 product
 })
@@ -3548,6 +3682,8 @@ $("new").style.display = mode === 'hub' ? 'none' : ''
 $("shopBreadcrumb").style.display = mode === 'category' ? 'block' : 'none'
 $("genderTabs").style.display = 'none'
 $("filters").style.display = 'none'
+$("catFilterBar").style.display = mode === 'category' ? 'flex' : 'none'
+$("catFilterBox").style.display = 'none'
 const features = document.querySelector('.features')
 if(features) features.style.display = mode === 'home' ? '' : 'none'
 if(mode !== 'category') $("shopHeading").textContent = 'New Arrivals'
@@ -3605,8 +3741,8 @@ window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
 }
 }
 
-const DEFAULT_SEO_TITLE = "VENOM — Premium Fashion in Bangladesh"
-const DEFAULT_SEO_DESC = "VENOM — Premium men's and women's clothing in Bangladesh. Shirts, pants, polos and more with nationwide cash-on-delivery. Shop the latest collection online."
+const DEFAULT_SEO_TITLE = "DEZIRE — Premium Fashion in Bangladesh"
+const DEFAULT_SEO_DESC = "DEZIRE — Premium men's and women's clothing in Bangladesh. Shirts, pants, polos and more with nationwide cash-on-delivery. Shop the latest collection online."
 const DEFAULT_OG_IMAGE = "https://res.cloudinary.com/dtdztxbfg/image/upload/w_1200/v1787488489/IMG_20260823_183338_ge9det.png"
 
 function setMetaTag(attrName, attrValue, content){
@@ -3645,7 +3781,7 @@ const data = {
 "@type": "Product",
 "name": product.name,
 "image": images,
-"brand": { "@type": "Brand", "name": product.brand || "VENOM" },
+"brand": { "@type": "Brand", "name": product.brand || "DEZIRE" },
 "offers": {
 "@type": "Offer",
 "priceCurrency": "BDT",
@@ -3836,8 +3972,8 @@ $("hubBreadcrumb").innerHTML = breadcrumbHTML(gender, path)
 
 if(!keepScroll){
 currentListSEO = {
-title: `${heading} — VENOM`,
-description: `Shop ${heading} for ${gender === 'women' ? "women's" : "men's"} fashion at VENOM — premium quality, nationwide cash-on-delivery in Bangladesh.`,
+title: `${heading} — DEZIRE`,
+description: `Shop ${heading} for ${gender === 'women' ? "women's" : "men's"} fashion at DEZIRE — premium quality, nationwide cash-on-delivery in Bangladesh.`,
 image: subs.find(s => s.image) ? cldOpt(subs.find(s => s.image).image, 1200) : null
 }
 updatePageSEO(currentListSEO)
@@ -3882,12 +4018,20 @@ const heading = path.length ? path[path.length - 1] : capitalize(gender)
 $("shopHeading").textContent = heading
 const firstImg = products.find(p => p.imgs)
 currentListSEO = {
-title: `${heading} — VENOM`,
-description: `Shop ${heading} for ${gender === 'women' ? "women's" : "men's"} fashion at VENOM — ${products.length} product${products.length===1?'':'s'} available with nationwide cash-on-delivery in Bangladesh.`,
+title: `${heading} — DEZIRE`,
+description: `Shop ${heading} for ${gender === 'women' ? "women's" : "men's"} fashion at DEZIRE — ${products.length} product${products.length===1?'':'s'} available with nationwide cash-on-delivery in Bangladesh.`,
 image: firstImg ? cldOpt(firstImg.imgs.split(',')[0].trim(), 1200) : null
 }
 updatePageSEO(currentListSEO)
-renderProductGrid(products)
+currentCategoryProducts = products
+catFilters = { sort: "newest", minPrice: null, maxPrice: null, sizes: [], inStockOnly: false }
+$("catMinPrice").value = ""
+$("catMaxPrice").value = ""
+$("catInStockOnly").checked = false
+$("catSortSelect").value = "newest"
+updateCatFilterCount()
+renderCatSizeOptions(products)
+renderCategoryProducts()
 rememberAndScroll(routeKey({ gender, path }), false)
 }
 
@@ -4771,6 +4915,30 @@ $("coDiscountRow").style.display = "none"
 }
 
 $("coTotal").textContent = "৳" + (subtotal - discount + charge).toLocaleString()
+updatePaymentInstructions(subtotal - discount + charge)
+}
+
+const WALLET_COLORS = { bKash:'#E2136E', Nagad:'#F6851F', Rocket:'#8C3494', Upay:'#00A99D', Tap:'#0072BC' }
+
+function walletBadgeHTML(name){
+const color = WALLET_COLORS[name] || '#333'
+return `<span style="background:${color};color:#fff;font-weight:700;font-size:12px;padding:4px 10px;border-radius:4px;letter-spacing:.3px">${escapeHTML(name)}</span>`
+}
+
+function updatePaymentInstructions(total){
+const method = document.querySelector('input[name="coPayment"]:checked').value
+const box = $("mobilePaymentBox")
+if(method === 'COD'){
+box.style.display = "none"
+return
+}
+box.style.display = "block"
+$("mpMethodName").innerHTML = walletBadgeHTML(method)
+$("mpAmount").textContent = "৳" + Math.max(0, Math.round(total || 0)).toLocaleString()
+}
+
+function onPaymentMethodChange(){
+updatePaymentInstructions(Number(($("coTotal").textContent || "৳0").replace(/[^\d]/g, '')))
 }
 
 async function placeOrder(e){
@@ -4803,6 +4971,8 @@ const addressType = method === 'home_delivery'
 : ''
 const address = method === 'home_delivery' ? $("coAddress").value.trim() : deliverySettings.pickup_address
 const note = $("coNote").value.trim()
+const paymentMethod = document.querySelector('input[name="coPayment"]:checked').value
+const trxId = paymentMethod !== 'COD' ? $("coTrxId").value.trim().toUpperCase() : ''
 
 if(!name || !phone){
 toast("Please fill in your name and phone number.")
@@ -4811,6 +4981,11 @@ return
 
 if(method === 'home_delivery' && (!region || !cityValue || !area || !address)){
 toast("Please fill in region, city, area and address.")
+return
+}
+
+if(paymentMethod !== 'COD' && !trxId){
+toast(`Please enter your ${paymentMethod} Transaction ID.`)
 return
 }
 
@@ -4842,7 +5017,7 @@ user_id: userId,
 customer_id: profile.id,
 address: address,
 items: cart.map(i => `${i.name}${i.size ? ` (${i.size})` : ''} x${i.qty}`).join(', '),
-payment: 'COD',
+payment: paymentMethod,
 status: 'Pending',
 date: new Date().toISOString(),
 order_ref: orderRef,
@@ -4855,6 +5030,7 @@ delivery_note: [
 subArea ? `${cityValue === DHAKA_CITY_VALUE ? 'Sub Area' : 'Union'}: ${subArea}` : '',
 addressType ? `Address Type: ${addressType}` : '',
 couponCode ? `Coupon: ${couponCode} (−৳${discount.toLocaleString()})` : '',
+trxId ? `${paymentMethod} TrxID: ${trxId} (unverified)` : '',
 note
 ].filter(Boolean).join(' | '),
 delivery_charge: idx === 0 ? charge : 0,
@@ -4898,6 +5074,7 @@ const methodLabel = method === 'pickup' ? 'Store Pickup (Mirpur 12)' : `Home Del
 
 // Build a WhatsApp message so the customer can confirm the order
 // instantly with the shop owner — no backend/SMS service needed.
+const paymentLabel = paymentMethod === 'COD' ? 'Cash on Delivery' : `${paymentMethod}${trxId ? ` — TrxID: ${trxId}` : ''}`
 const waText = encodeURIComponent(
 `New Order #${orderRef}\n` +
 `Name: ${name}\n` +
@@ -4906,9 +5083,26 @@ const waText = encodeURIComponent(
 `Delivery: ${methodLabel}\n` +
 (address ? `Address: ${address}\n` : '') +
 (note ? `Note: ${note}\n` : '') +
-`Total: ৳${total.toLocaleString()} (COD)`
+`Total: ৳${total.toLocaleString()} (${paymentLabel})`
 )
 const waNumber = (deliverySettings.whatsapp_number || '8801877270165').replace(/\D/g,'')
+
+// Email notification to the shop owner — best-effort only. The order is
+// already saved in Supabase at this point regardless, so a failure here
+// (EmailJS quota, network hiccup, etc.) is just logged, never shown to
+// the customer or allowed to block their order confirmation.
+if(typeof emailjs !== 'undefined'){
+emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+order_ref: orderRef,
+customer_name: name,
+customer_phone: phone,
+items_summary: cart.map(i => `${i.name}${i.size ? ` (${i.size})` : ''} x${i.qty}`).join(', '),
+delivery_method: methodLabel,
+delivery_address: address || '(Store Pickup)',
+payment_method: paymentLabel,
+total_amount: `৳${total.toLocaleString()}`
+}).catch(err => console.error('Order email notification failed:', err))
+}
 $("successWhatsapp").href = `https://wa.me/${waNumber}?text=${waText}`
 
 $("successOrderId").textContent = "#" + orderRef
@@ -5128,7 +5322,7 @@ $("pfDeleteBtn").style.display = "block"
 $("productFormTitle").textContent = "Add Product"
 $("pfId").value = ""
 $("pfGender").value = "men"
-$("pfBrand").value = "VENOM"
+$("pfBrand").value = "DEZIRE"
 pfCatLevels = ['']
 pfCatCustom = [false]
 renderPfCatBuilder()
@@ -5215,16 +5409,30 @@ $("adminProductCount").textContent = allProducts.length
 
 let adminOrdersCache = []
 
+// Mobile wallet payments (bKash/Nagad/Rocket/Upay/Tap) are manual Send
+// Money to a personal number, not a real payment gateway — there's no
+// merchant account yet to confirm them automatically. The transaction ID
+// the customer typed at checkout got folded into delivery_note (to avoid
+// needing a new database column); this pulls it back out so an admin can
+// see it here and verify it manually (check the wallet's transaction
+// history) before marking the order as processing/shipped.
+function paymentCellHTML(o){
+if(!o.payment || o.payment === 'COD') return '💵 COD'
+const m = (o.delivery_note || '').match(new RegExp(`${o.payment} TrxID: (\\S+)`))
+if(!m) return walletBadgeHTML(o.payment)
+return `${walletBadgeHTML(o.payment)}<br><span style="font-size:10.5px;color:var(--muted)">TrxID: ${escapeHTML(m[1])}</span>`
+}
+
 async function loadAllOrders(skipFetch){
 if(!skipFetch){
 const { data: orders, error } = await supabaseClient
 .from('orders')
-.select('id,customer,phone,total_amount,status,created_at,order_ref,rider_name,rider_phone')
+.select('id,customer,phone,total_amount,status,created_at,order_ref,rider_name,rider_phone,payment,delivery_note')
 .order('created_at', { ascending:false })
 .limit(100)
 
 if(error){
-$("adminAllOrdersBody").innerHTML = `<tr><td colspan="7">Could not load orders.</td></tr>`
+$("adminAllOrdersBody").innerHTML = `<tr><td colspan="8">Could not load orders.</td></tr>`
 return
 }
 adminOrdersCache = orders || []
@@ -5242,6 +5450,7 @@ $("adminAllOrdersBody").innerHTML = list.length
 <td>${o.customer||'—'}</td>
 <td>${o.phone||'—'}</td>
 <td>৳${Number(o.total_amount||0).toLocaleString()}</td>
+<td>${paymentCellHTML(o)}</td>
 <td>
 <select class="statusSelect" onchange="updateOrderStatus(${o.id}, this.value, ${o.order_ref ? `'${o.order_ref}'` : 'null'})" style="font-size:11px;padding:5px 8px;border-radius:8px;border:1px solid var(--line);background:#fff">
 ${['Pending','Processing','Shipped','Delivered','Cancelled'].map(s =>
@@ -5256,7 +5465,7 @@ ${o.rider_name ? `🛵 ${o.rider_name}` : '+ Add Rider'}
 </td>
 <td>${new Date(o.created_at).toLocaleDateString()}</td>
 </tr>`).join("")
-: `<tr><td colspan="7">${q ? 'No orders match your search.' : 'No orders yet'}</td></tr>`
+: `<tr><td colspan="8">${q ? 'No orders match your search.' : 'No orders yet'}</td></tr>`
 }
 
 async function setOrderRider(orderId, orderRef){
@@ -5488,7 +5697,7 @@ openPanel('resetPasswordPanel')
 }
 })()
 
-// PWA: lets visitors install VENOM to their home screen. Guarded with
+// PWA: lets visitors install DEZIRE to their home screen. Guarded with
 // a feature check so it does nothing (never errors) on older browsers.
 if('serviceWorker' in navigator){
 window.addEventListener('load', () => {
