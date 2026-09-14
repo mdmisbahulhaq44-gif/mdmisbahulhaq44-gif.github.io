@@ -2750,7 +2750,14 @@ seenNames.add(p.name)
 return true
 })
 }
-renderProductGrid(applySort(list))
+// Capped to match the loading skeleton's card count exactly (see
+// loadProducts) — otherwise the grid grows from 8 skeleton cards to the
+// full catalog once real data arrives, which is what was causing the
+// homepage's biggest layout shift. Shoppers can still browse the full
+// catalog via the category pages; this section is just a homepage
+// highlight, same as most e-commerce homepages.
+list = applySort(list).slice(0, 8)
+renderProductGrid(list)
 }
 
 function onSortChange(){
