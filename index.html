@@ -108,9 +108,9 @@ requests each throughout the page, not just one). -->
 <link rel="preconnect" href="https://otdbpahqfsarkzdpzwga.supabase.co">
 <link rel="preload" as="script" href="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
 <link rel="preload" as="image" fetchpriority="high" href="https://res.cloudinary.com/dtdztxbfg/image/upload/w_900,f_auto,q_auto/v1789381873/IMG_20260914_161653_hbvxqq.png" imagesrcset="https://res.cloudinary.com/dtdztxbfg/image/upload/w_600,f_auto,q_auto/v1789381873/IMG_20260914_161653_hbvxqq.png 600w, https://res.cloudinary.com/dtdztxbfg/image/upload/w_900,f_auto,q_auto/v1789381873/IMG_20260914_161653_hbvxqq.png 900w, https://res.cloudinary.com/dtdztxbfg/image/upload/w_1200,f_auto,q_auto/v1789381873/IMG_20260914_161653_hbvxqq.png 1200w" imagesizes="100vw">
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700;800&display=swap">
-<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-<noscript><link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700;800&display=optional">
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700;800&display=optional" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700;800&display=optional" rel="stylesheet"></noscript>
 
 <style>
 :root{
@@ -121,6 +121,7 @@ requests each throughout the page, not just one). -->
 --muted:#777;
 --gold:#b89545;
 --red:#d33;
+--teal:#1a5c4a;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none}
 html{scroll-behavior:smooth}
@@ -743,6 +744,39 @@ width:100%
 .form label{font-size:11px;letter-spacing:1px;color:var(--muted);margin-bottom:-6px}
 .radioRow{display:flex;gap:16px;font-size:13px}
 .radioRow label{display:flex;align-items:center;gap:6px;color:#111;letter-spacing:0}
+
+/* Delivery/payment method rows — one bordered box per group, rows
+divided by hairlines instead of each option being its own separate
+pill, so the two sections read as calm, organized lists rather than a
+scatter of differently-styled controls. */
+.methodBox{
+border:1.5px solid #ddd;
+border-radius:14px;
+overflow:hidden
+}
+.methodRow{
+display:flex;align-items:center;gap:14px;
+padding:15px 16px;
+border-bottom:1px solid #eee;
+cursor:pointer
+}
+.methodRow:last-child{border-bottom:0}
+.methodRow input[type="radio"]{
+width:19px;height:19px;
+accent-color:var(--teal);
+flex-shrink:0;
+cursor:pointer
+}
+.methodRow .methodBody{flex:1;min-width:0}
+.methodRow .methodTitle{font-size:14px;font-weight:600;color:#111}
+.methodRow .methodDesc{font-size:11.5px;color:var(--muted);margin-top:2px;line-height:1.4}
+.methodRow .methodRight{font-size:13px;font-weight:700;color:#111;flex-shrink:0;text-align:right}
+.walletBadge{
+font-weight:700;font-size:12px;
+padding:5px 11px;border-radius:5px;
+letter-spacing:.3px;color:#fff;
+flex-shrink:0
+}
 
 .pickerField{
 display:flex;align-items:center;justify-content:space-between;
@@ -1521,19 +1555,74 @@ This lets you track your orders anytime.
 <input type="tel" id="coPhone" placeholder="01XXXXXXXXX" required>
 
 <label>DELIVERY METHOD</label>
-<div class="radioRow">
-<label><input type="radio" name="coMethod" value="home_delivery" checked onchange="onDeliveryMethodChange()"> Home Delivery</label>
-<label><input type="radio" name="coMethod" value="pickup" onchange="onDeliveryMethodChange()"> Store Pickup</label>
+<div class="methodBox">
+<label class="methodRow">
+<input type="radio" name="coMethod" value="home_delivery" checked onchange="onDeliveryMethodChange()">
+<div class="methodBody">
+<div class="methodTitle">Home Delivery</div>
+<div class="methodDesc">Fee depends on your delivery area</div>
+</div>
+</label>
+<label class="methodRow">
+<input type="radio" name="coMethod" value="pickup" onchange="onDeliveryMethodChange()">
+<div class="methodBody">
+<div class="methodTitle">Store Pickup</div>
+<div class="methodDesc">Collect from our Mirpur 12 store</div>
+</div>
+<div class="methodRight">Free</div>
+</label>
 </div>
 
 <label>PAYMENT METHOD</label>
-<div class="radioRow" style="flex-direction:column;align-items:flex-start;gap:10px">
-<label><input type="radio" name="coPayment" value="COD" checked onchange="onPaymentMethodChange()"> 💵 Cash on Delivery</label>
-<label style="display:flex;align-items:center;gap:10px"><input type="radio" name="coPayment" value="bKash" onchange="onPaymentMethodChange()"> <span style="background:#E2136E;color:#fff;font-weight:700;font-size:12px;padding:4px 10px;border-radius:4px;letter-spacing:.3px">bKash</span></label>
-<label style="display:flex;align-items:center;gap:10px"><input type="radio" name="coPayment" value="Nagad" onchange="onPaymentMethodChange()"> <span style="background:#F6851F;color:#fff;font-weight:700;font-size:12px;padding:4px 10px;border-radius:4px;letter-spacing:.3px">Nagad</span></label>
-<label style="display:flex;align-items:center;gap:10px"><input type="radio" name="coPayment" value="Rocket" onchange="onPaymentMethodChange()"> <span style="background:#8C3494;color:#fff;font-weight:700;font-size:12px;padding:4px 10px;border-radius:4px;letter-spacing:.3px">Rocket</span></label>
-<label style="display:flex;align-items:center;gap:10px"><input type="radio" name="coPayment" value="Upay" onchange="onPaymentMethodChange()"> <span style="background:#00A99D;color:#fff;font-weight:700;font-size:12px;padding:4px 10px;border-radius:4px;letter-spacing:.3px">Upay</span></label>
-<label style="display:flex;align-items:center;gap:10px"><input type="radio" name="coPayment" value="Tap" onchange="onPaymentMethodChange()"> <span style="background:#0072BC;color:#fff;font-weight:700;font-size:12px;padding:4px 10px;border-radius:4px;letter-spacing:.3px">Tap</span></label>
+<div class="methodBox">
+<label class="methodRow">
+<input type="radio" name="coPayment" value="COD" checked onchange="onPaymentMethodChange()">
+<div class="methodBody">
+<div class="methodTitle">Cash on Delivery</div>
+<div class="methodDesc">Pay when your order arrives</div>
+</div>
+<div class="methodRight">💵</div>
+</label>
+<label class="methodRow">
+<input type="radio" name="coPayment" value="bKash" onchange="onPaymentMethodChange()">
+<div class="methodBody">
+<div class="methodTitle">bKash</div>
+<div class="methodDesc">Send Money, then enter the Transaction ID</div>
+</div>
+<span class="walletBadge" style="background:#E2136E">bKash</span>
+</label>
+<label class="methodRow">
+<input type="radio" name="coPayment" value="Nagad" onchange="onPaymentMethodChange()">
+<div class="methodBody">
+<div class="methodTitle">Nagad</div>
+<div class="methodDesc">Send Money, then enter the Transaction ID</div>
+</div>
+<span class="walletBadge" style="background:#F6851F">Nagad</span>
+</label>
+<label class="methodRow">
+<input type="radio" name="coPayment" value="Rocket" onchange="onPaymentMethodChange()">
+<div class="methodBody">
+<div class="methodTitle">Rocket</div>
+<div class="methodDesc">Send Money, then enter the Transaction ID</div>
+</div>
+<span class="walletBadge" style="background:#8C3494">Rocket</span>
+</label>
+<label class="methodRow">
+<input type="radio" name="coPayment" value="Upay" onchange="onPaymentMethodChange()">
+<div class="methodBody">
+<div class="methodTitle">Upay</div>
+<div class="methodDesc">Send Money, then enter the Transaction ID</div>
+</div>
+<span class="walletBadge" style="background:#00A99D">Upay</span>
+</label>
+<label class="methodRow">
+<input type="radio" name="coPayment" value="Tap" onchange="onPaymentMethodChange()">
+<div class="methodBody">
+<div class="methodTitle">Tap</div>
+<div class="methodDesc">Send Money, then enter the Transaction ID</div>
+</div>
+<span class="walletBadge" style="background:#0072BC">Tap</span>
+</label>
 </div>
 
 <!-- Shown only when a mobile wallet is picked above — there's no merchant/
@@ -1618,7 +1707,7 @@ Collect your order from our store:<br>
 <div class="summaryRow total"><span>Total</span><span id="coTotal">৳0</span></div>
 </div>
 
-<button class="btn" style="width:100%" type="submit">PLACE ORDER</button>
+<button class="btn" style="width:100%;background:var(--teal)" type="submit">PLACE ORDER</button>
 
 
 </form>
@@ -2084,7 +2173,27 @@ By default, a category's tile (Baggy, Shirt, etc — at any depth) uses one of i
 
 <!-- Supabase client library -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+<!-- EmailJS is only needed when an order/contact form is actually
+submitted — loading it eagerly here put it in the critical chain ahead
+of the Supabase queries (PageSpeed's network dependency tree flagged
+this ~200ms delay). loadEmailJs() below fetches + inits it lazily the
+first time it's actually needed. -->
+<script>
+let __emailjsLoading = null
+function loadEmailJs(){
+if(window.emailjs) return Promise.resolve()
+if(__emailjsLoading) return __emailjsLoading
+__emailjsLoading = new Promise((resolve, reject) => {
+const s = document.createElement('script')
+s.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js'
+s.onload = () => { emailjs.init({ publicKey: "dSUNkmSfdWZJmS_Vo" }); resolve() }
+s.onerror = reject
+document.head.appendChild(s)
+})
+return __emailjsLoading
+}
+</script>
 
 <script>
 
@@ -2094,7 +2203,6 @@ By default, a category's tile (Baggy, Shirt, etc — at any depth) uses one of i
 const SUPABASE_URL = "https://otdbpahqfsarkzdpzwga.supabase.co";
 const EMAILJS_SERVICE_ID = "service_wmr228e"
 const EMAILJS_TEMPLATE_ID = "template_kv6boqn"
-if(typeof emailjs !== 'undefined') emailjs.init({ publicKey: "dSUNkmSfdWZJmS_Vo" })
 const SUPABASE_ANON_KEY = "sb_publishable_AykcRsZJ3KH1-pmmbbEOpA_-2Cb6NbR";
 
 if(typeof window.supabase === 'undefined'){
@@ -4040,11 +4148,10 @@ const targetPath = buildShopPath(gender, [...path, s.seg])
 const href = `navigateTo('${targetPath.replace(/'/g,"\\'")}')`
 if(s.count === 1){
 return `
-<button class="category leafTile" onclick="${href}">
-<div class="leafImg" style="${s.image ? `background-image:url('${cldOpt(s.image, 500).replace(/'/g,"\\'")}')` : 'background:#f4f4f4'}"></div>
-<div class="leafInfo">
+<button class="category" style="${s.image ? `background-image:url('${cldOpt(s.image, 700).replace(/'/g,"\\'")}')` : 'background:#1a1a1a'}" onclick="${href}">
+<div class="catText">
 <h3>${escapeHTML(s.seg)}</h3>
-${s.minPrice!==null ? `<div class="leafPrice">৳${Number(s.minPrice).toLocaleString()}</div>` : ''}
+${s.minPrice!==null ? `<span>৳${Number(s.minPrice).toLocaleString()}</span>` : ''}
 </div>
 </button>
 `
@@ -5198,7 +5305,7 @@ const waNumber = (deliverySettings.whatsapp_number || '8801877270165').replace(/
 // already saved in Supabase at this point regardless, so a failure here
 // (EmailJS quota, network hiccup, etc.) is just logged, never shown to
 // the customer or allowed to block their order confirmation.
-if(typeof emailjs !== 'undefined'){
+loadEmailJs().then(() => {
 emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
 order_ref: orderRef,
 customer_name: name,
@@ -5208,8 +5315,8 @@ delivery_method: methodLabel,
 delivery_address: address || '(Store Pickup)',
 payment_method: paymentLabel,
 total_amount: `৳${total.toLocaleString()}`
+})
 }).catch(err => console.error('Order email notification failed:', err))
-}
 $("successWhatsapp").href = `https://wa.me/${waNumber}?text=${waText}`
 
 $("successOrderId").textContent = "#" + orderRef
