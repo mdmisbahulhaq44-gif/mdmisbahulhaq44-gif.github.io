@@ -60,17 +60,27 @@ history.replaceState(null, '', redirectPath)
 }
 </script>
 
-<!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-X8PZ8E98GH"></script>
+<!-- Google Analytics + Meta (Facebook) Pixel — deferred.
+Both are only needed for tracking, not for anything the visitor sees, so
+loading them immediately just competes with real page content for the
+main thread and counts as "unused JavaScript" on first paint (PageSpeed).
+Instead we load them on the first sign of real engagement (scroll, touch,
+pointer move, or a key press) or after a short idle fallback, so a visitor
+who never interacts still gets counted, just a little later. -->
 <script>
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', 'G-X8PZ8E98GH');
-</script>
+function loadAnalyticsAndPixel(){
+if(window.__analyticsLoaded) return
+window.__analyticsLoaded = true
 
-<!-- Meta (Facebook) Pixel -->
-<script>
+var ga = document.createElement('script')
+ga.async = true
+ga.src = 'https://www.googletagmanager.com/gtag/js?id=G-X8PZ8E98GH'
+document.head.appendChild(ga)
+window.dataLayer = window.dataLayer || []
+window.gtag = function(){ dataLayer.push(arguments) }
+gtag('js', new Date())
+gtag('config', 'G-X8PZ8E98GH')
+
 !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
 n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
 n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
@@ -78,14 +88,24 @@ t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
 document,'script','https://connect.facebook.net/en_US/fbevents.js');
 fbq('init', '2395583730972279');
 fbq('track', 'PageView');
+}
+var __analyticsEvents = ['scroll','touchstart','mousemove','keydown']
+__analyticsEvents.forEach(function(evt){
+window.addEventListener(evt, loadAnalyticsAndPixel, { passive:true, once:true })
+})
+setTimeout(loadAnalyticsAndPixel, 3500)
 </script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://res.cloudinary.com">
 <link rel="preconnect" href="https://otdbpahqfsarkzdpzwga.supabase.co">
-<link rel="preload" as="image" fetchpriority="high" href="https://res.cloudinary.com/dtdztxbfg/image/upload/w_1200,f_auto,q_auto/v1787488489/IMG_20260823_183338_ge9det.png">
-<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preload" as="script" href="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+<link rel="preload" as="image" fetchpriority="high" href="https://res.cloudinary.com/dtdztxbfg/image/upload/w_900,f_auto,q_auto/v1787488489/IMG_20260823_183338_ge9det.png" imagesrcset="https://res.cloudinary.com/dtdztxbfg/image/upload/w_600,f_auto,q_auto/v1787488489/IMG_20260823_183338_ge9det.png 600w, https://res.cloudinary.com/dtdztxbfg/image/upload/w_900,f_auto,q_auto/v1787488489/IMG_20260823_183338_ge9det.png 900w, https://res.cloudinary.com/dtdztxbfg/image/upload/w_1200,f_auto,q_auto/v1787488489/IMG_20260823_183338_ge9det.png 1200w" imagesizes="100vw">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700;800&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
 
 <style>
 :root{
@@ -1113,7 +1133,7 @@ font-size:12px
 To add/edit slides: use Admin Panel → Settings → Homepage Hero Banner (Slides).
 Recommended: landscape photos, at least 1200px wide. -->
 <div id="heroCarousel" class="heroCarousel">
-<div id="heroTrack" class="heroTrack"></div>
+<div id="heroTrack" class="heroTrack"><div class="heroSlide"><img src="https://res.cloudinary.com/dtdztxbfg/image/upload/w_900,f_auto,q_auto/v1787488489/IMG_20260823_183338_ge9det.png" srcset="https://res.cloudinary.com/dtdztxbfg/image/upload/w_600,f_auto,q_auto/v1787488489/IMG_20260823_183338_ge9det.png 600w, https://res.cloudinary.com/dtdztxbfg/image/upload/w_900,f_auto,q_auto/v1787488489/IMG_20260823_183338_ge9det.png 900w, https://res.cloudinary.com/dtdztxbfg/image/upload/w_1200,f_auto,q_auto/v1787488489/IMG_20260823_183338_ge9det.png 1200w" sizes="100vw" alt="" loading="eager" fetchpriority="high" decoding="async"></div></div>
 <button class="heroArrow heroArrowLeft" onclick="heroSlide(-1)" aria-label="Previous slide">‹</button>
 <button class="heroArrow heroArrowRight" onclick="heroSlide(1)" aria-label="Next slide">›</button>
 <div id="heroDots" class="heroDots"></div>
@@ -2123,6 +2143,17 @@ const transform = width ? `w_${width},f_auto,q_auto` : 'f_auto,q_auto'
 return url.replace('/upload/', `/upload/${transform}/`)
 }
 
+// PageSpeed's "Improve image delivery" audit flagged our images as much
+// bigger than their actual displayed size (e.g. a 1200px hero image shown
+// at ~720px). A srcset with a few widths lets the browser pick the one
+// that actually matches the device/viewport instead of always downloading
+// the largest.
+function cldSrcset(url, widths){
+if(!url || !url.includes('res.cloudinary.com') || !url.includes('/upload/')) return ''
+if(url.includes('/upload/w_') || url.includes('/upload/f_')) return ''
+return widths.map(w => `${url.replace('/upload/', `/upload/w_${w},f_auto,q_auto/`)} ${w}w`).join(', ')
+}
+
 /* ============================================================
    PANELS
    ============================================================ */
@@ -2567,7 +2598,7 @@ function productCardHTML(p){
 const badge = p.badge ? `<span class="badge ${p.badge.toLowerCase()==='sale'?'sale':''}">${p.badge}</span>` : ""
 const oldPrice = p.old ? `<span class="old">৳${Number(p.old).toLocaleString()}</span>` : ""
 const imgOrIcon = p.imgs
-? `<img src="${cldOpt(p.imgs.split(',')[0].trim(), 500)}" alt="${p.name}" loading="lazy" decoding="async">`
+? `<img src="${cldOpt(p.imgs.split(',')[0].trim(), 500)}" srcset="${cldSrcset(p.imgs.split(',')[0].trim(),[250,400,500])}" sizes="(min-width:901px) 25vw, 50vw" alt="${p.name}" loading="lazy" decoding="async">`
 : `<div class="placeholder">${iconFor(p)}</div>`
 const stockNote = (p.stock !== null && p.stock !== undefined && p.stock > 0 && p.stock <= 5)
 ? `<div style="font-size:11px;color:var(--red);margin-top:3px">Only ${p.stock} left</div>` : ""
@@ -2586,7 +2617,17 @@ ${colorSwatchesHTML(p)}
 }
 
 async function loadProducts(){
-$("productsGrid").innerHTML = Array(8).fill(0).map(()=>`
+// A fixed 8-card skeleton meant the grid's height jumped (often by
+// several rows) the moment real products replaced it, which is what
+// was moving the footer and driving up CLS. Sizing the skeleton to the
+// product count from last visit keeps that swap close to height-neutral.
+let skeletonCount = 8
+try{
+const cached = Number(localStorage.getItem('dezireProductCount'))
+if(cached > 0) skeletonCount = cached
+}catch(e){}
+
+$("productsGrid").innerHTML = Array(skeletonCount).fill(0).map(()=>`
 <div class="product skeletonCard">
 <div class="productImage"></div>
 <div class="skeletonLine" style="width:40%"></div>
@@ -2609,6 +2650,7 @@ return
 }
 
 allProducts = data || []
+try{ localStorage.setItem('dezireProductCount', String(allProducts.length)) }catch(e){}
 applyFiltersAndSort()
 renderFilters(allProducts)
 }catch(e){
@@ -3553,7 +3595,7 @@ const track = $("heroTrack")
 if(!track) return
 
 track.innerHTML = heroSlides.map((s, i) =>
-`<div class="heroSlide" onclick="onHeroSlideClick(${i})"><img src="${cldOpt(s.image, 1200)}" alt="" loading="${i===0?'eager':'lazy'}" ${i===0?'fetchpriority="high"':''} decoding="async"></div>`
+`<div class="heroSlide" onclick="onHeroSlideClick(${i})"><img src="${cldOpt(s.image, 900)}" srcset="${cldSrcset(s.image,[600,900,1200])}" sizes="100vw" alt="" loading="${i===0?'eager':'lazy'}" ${i===0?'fetchpriority="high"':''} decoding="async"></div>`
 ).join('')
 
 const dotsWrap = $("heroDots")
@@ -4222,6 +4264,50 @@ const { data } = await supabaseClient
 categoryImages = (data && data.value) ? JSON.parse(data.value) : {}
 }catch(e){
 console.error('Category images fetch failed:', e)
+categoryImages = {}
+}
+}
+
+// PageSpeed's network dependency tree flagged hero_slides,
+// homepage_categories, and category_images as three separate round trips
+// to the same `settings` table, all sitting on the page's critical path
+// (each ~1.7s in the lab run). One .in() query below fetches all three
+// rows together on first homepage load; loadHeroBanner/loadHomeCategories/
+// loadCategoryImages are left as-is above for admin-panel and other call
+// sites that still need a single key on demand.
+async function loadHomeSettings(){
+renderHomeCategories(DEFAULT_HOME_CATEGORIES)
+try{
+const { data, error } = await supabaseClient
+.from('settings')
+.select('key,value')
+.in('key', ['hero_slides','homepage_categories','category_images'])
+
+const rows = {}
+if(!error && data) data.forEach(r => { rows[r.key] = r.value })
+
+let slides = DEFAULT_HERO_SLIDES
+if(rows.hero_slides){
+try{
+const parsed = JSON.parse(rows.hero_slides)
+if(Array.isArray(parsed) && parsed.length) slides = parsed
+}catch(e){ /* fall back to default on bad JSON */ }
+}
+renderHeroSlides(slides)
+
+let list = DEFAULT_HOME_CATEGORIES
+if(rows.homepage_categories){
+try{
+const parsed = JSON.parse(rows.homepage_categories)
+if(Array.isArray(parsed) && parsed.length) list = parsed
+}catch(e){ /* fall back to defaults on bad JSON */ }
+}
+renderHomeCategories(list)
+
+categoryImages = rows.category_images ? JSON.parse(rows.category_images) : {}
+}catch(e){
+console.error('Home settings fetch failed:', e)
+renderHeroSlides(DEFAULT_HERO_SLIDES)
 categoryImages = {}
 }
 }
@@ -5677,14 +5763,14 @@ history.pushState({homeGuard:true}, '', location.pathname + location.search)
 }
 })
 
-// Fire all independent homepage data requests together instead of one
-// after another — loadHeroBanner/loadTestimonials/loadHomeCategories used
-// to only start after loadProducts finished, which is what made the hero
-// banner take an extra network round-trip to appear.
-loadHeroBanner()
+// Fire the homepage's independent data requests together instead of one
+// after another. loadHomeSettings replaces the old separate loadHeroBanner
+// + loadHomeCategories + loadCategoryImages calls with a single combined
+// settings query, cutting the number of parallel round trips before the
+// page finishes rendering.
+loadHomeSettings()
 loadTestimonials()
-loadHomeCategories()
-await Promise.all([loadProducts(), loadCategoryImages()])
+await loadProducts()
 
 routeChanged()
 
