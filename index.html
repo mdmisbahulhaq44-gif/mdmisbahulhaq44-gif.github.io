@@ -96,11 +96,16 @@ window.addEventListener(evt, loadAnalyticsAndPixel, { passive:true, once:true })
 setTimeout(loadAnalyticsAndPixel, 3500)
 </script>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<!-- fonts.googleapis.com and cdn.jsdelivr.net are covered by the explicit
+preload hints below (a preload also opens the connection), so a separate
+preconnect for them was redundant — Lighthouse flags >4 preconnects as
+wasteful since each one holds a socket open. Kept preconnect only for
+origins with no preload: fonts.gstatic.com (actual font file lands here
+after the CSS resolves), res.cloudinary.com and supabase.co (many
+requests each throughout the page, not just one). -->
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://res.cloudinary.com">
 <link rel="preconnect" href="https://otdbpahqfsarkzdpzwga.supabase.co">
-<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="preload" as="script" href="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
 <link rel="preload" as="image" fetchpriority="high" href="https://res.cloudinary.com/dtdztxbfg/image/upload/w_900,f_auto,q_auto/v1787488489/IMG_20260823_183338_ge9det.png" imagesrcset="https://res.cloudinary.com/dtdztxbfg/image/upload/w_600,f_auto,q_auto/v1787488489/IMG_20260823_183338_ge9det.png 600w, https://res.cloudinary.com/dtdztxbfg/image/upload/w_900,f_auto,q_auto/v1787488489/IMG_20260823_183338_ge9det.png 900w, https://res.cloudinary.com/dtdztxbfg/image/upload/w_1200,f_auto,q_auto/v1787488489/IMG_20260823_183338_ge9det.png 1200w" imagesizes="100vw">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700;800&display=swap">
