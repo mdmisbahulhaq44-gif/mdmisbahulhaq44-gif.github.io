@@ -4176,6 +4176,14 @@ grid.innerHTML = list.map(c => `
 }
 
 async function loadHomeCategories(){
+// Render the defaults immediately so this section has its real height
+// from the very first paint — leaving #homeCategoriesGrid empty until
+// the fetch below resolves was what let it collapse to 0 height and
+// then suddenly grow once real tiles arrived, pushing the footer (and
+// everything else after it) down. Re-rendered in place with the fetched
+// data once that's ready; same tile count in the common case, so this
+// doesn't introduce its own shift.
+renderHomeCategories(DEFAULT_HOME_CATEGORIES)
 try{
 const { data, error } = await supabaseClient
 .from('settings')
@@ -4193,7 +4201,6 @@ if(Array.isArray(parsed) && parsed.length) list = parsed
 renderHomeCategories(list)
 }catch(e){
 console.error('Category tiles fetch failed:', e)
-renderHomeCategories(DEFAULT_HOME_CATEGORIES)
 }
 }
 
