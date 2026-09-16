@@ -483,7 +483,7 @@ gap:16px
 .productImage{
 aspect-ratio:3/4;
 background:#f4f4f4;
-border-radius:6px;
+border-radius:14px;
 position:relative;
 overflow:hidden;
 display:flex;
@@ -755,28 +755,22 @@ border-radius:14px;
 overflow:hidden
 }
 .methodRow{
-display:flex;align-items:center;gap:14px;
-padding:15px 16px;
+display:flex;align-items:center;gap:12px;
+padding:11px 14px;
 border-bottom:1px solid #eee;
 cursor:pointer
 }
 .methodRow:last-child{border-bottom:0}
 .methodRow input[type="radio"]{
-width:19px;height:19px;
+width:17px;height:17px;
 accent-color:var(--teal);
 flex-shrink:0;
 cursor:pointer
 }
 .methodRow .methodBody{flex:1;min-width:0}
-.methodRow .methodTitle{font-size:14px;font-weight:600;color:#111}
+.methodRow .methodTitle{font-size:13.5px;font-weight:600;color:#111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .methodRow .methodDesc{font-size:11.5px;color:var(--muted);margin-top:2px;line-height:1.4}
-.methodRow .methodRight{font-size:13px;font-weight:700;color:#111;flex-shrink:0;text-align:right}
-.walletBadge{
-font-weight:700;font-size:12px;
-padding:5px 11px;border-radius:5px;
-letter-spacing:.3px;color:#fff;
-flex-shrink:0
-}
+.methodRow .methodRight{font-size:12.5px;font-weight:600;color:var(--muted);flex-shrink:0;text-align:right}
 
 .pickerField{
 display:flex;align-items:center;justify-content:space-between;
@@ -1560,14 +1554,13 @@ This lets you track your orders anytime.
 <input type="radio" name="coMethod" value="home_delivery" checked onchange="onDeliveryMethodChange()">
 <div class="methodBody">
 <div class="methodTitle">Home Delivery</div>
-<div class="methodDesc">Fee depends on your delivery area</div>
 </div>
+<div class="methodRight">Fee varies</div>
 </label>
 <label class="methodRow">
 <input type="radio" name="coMethod" value="pickup" onchange="onDeliveryMethodChange()">
 <div class="methodBody">
 <div class="methodTitle">Store Pickup</div>
-<div class="methodDesc">Collect from our Mirpur 12 store</div>
 </div>
 <div class="methodRight">Free</div>
 </label>
@@ -1579,49 +1572,43 @@ This lets you track your orders anytime.
 <input type="radio" name="coPayment" value="COD" checked onchange="onPaymentMethodChange()">
 <div class="methodBody">
 <div class="methodTitle">Cash on Delivery</div>
-<div class="methodDesc">Pay when your order arrives</div>
 </div>
-<div class="methodRight">💵</div>
+<div class="methodRight">Pay on arrival</div>
 </label>
 <label class="methodRow">
 <input type="radio" name="coPayment" value="bKash" onchange="onPaymentMethodChange()">
 <div class="methodBody">
 <div class="methodTitle">bKash</div>
-<div class="methodDesc">Send Money, then enter the Transaction ID</div>
 </div>
-<span class="walletBadge" style="background:#E2136E">bKash</span>
+<div class="methodRight">Send Money</div>
 </label>
 <label class="methodRow">
 <input type="radio" name="coPayment" value="Nagad" onchange="onPaymentMethodChange()">
 <div class="methodBody">
 <div class="methodTitle">Nagad</div>
-<div class="methodDesc">Send Money, then enter the Transaction ID</div>
 </div>
-<span class="walletBadge" style="background:#F6851F">Nagad</span>
+<div class="methodRight">Send Money</div>
 </label>
 <label class="methodRow">
 <input type="radio" name="coPayment" value="Rocket" onchange="onPaymentMethodChange()">
 <div class="methodBody">
 <div class="methodTitle">Rocket</div>
-<div class="methodDesc">Send Money, then enter the Transaction ID</div>
 </div>
-<span class="walletBadge" style="background:#8C3494">Rocket</span>
+<div class="methodRight">Send Money</div>
 </label>
 <label class="methodRow">
 <input type="radio" name="coPayment" value="Upay" onchange="onPaymentMethodChange()">
 <div class="methodBody">
 <div class="methodTitle">Upay</div>
-<div class="methodDesc">Send Money, then enter the Transaction ID</div>
 </div>
-<span class="walletBadge" style="background:#00A99D">Upay</span>
+<div class="methodRight">Send Money</div>
 </label>
 <label class="methodRow">
 <input type="radio" name="coPayment" value="Tap" onchange="onPaymentMethodChange()">
 <div class="methodBody">
 <div class="methodTitle">Tap</div>
-<div class="methodDesc">Send Money, then enter the Transaction ID</div>
 </div>
-<span class="walletBadge" style="background:#0072BC">Tap</span>
+<div class="methodRight">Send Money</div>
 </label>
 </div>
 
@@ -1707,7 +1694,7 @@ Collect your order from our store:<br>
 <div class="summaryRow total"><span>Total</span><span id="coTotal">৳0</span></div>
 </div>
 
-<button class="btn" style="width:100%;background:var(--teal)" type="submit">PLACE ORDER</button>
+<button class="btn" style="width:100%;background:transparent;color:#111;border:1.5px solid #111" type="submit">PLACE ORDER</button>
 
 
 </form>
