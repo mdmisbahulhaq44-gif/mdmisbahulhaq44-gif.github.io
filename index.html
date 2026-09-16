@@ -2717,11 +2717,14 @@ ${colorSwatchesHTML(p)}
 }
 
 async function loadProducts(){
-// A fixed 8-card skeleton meant the grid's height jumped (often by
-// several rows) the moment real products replaced it, which is what
-// was moving the footer and driving up CLS. Sizing the skeleton to the
-// product count from last visit keeps that swap close to height-neutral.
-let skeletonCount = 8
+// localStorage only helps a returning visitor in their OWN browser — every
+// PageSpeed/Lighthouse run starts with an empty, fresh profile, so it always
+// fell back to the hardcoded default below. That default was 8, but this
+// catalog (fetched with no .limit()) actually runs 20-40 products, so the
+// skeleton->real-data swap was jumping by many rows on every single
+// PageSpeed test — the real, consistent source of the CLS score that stuck
+// around no matter what else got optimized. 24 is a closer real-world match.
+let skeletonCount = 24
 try{
 const cached = Number(localStorage.getItem('dezireProductCount'))
 if(cached > 0) skeletonCount = cached
@@ -5122,8 +5125,7 @@ updatePaymentInstructions(subtotal - discount + charge)
 const WALLET_COLORS = { bKash:'#E2136E', Nagad:'#F6851F', Rocket:'#8C3494', Upay:'#00A99D', Tap:'#0072BC' }
 
 function walletBadgeHTML(name){
-const color = WALLET_COLORS[name] || '#333'
-return `<span style="background:${color};color:#fff;font-weight:700;font-size:12px;padding:4px 10px;border-radius:4px;letter-spacing:.3px">${escapeHTML(name)}</span>`
+return `<span style="background:transparent;border:1.5px solid #111;color:#111;font-weight:700;font-size:12px;padding:3px 12px;border-radius:20px;letter-spacing:.3px;display:inline-block">${escapeHTML(name)}</span>`
 }
 
 function updatePaymentInstructions(total){
