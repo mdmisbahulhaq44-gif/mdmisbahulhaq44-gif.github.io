@@ -1575,12 +1575,13 @@ This lets you track your orders anytime.
 </div>
 <div class="methodRight">Pay on arrival</div>
 </label>
-<label class="methodRow">
-<input type="radio" name="coPayment" value="ONLINE" onchange="onPaymentMethodChange()">
+<label class="methodRow" style="align-items:flex-start;flex-wrap:wrap">
+<input type="radio" name="coPayment" value="ONLINE" onchange="onPaymentMethodChange()" style="margin-top:2px">
 <div class="methodBody">
 <div class="methodTitle">Online Payment</div>
+<div style="font-size:12px;color:var(--muted);margin-top:6px;letter-spacing:.3px">bKash &nbsp;·&nbsp; Nagad &nbsp;·&nbsp; Rocket &nbsp;·&nbsp; Card</div>
+<div style="font-size:10.5px;color:var(--muted);margin-top:8px">🔒 Secured &amp; verified by UddoktaPay</div>
 </div>
-<div class="methodRight">bKash/Nagad/Card</div>
 </label>
 </div>
 
@@ -1677,13 +1678,13 @@ Collect your order from our store:<br>
 <div class="panel" id="successPanel">
 
 <div class="panelHead">
-<h2>Order Placed!</h2>
+<h2 id="successHeading">Order Placed!</h2>
 <button class="close" onclick="closePanels()">×</button>
 </div>
 
 <div style="text-align:center;padding:10px 0 25px">
-<div style="font-size:50px;margin-bottom:15px">✅</div>
-<p style="color:var(--muted);font-size:13px;line-height:1.7">
+<div id="successIcon" style="font-size:50px;margin-bottom:15px">✅</div>
+<p id="successMessage" style="color:var(--muted);font-size:13px;line-height:1.7">
 Thank you! Your order has been received.<br>
 We'll contact you shortly to confirm.
 </p>
@@ -5870,9 +5871,49 @@ history.pushState({homeGuard:true}, '', location.pathname + location.search)
 // + loadHomeCategories + loadCategoryImages calls with a single combined
 // settings query, cutting the number of parallel round trips before the
 // page finishes rendering.
+// UddoktaPay redirects the customer back here with ?order=<ref>&paid=1 (or
+// paid=0 if cancelled). We never trust that query param by itself — the
+// webhook is what actually marks the order paid in the database — this
+// just re-reads that real payment_status to decide what to show, so the
+// confirmation on screen always matches what's really in the database.
+async function checkPaymentReturn(){
+const params = new URLSearchParams(window.location.search)
+const orderRef = params.get('order')
+const paid = params.get('paid')
+if(!orderRef || paid === null) return
+
+// Clean the URL right away so refreshing this page doesn't reopen the panel
+history.replaceState(null, '', window.location.pathname + window.location.hash)
+
+try{
+const { data, error } = await supabaseClient
+.from('orders')
+.select('total_amount,delivery_method,payment_status')
+.eq('order_ref', orderRef)
+
+if(error || !data || !data.length) return
+
+const total = data.reduce((sum, r) => sum + Number(r.total_amount || 0), 0)
+const isPaid = data[0].payment_status === 'paid'
+
+$("successHeading").textContent = isPaid ? "Payment Successful!" : "Payment Not Completed"
+$("successIcon").textContent = isPaid ? "✅" : "⚠️"
+$("successMessage").innerHTML = isPaid
+? "Your payment has been received and your order is confirmed.<br>We'll contact you shortly."
+: "Your order is saved, but the payment wasn't completed.<br>You can retry payment or contact us to arrange Cash on Delivery."
+$("successOrderId").textContent = "#" + orderRef
+$("successTotal").textContent = "৳" + total.toLocaleString()
+$("successMethod").textContent = data[0].delivery_method === 'pickup' ? 'Store Pickup (Mirpur 12)' : 'Home Delivery'
+openPanel("successPanel")
+}catch(e){
+console.error('Payment return check failed:', e)
+}
+}
+
 loadHomeSettings()
 loadTestimonials()
 await loadProducts()
+checkPaymentReturn()
 
 routeChanged()
 
