@@ -1575,6 +1575,13 @@ This lets you track your orders anytime.
 </div>
 <div class="methodRight">Pay on arrival</div>
 </label>
+<label class="methodRow">
+<input type="radio" name="coPayment" value="ONLINE" onchange="onPaymentMethodChange()">
+<div class="methodBody">
+<div class="methodTitle">Online Payment</div>
+</div>
+<div class="methodRight">bKash/Nagad/Card</div>
+</label>
 </div>
 
 <!-- Shown only when a mobile wallet is picked above — there's no merchant/
@@ -5095,7 +5102,7 @@ return `<span style="background:transparent;border:1.5px solid #111;color:#111;f
 function updatePaymentInstructions(total){
 const method = document.querySelector('input[name="coPayment"]:checked').value
 const box = $("mobilePaymentBox")
-if(method === 'COD'){
+if(method === 'COD' || method === 'ONLINE'){
 box.style.display = "none"
 return
 }
@@ -5139,7 +5146,7 @@ const addressType = method === 'home_delivery'
 const address = method === 'home_delivery' ? $("coAddress").value.trim() : deliverySettings.pickup_address
 const note = $("coNote").value.trim()
 const paymentMethod = document.querySelector('input[name="coPayment"]:checked').value
-const trxId = paymentMethod !== 'COD' ? $("coTrxId").value.trim().toUpperCase() : ''
+const trxId = (paymentMethod !== 'COD' && paymentMethod !== 'ONLINE') ? $("coTrxId").value.trim().toUpperCase() : ''
 
 if(!name || !phone){
 toast("Please fill in your name and phone number.")
@@ -5151,7 +5158,7 @@ toast("Please fill in region, city, area and address.")
 return
 }
 
-if(paymentMethod !== 'COD' && !trxId){
+if(paymentMethod !== 'COD' && paymentMethod !== 'ONLINE' && !trxId){
 toast(`Please enter your ${paymentMethod} Transaction ID.`)
 return
 }
@@ -5232,6 +5239,36 @@ supabaseClient.rpc('decrement_product_stock', { p_product_id: item.id, p_qty: it
 const purchaseTotal = subtotal - discount + charge
 if(typeof fbq === 'function') fbq('track', 'Purchase', { value:purchaseTotal, currency:'BDT', content_ids:cart.map(i=>String(i.id)), content_type:'product', num_items:cart.reduce((s,i)=>s+i.qty,0) })
 if(typeof gtag === 'function') gtag('event', 'purchase', { transaction_id:orderRef, value:purchaseTotal, currency:'BDT', items:cart.map(i=>({ item_id:String(i.id), item_name:i.name, price:i.price, quantity:i.qty })) })
+
+// Online payment: the order row above is saved as unpaid, then we hand
+// off to UddoktaPay's hosted page. Their webhook (server-side, verified
+// against their API independently — see uddoktapay-webhook) flips it to
+// paid once the customer actually completes payment. Nothing below this
+// runs for this path since the browser is about to navigate away.
+if(paymentMethod === 'ONLINE'){
+try{
+const { data: chargeData, error: chargeError } = await supabaseClient.functions.invoke('create-charge', {
+body: { orderRef, fullName: name, amount: purchaseTotal }
+})
+if(chargeError || !chargeData || !chargeData.payment_url){
+console.error('create-charge failed:', chargeError, chargeData)
+toast("Could not start online payment. Please try Cash on Delivery, or contact us — your order is saved as #" + orderRef + ".")
+submitBtn.disabled = false
+submitBtn.textContent = "PLACE ORDER"
+return
+}
+saveCart([])
+renderCart()
+window.location.href = chargeData.payment_url
+return
+}catch(err){
+console.error('create-charge error:', err)
+toast("Could not start online payment. Please try Cash on Delivery, or contact us — your order is saved as #" + orderRef + ".")
+submitBtn.disabled = false
+submitBtn.textContent = "PLACE ORDER"
+return
+}
+}
 
 // The real order id is now stored in every row as order_ref — the
 // customer can use this exact number in Track Order to pull up their
