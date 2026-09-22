@@ -108,9 +108,9 @@ requests each throughout the page, not just one). -->
 <link rel="preconnect" href="https://otdbpahqfsarkzdpzwga.supabase.co">
 <link rel="preload" as="script" href="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
 <link rel="preload" as="image" fetchpriority="high" href="https://res.cloudinary.com/dtdztxbfg/image/upload/w_900,f_auto,q_auto/v1789381873/IMG_20260914_161653_hbvxqq.png" imagesrcset="https://res.cloudinary.com/dtdztxbfg/image/upload/w_600,f_auto,q_auto/v1789381873/IMG_20260914_161653_hbvxqq.png 600w, https://res.cloudinary.com/dtdztxbfg/image/upload/w_900,f_auto,q_auto/v1789381873/IMG_20260914_161653_hbvxqq.png 900w, https://res.cloudinary.com/dtdztxbfg/image/upload/w_1200,f_auto,q_auto/v1789381873/IMG_20260914_161653_hbvxqq.png 1200w" imagesizes="100vw">
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700;800&display=swap">
-<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-<noscript><link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet"></noscript>
 
 <style>
 :root{
@@ -126,7 +126,7 @@ requests each throughout the page, not just one). -->
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none}
 html{scroll-behavior:smooth}
 body{
-font-family:Jost,sans-serif;
+font-family:Quicksand,sans-serif;
 color:var(--black);
 background:#fff;
 overflow-x:hidden
@@ -260,7 +260,7 @@ border-bottom:1px solid rgba(0,0,0,.08)
 .heroCarousel{
 position:relative;
 width:100%;
-aspect-ratio:2.4/1;
+aspect-ratio:2.8/1;
 overflow:hidden;
 background:#111
 }
@@ -774,25 +774,18 @@ cursor:pointer
 .methodRow{transition:background .15s ease}
 .methodRow:has(input:checked){background:#f7faf8}
 
-/* Online-payment wallet chips — small colored badges standing in for
-each gateway's brand color, shown once "Online Payment" is selected.
-No trademarked artwork is reproduced; each chip is just a colored dot
-+ wordmark, styled to read as a proper logo row rather than plain text. */
-.walletGrid{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
-.walletChip{
-display:flex;align-items:center;
-padding:6px 14px;
-border-radius:20px;
-background:#fff;
-border:1.5px solid #eee;
-box-shadow:0 1px 3px rgba(0,0,0,.05);
-font-size:12px;font-weight:700;letter-spacing:.2px;
-color:#222
-}
-.onlineSecured{
-display:flex;align-items:center;gap:6px;
-font-size:11px;color:var(--muted);margin-top:10px
-}
+/* Payment Method — plain expanding list (reference-style): radio + title
+on one line, a light description panel that opens only for the selected
+option. Delivery Method above keeps the old boxed .methodRow style;
+this is scoped to payment only so nothing else on the page changes. */
+.payMethodList{border-top:1px solid var(--line)}
+.payOption{display:block;padding:14px 2px;border-bottom:1px solid var(--line);cursor:pointer}
+.payOptionHead{display:flex;align-items:center;gap:10px}
+.payOptionHead input[type=radio]{width:19px;height:19px;accent-color:var(--teal);flex-shrink:0}
+.payOptionTitle{font-size:15.5px;font-weight:600;color:#222}
+.payOptionDesc{display:none;margin:10px 0 0 29px;background:#f7f7f5;border-radius:8px;padding:12px 14px;font-size:12.5px;color:var(--muted)}
+.payOption:has(input:checked) .payOptionDesc{display:block}
+.payLogo{display:block;height:24px;margin-top:8px}
 
 .pickerField{
 display:flex;align-items:center;justify-content:space-between;
@@ -1211,7 +1204,7 @@ Recommended: landscape photos, at least 1200px wide. -->
 </div>
 
 <section class="section" id="women" style="padding-left:0;padding-right:0;padding-top:36px">
-<div class="categories" id="homeCategoriesGrid" style="padding:0 5%">
+<div class="categories" id="homeCategoriesGrid" style="padding:0">
 <!-- Category tiles are rendered here by loadHomeCategories(). Edit them from Admin Panel → Settings. -->
 </div>
 </section>
@@ -1588,43 +1581,7 @@ This lets you track your orders anytime.
 </label>
 </div>
 
-<label>PAYMENT METHOD</label>
-<div class="methodBox">
-<label class="methodRow">
-<input type="radio" name="coPayment" value="COD" checked onchange="onPaymentMethodChange()">
-<div class="methodBody">
-<div class="methodTitle">Cash on Delivery</div>
-</div>
-<div class="methodRight">Pay on arrival</div>
-</label>
-<label class="methodRow" style="align-items:flex-start;flex-wrap:wrap">
-<input type="radio" name="coPayment" value="ONLINE" onchange="onPaymentMethodChange()" style="margin-top:2px">
-<div class="methodBody">
-<div class="methodTitle">Online Payment</div>
-<div class="walletGrid">
-<span class="walletChip">bKash</span>
-<span class="walletChip">Nagad</span>
-<span class="walletChip">Rocket</span>
-<span class="walletChip">Card</span>
-</div>
-<div class="onlineSecured">🔒 Secured &amp; verified by Paymently</div>
-</div>
-</label>
-</div>
-
-<!-- Shown only when a mobile wallet is picked above — there's no merchant/
-gateway account set up yet, so payment is a manual Send Money to a
-personal wallet number, verified by the admin against the transaction ID
-the customer provides here before the order ships. -->
-<div id="mobilePaymentBox" style="display:none;background:#f7f5f0;border:1px solid var(--line);border-radius:10px;padding:16px;margin-top:-6px;margin-bottom:16px">
-<p style="font-size:13px;margin-bottom:10px">
-Send <strong id="mpAmount">৳0</strong> via <strong id="mpMethodName">bKash</strong> "Send Money" to:
-</p>
-<p style="font-size:18px;font-weight:600;letter-spacing:1px;margin-bottom:12px">+880 1877-270165</p>
-<label style="font-size:12px">TRANSACTION ID</label>
-<input type="text" id="coTrxId" placeholder="e.g. 8N7A2K9XYZ" style="text-transform:uppercase">
-<p style="font-size:11.5px;color:var(--muted);margin-top:8px">After sending money, enter the Transaction ID from the confirmation SMS. We'll verify it before your order ships.</p>
-</div>
+<!-- Payment Method moved further down, right above the Place Order button -->
 
 <div id="homeDeliveryFields">
 <label>REGION</label>
@@ -1692,6 +1649,40 @@ Collect your order from our store:<br>
 <div class="summaryRow" id="coDiscountRow" style="display:none;color:var(--gold)"><span id="coDiscountLabel">Discount</span><span id="coDiscountAmount">−৳0</span></div>
 <div class="summaryRow"><span id="coDeliveryLabel">Delivery</span><span id="coDeliveryCharge">৳0</span></div>
 <div class="summaryRow total"><span>Total</span><span id="coTotal">৳0</span></div>
+</div>
+
+<label>PAYMENT METHOD</label>
+<div class="payMethodList">
+<label class="payOption">
+<div class="payOptionHead">
+<input type="radio" name="coPayment" value="COD" checked onchange="onPaymentMethodChange()">
+<span class="payOptionTitle">Cash on Delivery</span>
+</div>
+<div class="payOptionDesc">Pay in cash when your order arrives at the door.</div>
+</label>
+<label class="payOption">
+<div class="payOptionHead">
+<input type="radio" name="coPayment" value="ONLINE" onchange="onPaymentMethodChange()">
+<span class="payOptionTitle">Pay via bKash</span>
+</div>
+<div class="payOptionDesc">
+🔒 Secured &amp; verified by Paymently
+<img id="bkashLogoImg" src="" alt="bKash" class="payLogo" style="display:none" onerror="this.style.display='none'">
+</div>
+</label>
+</div>
+
+<!-- Legacy manual-verification box — no longer triggered by COD/ONLINE,
+kept only as a safety net in case an older payment value is ever routed
+here again. -->
+<div id="mobilePaymentBox" style="display:none;background:#f7f5f0;border:1px solid var(--line);border-radius:10px;padding:16px;margin-top:-6px;margin-bottom:16px">
+<p style="font-size:13px;margin-bottom:10px">
+Send <strong id="mpAmount">৳0</strong> via <strong id="mpMethodName">bKash</strong> "Send Money" to:
+</p>
+<p style="font-size:18px;font-weight:600;letter-spacing:1px;margin-bottom:12px">+880 1877-270165</p>
+<label style="font-size:12px">TRANSACTION ID</label>
+<input type="text" id="coTrxId" placeholder="e.g. 8N7A2K9XYZ" style="text-transform:uppercase">
+<p style="font-size:11.5px;color:var(--muted);margin-top:8px">After sending money, enter the Transaction ID from the confirmation SMS. We'll verify it before your order ships.</p>
 </div>
 
 <button class="btn" style="width:100%;background:transparent;color:#111;border:1.5px solid #111" type="submit">PLACE ORDER</button>
@@ -2146,6 +2137,18 @@ By default, a category's tile (Baggy, Shirt, etc — at any depth) uses one of i
 </p>
 <div id="categoryImageRows"></div>
 <button class="btn" onclick="saveCategoryImages()">SAVE CATEGORY PHOTOS</button>
+</div>
+
+<hr style="margin:36px 0;border:0;border-top:1px solid var(--line)">
+
+<div style="max-width:500px">
+<label style="display:block;font-size:12px;font-weight:700;letter-spacing:.5px;margin-bottom:8px">PAYMENT METHOD LOGO (bKash)</label>
+<p style="font-size:12px;color:var(--muted);margin-bottom:16px;line-height:1.6">
+Paste a Cloudinary (or any) image link here to show the bKash logo on the checkout page's "Pay via bKash" option. Leave blank to hide it.
+</p>
+<input type="text" id="bkashLogoUrlInput" placeholder="https://res.cloudinary.com/..." oninput="$('bkashLogoAdminPreview').src=this.value">
+<img id="bkashLogoAdminPreview" src="" style="display:none;height:32px;margin:10px 0" onerror="this.style.display='none'" onload="this.style.display='block'">
+<button class="btn" onclick="saveBkashLogoSetting()" style="margin-top:10px">SAVE PAYMENT LOGO</button>
 </div>
 
 </div>
@@ -3625,7 +3628,8 @@ const { data, error } = await supabaseClient
 .in('key', [
 'delivery_charge_dhaka','delivery_charge_outside',
 'free_delivery_threshold','pickup_available',
-'pickup_address','pickup_charge','whatsapp_number'
+'pickup_address','pickup_charge','whatsapp_number',
+'bkash_logo_url'
 ])
 
 if(error || !data || !data.length){
@@ -3634,7 +3638,7 @@ deliverySettings = {
 delivery_charge_dhaka:50, delivery_charge_outside:60,
 free_delivery_threshold:1000, pickup_available:true,
 pickup_address:'Mirpur 12, Dhaka', pickup_charge:0,
-whatsapp_number:'8801877270165'
+whatsapp_number:'8801877270165', bkash_logo_url:''
 }
 return deliverySettings
 }
@@ -3648,7 +3652,8 @@ free_delivery_threshold: Number(map.free_delivery_threshold),
 pickup_available: map.pickup_available === 'true',
 pickup_address: map.pickup_address,
 pickup_charge: Number(map.pickup_charge||0),
-whatsapp_number: map.whatsapp_number || '8801877270165'
+whatsapp_number: map.whatsapp_number || '8801877270165',
+bkash_logo_url: map.bkash_logo_url || ''
 }
 return deliverySettings
 }
@@ -4467,6 +4472,36 @@ if(error){ toast("Could not save: " + readableError(error)); return }
 toast("Category images updated!")
 }
 
+/* ============================================================
+   PAYMENT METHOD LOGO (bKash) — a single settings row, key:
+   bkash_logo_url. Edited from Admin Panel → Settings → Payment
+   Method Logo. Checkout reads it via deliverySettings and shows
+   the image next to "Pay via bKash" once it's set.
+   ============================================================ */
+async function loadBkashLogoSettingIntoForm(){
+const { data } = await supabaseClient
+.from('settings')
+.select('value')
+.eq('key', 'bkash_logo_url')
+.maybeSingle()
+
+const input = $("bkashLogoUrlInput")
+const url = (data && data.value) || ''
+if(input) input.value = url
+if($("bkashLogoAdminPreview")) $("bkashLogoAdminPreview").src = url
+}
+
+async function saveBkashLogoSetting(){
+const url = $("bkashLogoUrlInput").value.trim()
+const { error } = await supabaseClient
+.from('settings')
+.upsert({ key: 'bkash_logo_url', value: url }, { onConflict: 'key' })
+
+if(error){ toast("Could not save: " + readableError(error)); return }
+deliverySettings = null // force a fresh fetch next time checkout loads
+toast("Payment logo updated!")
+}
+
 async function loadHomeCategoriesSettingIntoForm(){
 const { data } = await supabaseClient
 .from('settings')
@@ -5013,6 +5048,12 @@ if(!$("coRegion").options.length || $("coRegion").options.length === 1){
 await loadRegionsIntoSelect()
 }
 $("pickupAddressText").textContent = deliverySettings.pickup_address
+if(deliverySettings.bkash_logo_url){
+$("bkashLogoImg").src = deliverySettings.bkash_logo_url
+$("bkashLogoImg").style.display = 'block'
+}else{
+$("bkashLogoImg").style.display = 'none'
+}
 if(profile){
 $("coName").value = profile.name || ''
 $("coPhone").value = profile.phone || ''
@@ -5423,7 +5464,7 @@ $("adminSettingsView").style.display = section==='settings' ? 'block' : 'none'
 if(section==='dashboard'){ $("navDashboard").classList.add('active'); $("adminTitle").textContent="Dashboard"; loadAdminData() }
 if(section==='products'){ $("navProducts").classList.add('active'); $("adminTitle").textContent="Products"; renderAdminProductsTable() }
 if(section==='orders'){ $("navOrders").classList.add('active'); $("adminTitle").textContent="Orders"; loadAllOrders() }
-if(section==='settings'){ $("navSettings").classList.add('active'); $("adminTitle").textContent="Settings"; loadHeroSlidesSettingIntoForm(); loadHomeCategoriesSettingIntoForm(); loadCategoryImagesSettingIntoForm() }
+if(section==='settings'){ $("navSettings").classList.add('active'); $("adminTitle").textContent="Settings"; loadHeroSlidesSettingIntoForm(); loadHomeCategoriesSettingIntoForm(); loadCategoryImagesSettingIntoForm(); loadBkashLogoSettingIntoForm() }
 }
 
 function statusBadgeHTML(status){
