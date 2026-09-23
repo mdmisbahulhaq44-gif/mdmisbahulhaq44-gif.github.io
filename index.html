@@ -136,7 +136,7 @@ button,a{-webkit-tap-highlight-color:transparent;outline:none}
 button:focus,a:focus{outline:none}
 
 nav{
-height:52px;padding:0 4%;
+height:46px;padding:0 4%;
 display:flex;align-items:center;
 justify-content:space-between;
 border-bottom:1px solid rgba(255,255,255,.4);
@@ -260,7 +260,7 @@ border-bottom:1px solid rgba(0,0,0,.08)
 .heroCarousel{
 position:relative;
 width:100%;
-aspect-ratio:2.6/1;
+aspect-ratio:2.8/1;
 overflow:hidden;
 background:#111
 }
@@ -277,6 +277,7 @@ cursor:pointer
 .heroSlide img{
 width:100%;height:100%;
 object-fit:cover;
+object-position:center top;
 display:block
 }
 .heroArrow{
@@ -785,6 +786,8 @@ this is scoped to payment only so nothing else on the page changes. */
 .payOptionTitle{font-size:15.5px;font-weight:600;color:#222}
 .payOptionDesc{display:none;margin:10px 0 0 29px;background:#f7f7f5;border-radius:8px;padding:12px 14px;font-size:12.5px;color:var(--muted)}
 .payOption:has(input:checked) .payOptionDesc{display:block}
+.paymentLogosRow{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin-top:12px;min-height:32px}
+.paymentLogosRow img{height:28px;max-width:100px;object-fit:contain;display:block}
 .payLogo{display:block;height:24px;margin-top:8px}
 
 .pickerField{
@@ -1203,8 +1206,8 @@ Recommended: landscape photos, at least 1200px wide. -->
 <a href="#" onclick="closeDrawer();openTrackOrder();return false">Track Order</a>
 </div>
 
-<section class="section" id="women" style="padding-left:0;padding-right:0;padding-top:36px">
-<div class="categories" id="homeCategoriesGrid" style="padding:0 3%">
+<section class="section" id="women" style="padding-left:0;padding-right:0;padding-top:14px">
+<div class="categories" id="homeCategoriesGrid" style="padding:0 1.5%">
 <!-- Category tiles are rendered here by loadHomeCategories(). Edit them from Admin Panel → Settings. -->
 </div>
 </section>
@@ -1663,11 +1666,11 @@ Collect your order from our store:<br>
 <label class="payOption">
 <div class="payOptionHead">
 <input type="radio" name="coPayment" value="ONLINE" onchange="onPaymentMethodChange()">
-<span class="payOptionTitle">Pay via bKash</span>
+<span class="payOptionTitle">Pay Online</span>
 </div>
-<div class="payOptionDesc">
+<div class="payOptionDesc" style="display:block">
 🔒 Secured &amp; verified by Paymently
-<img id="bkashLogoImg" src="" alt="bKash" class="payLogo" style="display:none" onerror="this.style.display='none'">
+<div id="paymentLogosRow" class="paymentLogosRow"></div>
 </div>
 </label>
 </div>
@@ -1685,6 +1688,7 @@ Send <strong id="mpAmount">৳0</strong> via <strong id="mpMethodName">bKash</st
 <p style="font-size:11.5px;color:var(--muted);margin-top:8px">After sending money, enter the Transaction ID from the confirmation SMS. We'll verify it before your order ships.</p>
 </div>
 
+<div style="height:28px"></div>
 <button class="btn" style="width:100%;background:transparent;color:#111;border:1.5px solid #111" type="submit">PLACE ORDER</button>
 
 
@@ -2142,13 +2146,41 @@ By default, a category's tile (Baggy, Shirt, etc — at any depth) uses one of i
 <hr style="margin:36px 0;border:0;border-top:1px solid var(--line)">
 
 <div style="max-width:500px">
-<label style="display:block;font-size:12px;font-weight:700;letter-spacing:.5px;margin-bottom:8px">PAYMENT METHOD LOGO (bKash)</label>
+<label style="display:block;font-size:12px;font-weight:700;letter-spacing:.5px;margin-bottom:8px">PAYMENT METHOD LOGOS</label>
 <p style="font-size:12px;color:var(--muted);margin-bottom:16px;line-height:1.6">
-Paste a Cloudinary (or any) image link here to show the bKash logo on the checkout page's "Pay via bKash" option. Leave blank to hide it.
+Add as many payment logos as you like (bKash, Nagad, Rocket, card networks, etc.) — they always show under "Pay Online" at checkout. Paste a Cloudinary (or any) image link per row.
 </p>
-<input type="text" id="bkashLogoUrlInput" placeholder="https://res.cloudinary.com/..." oninput="$('bkashLogoAdminPreview').src=this.value">
-<img id="bkashLogoAdminPreview" src="" style="display:none;height:32px;margin:10px 0" onerror="this.style.display='none'" onload="this.style.display='block'">
-<button class="btn" onclick="saveBkashLogoSetting()" style="margin-top:10px">SAVE PAYMENT LOGO</button>
+<div id="paymentLogoRows"></div>
+<button class="btn light" onclick="addPaymentLogoRow()" style="margin-top:6px">+ ADD LOGO</button>
+<button class="btn" onclick="savePaymentLogos()" style="margin-top:10px">SAVE PAYMENT LOGOS</button>
+</div>
+
+<hr style="margin:36px 0;border:0;border-top:1px solid var(--line)">
+
+<div style="max-width:500px">
+<label style="display:block;font-size:12px;font-weight:700;letter-spacing:.5px;margin-bottom:8px">COUPON CODES</label>
+<p style="font-size:12px;color:var(--muted);margin-bottom:16px;line-height:1.6">
+Create discount codes customers can enter at checkout. Percentage discounts apply to the order subtotal.
+</p>
+<div id="couponListWrap" style="margin-bottom:18px"></div>
+
+<div style="border:1px solid var(--line);border-radius:10px;padding:14px">
+<b style="font-size:12px;letter-spacing:.5px;display:block;margin-bottom:10px">ADD NEW COUPON</b>
+<label style="display:block;font-size:11px;color:var(--muted);margin-bottom:4px">CODE</label>
+<input type="text" id="newCouponCode" placeholder="e.g. EID20" style="margin-bottom:10px;text-transform:uppercase">
+<label style="display:block;font-size:11px;color:var(--muted);margin-bottom:4px">DISCOUNT TYPE</label>
+<select id="newCouponType" style="width:100%;border:1px solid var(--line);border-radius:8px;padding:10px;margin-bottom:10px">
+<option value="percent">Percentage (%)</option>
+<option value="fixed">Fixed Amount (৳)</option>
+</select>
+<label style="display:block;font-size:11px;color:var(--muted);margin-bottom:4px">VALUE</label>
+<input type="number" id="newCouponValue" placeholder="e.g. 20" style="margin-bottom:10px">
+<label style="display:block;font-size:11px;color:var(--muted);margin-bottom:4px">MINIMUM ORDER (OPTIONAL)</label>
+<input type="number" id="newCouponMinorder" placeholder="e.g. 1000" style="margin-bottom:10px">
+<label style="display:block;font-size:11px;color:var(--muted);margin-bottom:4px">EXPIRES ON (OPTIONAL)</label>
+<input type="date" id="newCouponExpires" style="margin-bottom:14px">
+<button class="btn" onclick="addCoupon()">ADD COUPON</button>
+</div>
 </div>
 
 </div>
@@ -3629,7 +3661,7 @@ const { data, error } = await supabaseClient
 'delivery_charge_dhaka','delivery_charge_outside',
 'free_delivery_threshold','pickup_available',
 'pickup_address','pickup_charge','whatsapp_number',
-'bkash_logo_url'
+'payment_logos'
 ])
 
 if(error || !data || !data.length){
@@ -3638,13 +3670,15 @@ deliverySettings = {
 delivery_charge_dhaka:50, delivery_charge_outside:60,
 free_delivery_threshold:1000, pickup_available:true,
 pickup_address:'Mirpur 12, Dhaka', pickup_charge:0,
-whatsapp_number:'8801877270165', bkash_logo_url:''
+whatsapp_number:'8801877270165', payment_logos:[]
 }
 return deliverySettings
 }
 
 const map = {}
 data.forEach(r => map[r.key] = r.value)
+let paymentLogos = []
+try{ paymentLogos = JSON.parse(map.payment_logos || '[]') }catch(e){ paymentLogos = [] }
 deliverySettings = {
 delivery_charge_dhaka: Number(map.delivery_charge_dhaka),
 delivery_charge_outside: Number(map.delivery_charge_outside),
@@ -3653,7 +3687,7 @@ pickup_available: map.pickup_available === 'true',
 pickup_address: map.pickup_address,
 pickup_charge: Number(map.pickup_charge||0),
 whatsapp_number: map.whatsapp_number || '8801877270165',
-bkash_logo_url: map.bkash_logo_url || ''
+payment_logos: paymentLogos
 }
 return deliverySettings
 }
@@ -4473,33 +4507,138 @@ toast("Category images updated!")
 }
 
 /* ============================================================
-   PAYMENT METHOD LOGO (bKash) — a single settings row, key:
-   bkash_logo_url. Edited from Admin Panel → Settings → Payment
-   Method Logo. Checkout reads it via deliverySettings and shows
-   the image next to "Pay via bKash" once it's set.
+   PAYMENT METHOD LOGOS — settings key: payment_logos (JSON array
+   of image URLs). Edited from Admin Panel → Settings → Payment
+   Method Logos. Checkout renders every URL under "Pay Online".
    ============================================================ */
-async function loadBkashLogoSettingIntoForm(){
+let editingPaymentLogos = []
+
+async function loadPaymentLogosSettingIntoForm(){
 const { data } = await supabaseClient
 .from('settings')
 .select('value')
-.eq('key', 'bkash_logo_url')
+.eq('key', 'payment_logos')
 .maybeSingle()
 
-const input = $("bkashLogoUrlInput")
-const url = (data && data.value) || ''
-if(input) input.value = url
-if($("bkashLogoAdminPreview")) $("bkashLogoAdminPreview").src = url
+let logos = []
+if(data && data.value){
+try{ const parsed = JSON.parse(data.value); if(Array.isArray(parsed)) logos = parsed }catch(e){}
+}
+editingPaymentLogos = logos.slice()
+renderPaymentLogoRows()
 }
 
-async function saveBkashLogoSetting(){
-const url = $("bkashLogoUrlInput").value.trim()
+function renderPaymentLogoRows(){
+const wrap = $("paymentLogoRows")
+if(!wrap) return
+wrap.innerHTML = editingPaymentLogos.map((url, i) => `
+<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+<img src="${escapeAttr(url)}" style="width:36px;height:36px;object-fit:contain;border:1px solid var(--line);border-radius:6px;background:#f7f7f5;flex-shrink:0" onerror="this.style.display='none'">
+<input type="text" value="${escapeAttr(url)}" oninput="updatePaymentLogoField(${i},this.value)" placeholder="https://res.cloudinary.com/..." style="flex:1">
+<button type="button" onclick="removePaymentLogoRow(${i})" style="background:none;border:0;color:var(--red);font-size:18px;cursor:pointer;flex-shrink:0">×</button>
+</div>
+`).join('') || `<p style="font-size:12px;color:var(--muted)">No logos added yet.</p>`
+}
+
+function updatePaymentLogoField(index, value){
+editingPaymentLogos[index] = value
+}
+
+function removePaymentLogoRow(index){
+editingPaymentLogos.splice(index, 1)
+renderPaymentLogoRows()
+}
+
+function addPaymentLogoRow(){
+editingPaymentLogos.push("")
+renderPaymentLogoRows()
+}
+
+async function savePaymentLogos(){
+const cleaned = editingPaymentLogos.map(u => (u||'').trim()).filter(Boolean)
 const { error } = await supabaseClient
 .from('settings')
-.upsert({ key: 'bkash_logo_url', value: url }, { onConflict: 'key' })
+.upsert({ key: 'payment_logos', value: JSON.stringify(cleaned) }, { onConflict: 'key' })
 
 if(error){ toast("Could not save: " + readableError(error)); return }
 deliverySettings = null // force a fresh fetch next time checkout loads
-toast("Payment logo updated!")
+editingPaymentLogos = cleaned
+renderPaymentLogoRows()
+toast("Payment logos updated!")
+}
+
+/* ============================================================
+   COUPON CODES — table `coupons` (code, type, value, minorder,
+   active, expires). Admin Panel → Settings → Coupon Codes.
+   Checkout's applyCoupon() already reads this same table.
+   ============================================================ */
+async function loadCouponsAdmin(){
+const wrap = $("couponListWrap")
+if(!wrap) return
+wrap.innerHTML = `<p style="font-size:12px;color:var(--muted)">Loading...</p>`
+
+const { data, error } = await supabaseClient
+.from('coupons')
+.select('id,code,type,value,minorder,active,expires')
+.order('id', { ascending:false })
+
+if(error){ wrap.innerHTML = `<p style="font-size:12px;color:var(--red)">Could not load coupons.</p>`; return }
+
+if(!data || !data.length){
+wrap.innerHTML = `<p style="font-size:12px;color:var(--muted)">No coupons yet.</p>`
+return
+}
+
+wrap.innerHTML = data.map(c => `
+<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin-bottom:8px">
+<div>
+<b style="font-size:13px;letter-spacing:.5px">${escapeHTML(c.code)}</b>
+<span style="font-size:12px;color:var(--muted)"> — ${c.type === 'percent' ? c.value + '%' : '৳' + c.value} off${c.minorder ? `, min ৳${Number(c.minorder).toLocaleString()}` : ''}${c.expires ? `, expires ${c.expires}` : ''}${c.active ? '' : ' (inactive)'}</span>
+</div>
+<div style="display:flex;gap:10px;flex-shrink:0">
+<button type="button" onclick="toggleCouponActive(${c.id}, ${!c.active})" style="background:none;border:0;color:var(--teal);font-size:12px;cursor:pointer">${c.active ? 'Disable' : 'Enable'}</button>
+<button type="button" onclick="deleteCoupon(${c.id})" style="background:none;border:0;color:var(--red);font-size:12px;cursor:pointer">Delete</button>
+</div>
+</div>
+`).join('')
+}
+
+async function addCoupon(){
+const code = $("newCouponCode").value.trim().toUpperCase()
+const type = $("newCouponType").value
+const value = Number($("newCouponValue").value)
+const minorder = $("newCouponMinorder").value ? Number($("newCouponMinorder").value) : null
+const expires = $("newCouponExpires").value || null
+
+if(!code){ toast("Enter a coupon code."); return }
+if(!value || value <= 0){ toast("Enter a valid discount value."); return }
+
+const { error } = await supabaseClient
+.from('coupons')
+.insert({ code, type, value, minorder, expires, active: true })
+
+if(error){ toast("Could not save: " + readableError(error)); return }
+
+$("newCouponCode").value = ''
+$("newCouponValue").value = ''
+$("newCouponMinorder").value = ''
+$("newCouponExpires").value = ''
+toast("Coupon added!")
+loadCouponsAdmin()
+}
+
+async function toggleCouponActive(id, makeActive){
+const { error } = await supabaseClient.from('coupons').update({ active: makeActive }).eq('id', id)
+if(error){ toast("Could not update: " + readableError(error)); return }
+loadCouponsAdmin()
+}
+
+async function deleteCoupon(id){
+if(!confirm("Delete this coupon?")) return
+const { error } = await supabaseClient.from('coupons').delete().eq('id', id)
+if(error){ toast("Could not delete: " + readableError(error)); return }
+toast("Coupon deleted.")
+loadCouponsAdmin()
 }
 
 async function loadHomeCategoriesSettingIntoForm(){
@@ -5048,12 +5187,9 @@ if(!$("coRegion").options.length || $("coRegion").options.length === 1){
 await loadRegionsIntoSelect()
 }
 $("pickupAddressText").textContent = deliverySettings.pickup_address
-if(deliverySettings.bkash_logo_url){
-$("bkashLogoImg").src = deliverySettings.bkash_logo_url
-$("bkashLogoImg").style.display = 'block'
-}else{
-$("bkashLogoImg").style.display = 'none'
-}
+$("paymentLogosRow").innerHTML = (deliverySettings.payment_logos||[])
+.map(url => `<img src="${escapeAttr(url)}" alt="" onerror="this.style.display='none'">`)
+.join('')
 if(profile){
 $("coName").value = profile.name || ''
 $("coPhone").value = profile.phone || ''
@@ -5464,7 +5600,7 @@ $("adminSettingsView").style.display = section==='settings' ? 'block' : 'none'
 if(section==='dashboard'){ $("navDashboard").classList.add('active'); $("adminTitle").textContent="Dashboard"; loadAdminData() }
 if(section==='products'){ $("navProducts").classList.add('active'); $("adminTitle").textContent="Products"; renderAdminProductsTable() }
 if(section==='orders'){ $("navOrders").classList.add('active'); $("adminTitle").textContent="Orders"; loadAllOrders() }
-if(section==='settings'){ $("navSettings").classList.add('active'); $("adminTitle").textContent="Settings"; loadHeroSlidesSettingIntoForm(); loadHomeCategoriesSettingIntoForm(); loadCategoryImagesSettingIntoForm(); loadBkashLogoSettingIntoForm() }
+if(section==='settings'){ $("navSettings").classList.add('active'); $("adminTitle").textContent="Settings"; loadHeroSlidesSettingIntoForm(); loadHomeCategoriesSettingIntoForm(); loadCategoryImagesSettingIntoForm(); loadPaymentLogosSettingIntoForm(); loadCouponsAdmin() }
 }
 
 function statusBadgeHTML(status){
