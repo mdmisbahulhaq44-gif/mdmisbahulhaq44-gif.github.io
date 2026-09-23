@@ -663,6 +663,13 @@ transform:translateX(-100%)
 }
 .panel.left.show{transform:translateX(0);box-shadow:2px 0 30px rgba(0,0,0,.08)}
 
+/* Product detail specifically opens as a plain full-page swap (fade only,
+no directional slide) — closer to how a real page navigation feels,
+rather than a side drawer. Other panels (cart, wishlist, login, ...)
+keep the normal slide-in-from-right drawer behavior above. */
+#productPanel{transform:none;opacity:0;pointer-events:none;transition:opacity .18s ease}
+#productPanel.show{transform:none;opacity:1;pointer-events:auto;box-shadow:none}
+
 .pdWhatsapp{
 position:absolute;
 right:22px;bottom:26px;
