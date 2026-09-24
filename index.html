@@ -670,34 +670,21 @@ keep the normal slide-in-from-right drawer behavior above. */
 #productPanel{transform:none;opacity:0;pointer-events:none;transition:opacity .18s ease}
 #productPanel.show{transform:none;opacity:1;pointer-events:auto;box-shadow:none}
 
-.pdWhatsapp{
-position:absolute;
-right:22px;bottom:26px;
-width:52px;height:52px;
-background:#25D366;
-border-radius:50%;
-display:flex;align-items:center;justify-content:center;
-box-shadow:0 6px 16px rgba(0,0,0,.25);
-z-index:20;
-text-decoration:none
-}
-.pdWhatsapp:active{transform:scale(0.94)}
-
 .pdCartFab{
-position:absolute;
+position:fixed;
 left:22px;bottom:26px;
 width:52px;height:52px;
-background:#111;
+background:#fff;
 border-radius:50%;
 display:flex;align-items:center;justify-content:center;
-box-shadow:0 6px 16px rgba(0,0,0,.25);
+box-shadow:0 6px 16px rgba(0,0,0,.2);
 z-index:20;
-border:0;cursor:pointer
+border:1px solid #eee;cursor:pointer
 }
 .pdCartFab:active{transform:scale(0.94)}
 .pdCartFab .fabCount{
-position:absolute;top:-4px;right:-4px;
-background:var(--red);color:#fff;
+position:absolute;top:-4px;left:-4px;
+background:#111;color:#fff;
 font-size:10px;font-weight:700;
 width:18px;height:18px;border-radius:50%;
 display:flex;align-items:center;justify-content:center
@@ -1757,7 +1744,11 @@ Send <strong id="mpAmount">৳0</strong> via <strong id="mpMethodName">bKash</st
 </div>
 
 <div style="text-align:center;padding:10px 0 25px">
-<div id="successIcon" style="font-size:50px;margin-bottom:15px">✅</div>
+<div id="successIcon" style="margin-bottom:15px">
+<div style="width:64px;height:64px;border-radius:50%;background:rgba(26,92,74,.08);display:flex;align-items:center;justify-content:center;margin:0 auto">
+<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#1a5c4a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>
+</div>
+</div>
 <p id="successMessage" style="color:var(--muted);font-size:13px;line-height:1.7">
 Thank you! Your order has been received.<br>
 We'll contact you shortly to confirm.
@@ -1774,7 +1765,7 @@ We'll contact you shortly to confirm.
 Save this Order ID and your phone number — use them anytime in <b>Track Order</b> to see your order status.
 </p>
 
-<a id="successWhatsapp" class="btn" style="width:100%;display:block;text-align:center;background:#25D366" href="#" target="_blank">
+<a id="successWhatsapp" class="btn light" style="width:100%;display:block;text-align:center;border:1.5px solid #25D366;color:#128C4A" href="#" target="_blank">
 CONFIRM VIA WHATSAPP
 </a>
 <button class="btn light" style="width:100%;margin-top:10px" onclick="closePanels();openTrackOrder()">
@@ -1794,15 +1785,15 @@ CONTINUE SHOPPING
 <button class="close" onclick="closeProductPanel()">×</button>
 </div>
 
-<a href="https://wa.me/8801877270165" target="_blank" class="pdWhatsapp" title="Ask about this product on WhatsApp">
-<svg viewBox="0 0 32 32" width="26" height="26" fill="#fff"><path d="M16 3C9.4 3 4 8.4 4 15c0 2.4.7 4.6 1.9 6.5L4 29l7.7-1.9c1.8 1 3.9 1.5 6.1 1.5 6.6 0 12-5.4 12-12S22.6 3 16 3zm0 22c-2 0-3.9-.5-5.5-1.5l-.4-.2-4.6 1.2 1.2-4.5-.3-.4C5.4 18 4.8 16.5 4.8 15c0-6.2 5-11.2 11.2-11.2S27.2 8.8 27.2 15 22.2 25 16 25zm6.2-8.3c-.3-.2-2-1-2.3-1.1-.3-.1-.5-.2-.8.2-.2.3-.9 1.1-1.1 1.3-.2.2-.4.2-.7.1-.3-.2-1.4-.5-2.7-1.7-1-.9-1.7-2-1.9-2.3-.2-.3 0-.5.1-.7.1-.1.3-.4.5-.5.2-.2.2-.3.3-.5.1-.2.1-.4 0-.6-.1-.2-.8-1.9-1.1-2.6-.3-.7-.6-.6-.8-.6h-.7c-.2 0-.6.1-.9.4-.3.3-1.2 1.2-1.2 2.8s1.2 3.2 1.4 3.5c.2.3 2.4 3.7 5.9 5.1.8.3 1.4.5 1.9.7.8.2 1.5.2 2.1.1.6-.1 2-.8 2.3-1.6.3-.8.3-1.5.2-1.6-.1-.1-.3-.2-.6-.3z"/></svg>
-</a>
 
 <!-- Floating quick-access to the cart, shown while browsing a product —
 mirrors gorurghash.com's basket shortcut. Opens the existing cart panel
 rather than a separate mini-cart, since this SPA only has one cart view. -->
 <button type="button" class="pdCartFab" onclick="openCart()" title="View cart" aria-label="View cart">
-<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l-1.2 11a2 2 0 0 1-2 1.8H9.2a2 2 0 0 1-2-1.8L6 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+<svg viewBox="0 0 24 24" width="24" height="24" fill="none">
+<path d="M9 9V7a3 3 0 0 1 6 0v2" stroke="#111" stroke-width="1.8" stroke-linecap="round"/>
+<path d="M4.5 9h15l-1.3 9.2a2 2 0 0 1-2 1.8H7.8a2 2 0 0 1-2-1.8L4.5 9Z" fill="#111"/>
+</svg>
 <span class="fabCount" id="pdCartFabCount" style="display:none">0</span>
 </button>
 
@@ -6179,7 +6170,9 @@ const total = data.reduce((sum, r) => sum + Number(r.total_amount || 0), 0)
 const isPaid = data[0].payment_status === 'paid'
 
 $("successHeading").textContent = isPaid ? "Payment Successful!" : "Payment Not Completed"
-$("successIcon").textContent = isPaid ? "✅" : "⚠️"
+$("successIcon").innerHTML = isPaid
+? `<div style="width:64px;height:64px;border-radius:50%;background:rgba(26,92,74,.08);display:flex;align-items:center;justify-content:center;margin:0 auto"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#1a5c4a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div>`
+: `<div style="width:64px;height:64px;border-radius:50%;background:rgba(217,119,6,.1);display:flex;align-items:center;justify-content:center;margin:0 auto"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#d97706" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4"/><path d="M12 17h.01"/><circle cx="12" cy="12" r="9"/></svg></div>`
 $("successMessage").innerHTML = isPaid
 ? "Your payment has been received and your order is confirmed.<br>We'll contact you shortly."
 : "Your order is saved, but the payment wasn't completed.<br>You can retry payment or contact us to arrange Cash on Delivery."
