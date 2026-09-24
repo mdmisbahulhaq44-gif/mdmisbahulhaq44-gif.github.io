@@ -651,7 +651,7 @@ right:0;width:min(430px,100%);
 background:#fff;
 z-index:501;
 transform:translateX(100%);
-transition:transform .35s ease;
+transition:transform .5s cubic-bezier(0.22,1,0.36,1);
 will-change:transform;
 padding:25px;
 overflow:auto
@@ -682,6 +682,26 @@ z-index:20;
 text-decoration:none
 }
 .pdWhatsapp:active{transform:scale(0.94)}
+
+.pdCartFab{
+position:absolute;
+left:22px;bottom:26px;
+width:52px;height:52px;
+background:#111;
+border-radius:50%;
+display:flex;align-items:center;justify-content:center;
+box-shadow:0 6px 16px rgba(0,0,0,.25);
+z-index:20;
+border:0;cursor:pointer
+}
+.pdCartFab:active{transform:scale(0.94)}
+.pdCartFab .fabCount{
+position:absolute;top:-4px;right:-4px;
+background:var(--red);color:#fff;
+font-size:10px;font-weight:700;
+width:18px;height:18px;border-radius:50%;
+display:flex;align-items:center;justify-content:center
+}
 
 .trackStep{display:flex;gap:14px}
 .trackStep .trackDot{
@@ -751,6 +771,22 @@ width:100%
 .form textarea{resize:vertical;min-height:70px}
 .form label{font-size:11px;letter-spacing:1px;color:var(--muted);margin-bottom:-6px}
 .radioRow{display:flex;gap:16px;font-size:13px}
+
+/* Clean bordered "pick" buttons — used for Delivery Method and Address
+Type so they read exactly like the Region/City/Area pickerField buttons
+above them, instead of a separate boxed-list style. */
+.optionPick{
+display:flex;align-items:center;gap:10px;
+padding:14px;
+border:1.5px solid #bbb;
+border-radius:14px;
+cursor:pointer;
+transition:border-color .15s ease,background .15s ease
+}
+.optionPick:has(input:checked){border-color:#222;background:#f7f7f5}
+.optionPick input[type="radio"]{width:17px;height:17px;accent-color:#222;flex-shrink:0;cursor:pointer}
+.optionPick .opIcon{display:flex;flex-shrink:0;color:#333}
+.optionPick .opTitle{font-size:13px;font-weight:600;color:#111}
 .radioRow label{display:flex;align-items:center;gap:6px;color:#111;letter-spacing:0}
 
 /* Delivery/payment method rows — one bordered box per group, rows
@@ -771,7 +807,7 @@ cursor:pointer
 .methodRow:last-child{border-bottom:0}
 .methodRow input[type="radio"]{
 width:17px;height:17px;
-accent-color:var(--teal);
+accent-color:#222;
 flex-shrink:0;
 cursor:pointer
 }
@@ -789,7 +825,7 @@ this is scoped to payment only so nothing else on the page changes. */
 .payMethodList{border-top:1px solid var(--line)}
 .payOption{display:block;padding:14px 2px;border-bottom:1px solid var(--line);cursor:pointer}
 .payOptionHead{display:flex;align-items:center;gap:10px}
-.payOptionHead input[type=radio]{width:19px;height:19px;accent-color:var(--teal);flex-shrink:0}
+.payOptionHead input[type=radio]{width:19px;height:19px;accent-color:#222;flex-shrink:0}
 .payOptionTitle{font-size:15.5px;font-weight:600;color:#222}
 .payOptionDesc{display:none;margin:10px 0 0 29px;background:#f7f7f5;border-radius:8px;padding:12px 14px;font-size:12.5px;color:var(--muted)}
 .payOption:has(input:checked) .payOptionDesc{display:block}
@@ -1517,12 +1553,15 @@ your signature style.
 <div class="empty">🛒<br><br>Your cart is empty.</div>
 </div>
 
-<div style="margin-top:30px">
-<div class="summaryRow total">
+<div style="margin-top:30px;text-align:center">
+<div class="summaryRow total" style="text-align:left">
 <b>Total</b>
 <b id="cartTotal">৳0</b>
 </div>
-<button class="btn" style="width:100%" id="checkoutBtn" onclick="checkout()" disabled>
+<button class="btn light" type="button" style="width:100%;border:1.5px solid #111;margin-bottom:10px" onclick="closePanels()">
+CONTINUE SHOPPING
+</button>
+<button class="btn light" style="border:1.5px solid #111;padding:14px 46px" id="checkoutBtn" onclick="checkout()" disabled>
 CHECKOUT
 </button>
 </div>
@@ -1574,20 +1613,17 @@ This lets you track your orders anytime.
 <input type="tel" id="coPhone" placeholder="01XXXXXXXXX" required>
 
 <label>DELIVERY METHOD</label>
-<div class="methodBox">
-<label class="methodRow">
+<div style="display:flex;flex-direction:column;gap:10px">
+<label class="optionPick">
 <input type="radio" name="coMethod" value="home_delivery" checked onchange="onDeliveryMethodChange()">
-<div class="methodBody">
-<div class="methodTitle">Home Delivery</div>
-</div>
-<div class="methodRight">Fee varies</div>
+<span class="opIcon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="19" height="19"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M9.5 21v-6.5h5V21"/></svg></span>
+<span class="opTitle">Home Delivery</span>
 </label>
-<label class="methodRow">
+<label class="optionPick">
 <input type="radio" name="coMethod" value="pickup" onchange="onDeliveryMethodChange()">
-<div class="methodBody">
-<div class="methodTitle">Store Pickup</div>
-</div>
-<div class="methodRight">Free</div>
+<span class="opIcon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="19" height="19"><path d="M3 9.5 12 4l9 5.5"/><path d="M4.5 9v10a1 1 0 0 0 1 1h13a1 1 0 0 0 1-1V9"/><path d="M9 20v-5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v5"/></svg></span>
+<span class="opTitle">Store Pickup</span>
+<span style="margin-left:auto;font-size:12px;font-weight:600;color:var(--muted)">Free</span>
 </label>
 </div>
 
@@ -1630,10 +1666,17 @@ This lets you track your orders anytime.
 <textarea id="coAddress" placeholder="Type House, Flat No, Road"></textarea>
 
 <label>ADDRESS TYPE</label>
-<div class="radioRow" id="coAddressType">
-<label><input type="radio" name="coAddrType" value="Home" checked> 🏠 Home</label>
-<label><input type="radio" name="coAddrType" value="Office"> 💼 Office</label>
-<label><input type="radio" name="coAddrType" value="Hometown"> 🏢 Hometown</label>
+<div class="radioRow" id="coAddressType" style="gap:10px">
+<label class="optionPick" style="flex:1">
+<input type="radio" name="coAddrType" value="Home" checked>
+<span class="opIcon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M9.5 21v-6.5h5V21"/></svg></span>
+<span class="opTitle">Home</span>
+</label>
+<label class="optionPick" style="flex:1">
+<input type="radio" name="coAddrType" value="Office">
+<span class="opIcon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><rect x="3" y="7" width="18" height="12" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M3 12h18"/></svg></span>
+<span class="opTitle">Office</span>
+</label>
 </div>
 </div>
 
@@ -1696,7 +1739,9 @@ Send <strong id="mpAmount">৳0</strong> via <strong id="mpMethodName">bKash</st
 </div>
 
 <div style="height:28px"></div>
-<button class="btn" style="width:100%;background:transparent;color:#111;border:1.5px solid #111" type="submit">PLACE ORDER</button>
+<div style="text-align:center">
+<button class="btn" style="background:transparent;color:#111;border:1.5px solid #111;padding:14px 46px" type="submit">PLACE ORDER</button>
+</div>
 
 
 </form>
@@ -1752,6 +1797,14 @@ CONTINUE SHOPPING
 <a href="https://wa.me/8801877270165" target="_blank" class="pdWhatsapp" title="Ask about this product on WhatsApp">
 <svg viewBox="0 0 32 32" width="26" height="26" fill="#fff"><path d="M16 3C9.4 3 4 8.4 4 15c0 2.4.7 4.6 1.9 6.5L4 29l7.7-1.9c1.8 1 3.9 1.5 6.1 1.5 6.6 0 12-5.4 12-12S22.6 3 16 3zm0 22c-2 0-3.9-.5-5.5-1.5l-.4-.2-4.6 1.2 1.2-4.5-.3-.4C5.4 18 4.8 16.5 4.8 15c0-6.2 5-11.2 11.2-11.2S27.2 8.8 27.2 15 22.2 25 16 25zm6.2-8.3c-.3-.2-2-1-2.3-1.1-.3-.1-.5-.2-.8.2-.2.3-.9 1.1-1.1 1.3-.2.2-.4.2-.7.1-.3-.2-1.4-.5-2.7-1.7-1-.9-1.7-2-1.9-2.3-.2-.3 0-.5.1-.7.1-.1.3-.4.5-.5.2-.2.2-.3.3-.5.1-.2.1-.4 0-.6-.1-.2-.8-1.9-1.1-2.6-.3-.7-.6-.6-.8-.6h-.7c-.2 0-.6.1-.9.4-.3.3-1.2 1.2-1.2 2.8s1.2 3.2 1.4 3.5c.2.3 2.4 3.7 5.9 5.1.8.3 1.4.5 1.9.7.8.2 1.5.2 2.1.1.6-.1 2-.8 2.3-1.6.3-.8.3-1.5.2-1.6-.1-.1-.3-.2-.6-.3z"/></svg>
 </a>
+
+<!-- Floating quick-access to the cart, shown while browsing a product —
+mirrors gorurghash.com's basket shortcut. Opens the existing cart panel
+rather than a separate mini-cart, since this SPA only has one cart view. -->
+<button type="button" class="pdCartFab" onclick="openCart()" title="View cart" aria-label="View cart">
+<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l-1.2 11a2 2 0 0 1-2 1.8H9.2a2 2 0 0 1-2-1.8L6 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+<span class="fabCount" id="pdCartFabCount" style="display:none">0</span>
+</button>
 
 <div id="pdGallery" class="pdGallery">
 <div id="pdGalleryTrack" class="pdGalleryTrack"></div>
@@ -3559,7 +3612,7 @@ updateCartBadge()
 function updateCartBadge(){
 const cart = getCart()
 const count = cart.reduce((s,i)=>s+i.qty,0)
-;["cartCount","cartCountTop"].forEach(id => {
+;["cartCount","cartCountTop","pdCartFabCount"].forEach(id => {
 const badge = $(id)
 if(!badge) return
 if(count > 0){
