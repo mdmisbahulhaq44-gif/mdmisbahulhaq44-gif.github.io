@@ -1417,6 +1417,18 @@ your signature style.
 
 </div>
 
+<!-- Floating quick-access to the cart — visible across the shop (home,
+category, product) whenever bottomNav is, mirroring gorurghash.com's
+basket shortcut. Opens the existing cart panel rather than a separate
+mini-cart, since this SPA only has one cart view. -->
+<button type="button" class="pdCartFab" id="pdCartFab" onclick="openCart()" title="View cart" aria-label="View cart">
+<svg viewBox="0 0 24 24" width="24" height="24" fill="none">
+<path d="M9 9V7a3 3 0 0 1 6 0v2" stroke="#111" stroke-width="1.8" stroke-linecap="round"/>
+<path d="M4.5 9h15l-1.3 9.2a2 2 0 0 1-2 1.8H7.8a2 2 0 0 1-2-1.8L4.5 9Z" fill="#111"/>
+</svg>
+<span class="fabCount" id="pdCartFabCount" style="display:none">0</span>
+</button>
+
 <!-- BOTTOM NAV -->
 <div class="bottomNav" id="bottomNav">
 <button class="active" onclick="navigateTo('/');showShop();window.scrollTo(0,0)">
@@ -1786,16 +1798,6 @@ CONTINUE SHOPPING
 </div>
 
 
-<!-- Floating quick-access to the cart, shown while browsing a product —
-mirrors gorurghash.com's basket shortcut. Opens the existing cart panel
-rather than a separate mini-cart, since this SPA only has one cart view. -->
-<button type="button" class="pdCartFab" onclick="openCart()" title="View cart" aria-label="View cart">
-<svg viewBox="0 0 24 24" width="24" height="24" fill="none">
-<path d="M9 9V7a3 3 0 0 1 6 0v2" stroke="#111" stroke-width="1.8" stroke-linecap="round"/>
-<path d="M4.5 9h15l-1.3 9.2a2 2 0 0 1-2 1.8H7.8a2 2 0 0 1-2-1.8L4.5 9Z" fill="#111"/>
-</svg>
-<span class="fabCount" id="pdCartFabCount" style="display:none">0</span>
-</button>
 
 <div id="pdGallery" class="pdGallery">
 <div id="pdGalleryTrack" class="pdGalleryTrack"></div>
@@ -2019,7 +2021,7 @@ Your wishlist is currently empty.
 </div>
 
 <form class="form" onsubmit="searchProducts(event)">
-<input id="searchInput" placeholder="Search products..." autofocus oninput="onSearchInput()">
+<input id="searchInput" placeholder="Search products..." oninput="onSearchInput()">
 <button class="btn">SEARCH</button>
 </form>
 
@@ -2361,13 +2363,17 @@ return widths.map(w => `${url.replace('/upload/', `/upload/w_${w},f_auto,q_auto/
 function lockBodyScroll(){
 document.body.style.overflow = "hidden"
 $("bottomNav").style.display = "none"
+$("pdCartFab").style.display = "none"
 }
 
 function unlockBodyScrollIfNoneOpen(){
 const anyOpen = document.querySelector(".panel.show, .drawer.show")
 if(!anyOpen){
 document.body.style.overflow = ""
-if($("shopPage").style.display !== "none") $("bottomNav").style.display = "flex"
+if($("shopPage").style.display !== "none"){
+$("bottomNav").style.display = "flex"
+$("pdCartFab").style.display = "flex"
+}
 }
 }
 
@@ -6015,6 +6021,7 @@ return
 $("shopPage").style.display="none"
 $("adminPage").style.display="block"
 $("bottomNav").style.display="none"
+$("pdCartFab").style.display="none"
 document.body.style.paddingBottom="0"
 closePanels()
 window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
@@ -6030,6 +6037,7 @@ function showShop(){
 $("adminPage").style.display="none"
 $("shopPage").style.display="block"
 $("bottomNav").style.display="flex"
+$("pdCartFab").style.display="flex"
 document.body.style.paddingBottom="64px"
 window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
 }
