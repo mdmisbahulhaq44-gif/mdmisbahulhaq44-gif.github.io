@@ -663,22 +663,29 @@ transform:translateX(-100%)
 }
 .panel.left.show{transform:translateX(0);box-shadow:2px 0 30px rgba(0,0,0,.08)}
 
-/* Product detail specifically opens as a plain full-page swap (fade only,
-no directional slide) — closer to how a real page navigation feels,
-rather than a side drawer. Other panels (cart, wishlist, login, ...)
-keep the normal slide-in-from-right drawer behavior above. */
-#productPanel{transform:none;opacity:0;pointer-events:none;transition:opacity .18s ease}
-#productPanel.show{transform:none;opacity:1;pointer-events:auto;box-shadow:none}
+/* Product detail specifically opens as a plain full-page swap (fade +
+subtle slide, no full directional drawer) — closer to how a real page
+navigation feels, rather than a side drawer. Slowed down and eased (was
+a flat 0.18s fade) so it reads as a smooth transition instead of an
+abrupt on/off flash. Other panels (cart, wishlist, login, ...) keep the
+normal slide-in-from-right drawer behavior above. */
+#productPanel{transform:translateY(14px);opacity:0;pointer-events:none;transition:opacity .38s cubic-bezier(.22,.61,.36,1),transform .38s cubic-bezier(.22,.61,.36,1)}
+#productPanel.show{transform:translateY(0);opacity:1;pointer-events:auto;box-shadow:none}
 
 .pdCartFab{
 position:fixed;
-left:22px;bottom:26px;
+left:22px;
+/* Always the same distance above where the bottom nav sits (64px tall +
+safe-area), whether or not the nav is actually visible right now — so the
+button never overlaps the nav on Home/Category, and stays in the exact
+same on-screen spot when the nav is hidden (e.g. on the product page). */
+bottom:calc(64px + env(safe-area-inset-bottom) + 14px);
 width:52px;height:52px;
 background:#fff;
 border-radius:50%;
 display:flex;align-items:center;justify-content:center;
 box-shadow:0 6px 16px rgba(0,0,0,.2);
-z-index:20;
+z-index:210;
 border:1px solid #eee;cursor:pointer
 }
 .pdCartFab:active{transform:scale(0.94)}
@@ -945,6 +952,23 @@ font-size:11px;cursor:pointer;text-decoration:underline
 }
 
 .sizePillRow{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.pdSizeSelect{
+width:100%;margin-top:8px;
+padding:14px 40px 14px 16px;
+border:1px solid #d6d6d6;border-radius:4px;
+font-size:14px;color:#333;background:#fff;
+-webkit-appearance:none;appearance:none;
+background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="%23555" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>');
+background-repeat:no-repeat;background-position:right 14px center;
+cursor:pointer
+}
+.pdSizeSelect:focus{border-color:#111;outline:none}
+.pdSizeClear{
+display:inline-block;margin-top:8px;
+font-size:10px;letter-spacing:1px;color:var(--muted);
+text-decoration:underline;text-transform:uppercase;
+background:none;border:0;padding:0;cursor:pointer
+}
 .sizePill{
 border:1px solid var(--line);background:#fff;color:#111;
 min-width:42px;height:38px;padding:0 12px;border-radius:8px;
@@ -1422,9 +1446,9 @@ category, product) whenever bottomNav is, mirroring gorurghash.com's
 basket shortcut. Opens the existing cart panel rather than a separate
 mini-cart, since this SPA only has one cart view. -->
 <button type="button" class="pdCartFab" id="pdCartFab" onclick="openCart()" title="View cart" aria-label="View cart">
-<svg viewBox="0 0 24 24" width="24" height="24" fill="none">
-<path d="M9 9V7a3 3 0 0 1 6 0v2" stroke="#111" stroke-width="1.8" stroke-linecap="round"/>
-<path d="M4.5 9h15l-1.3 9.2a2 2 0 0 1-2 1.8H7.8a2 2 0 0 1-2-1.8L4.5 9Z" fill="#111"/>
+<svg viewBox="0 0 24 24" width="22" height="22" fill="none">
+<path d="M9 9V7a3 3 0 0 1 6 0v2" stroke="#111" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M4.5 9h15l-1.1 9.3a2 2 0 0 1-2 1.7H7.6a2 2 0 0 1-2-1.7L4.5 9Z" stroke="#111" stroke-width="1.6" stroke-linejoin="round"/>
 </svg>
 <span class="fabCount" id="pdCartFabCount" style="display:none">0</span>
 </button>
@@ -1818,8 +1842,11 @@ CONTINUE SHOPPING
 
 <div id="pdSizeSelectWrap" style="display:none;margin-top:14px">
 <span style="font-size:12px;letter-spacing:1px;color:var(--muted)">SELECT SIZE</span>
-<div id="pdSizePills" class="sizePillRow"></div>
-<div id="pdSizeMeasurements" style="display:none;margin-top:10px;background:var(--cream);border-radius:10px;padding:12px 14px;font-size:11px;color:#333"></div>
+<select id="pdSizeSelect" class="pdSizeSelect" onchange="selectPdSize(this.value)">
+<option value="">Choose an option</option>
+</select>
+<button type="button" id="pdSizeClearBtn" class="pdSizeClear" style="display:none" onclick="selectPdSize('')">Clear</button>
+<div id="pdSizeMeasurements" style="display:none;margin-top:10px;font-size:12px;color:#333;line-height:1.6"></div>
 </div>
 
 <div class="qtyRow" style="margin-top:18px;gap:14px">
@@ -2380,6 +2407,11 @@ $("pdCartFab").style.display = "flex"
 function openPanel(id){
 closePanels()
 lockBodyScroll()
+// Product view is a full-page swap, not a real "leave the shop" panel like
+// cart/checkout/account — the basket shortcut should stay put through it,
+// same as gorurghash.com. Every other panel (including checkout) keeps it
+// hidden, exactly as before.
+if(id === "productPanel") $("pdCartFab").style.display = "flex"
 $("overlay").classList.add("show")
 $(id).classList.add("show")
 }
@@ -3072,25 +3104,25 @@ let pdQty = 1
 let pdSelectedSize = null
 
 function selectPdSize(size){
-pdSelectedSize = size
-$("pdSizePills").querySelectorAll('.sizePill').forEach(btn =>
-btn.classList.toggle('active', btn.dataset.size === size)
-)
+pdSelectedSize = size || null
+const sel = $("pdSizeSelect")
+if(sel && sel.value !== size) sel.value = size || ""
+$("pdSizeClearBtn").style.display = size ? "inline-block" : "none"
 showPdSizeMeasurements(size)
 }
 
 function showPdSizeMeasurements(size){
 const wrap = $("pdSizeMeasurements")
 const chart = pdCurrentProduct?.size_chart
-const measurements = chart && chart[size]
+const measurements = size && chart && chart[size]
 if(!measurements || !Object.keys(measurements).length){
 wrap.style.display = "none"
 wrap.innerHTML = ""
 return
 }
 const labels = { waist:'Waist', length:'Length', hip:'Hip', leg_opening:'Leg Opening', chest:'Chest', shoulder:'Shoulder', sleeve:'Sleeve' }
-wrap.innerHTML = `<b style="display:block;margin-bottom:4px;font-size:11px">Size ${size} measurements (inches)</b>` +
-Object.entries(measurements).map(([k,v]) => `${labels[k] || k}: <b>${v}"</b>`).join(' &nbsp;·&nbsp; ')
+wrap.innerHTML = `<b>${size}</b>: ` +
+Object.entries(measurements).map(([k,v]) => `${labels[k] || k}- ${v}"`).join(' | ')
 wrap.style.display = "block"
 }
 let pdTouchStartX = 0
@@ -3169,18 +3201,19 @@ $("pdFabricSizes").innerHTML = infoBits.length
 const hasSizeChart = product.size_chart && Object.keys(product.size_chart).length > 0
 $("pdSizeChartBtn").style.display = hasSizeChart ? "inline-block" : "none"
 
-// Selectable size pills
+// Selectable size dropdown
 pdSelectedSize = null
 $("pdSizeMeasurements").style.display = "none"
 $("pdSizeMeasurements").innerHTML = ""
+$("pdSizeClearBtn").style.display = "none"
 if(sizes.length){
 $("pdSizeSelectWrap").style.display = "block"
-$("pdSizePills").innerHTML = sizes.map(s =>
-`<button type="button" class="sizePill" data-size="${s}" onclick="selectPdSize('${s.replace(/'/g,"\\'")}')">${s}</button>`
-).join('')
+$("pdSizeSelect").innerHTML = `<option value="">Choose an option</option>` +
+sizes.map(s => `<option value="${s.replace(/"/g,"&quot;")}">${s}</option>`).join('')
+$("pdSizeSelect").value = ""
 }else{
 $("pdSizeSelectWrap").style.display = "none"
-$("pdSizePills").innerHTML = ""
+$("pdSizeSelect").innerHTML = ""
 }
 
 // Related products — this same design's opposite-gender twin (the one
