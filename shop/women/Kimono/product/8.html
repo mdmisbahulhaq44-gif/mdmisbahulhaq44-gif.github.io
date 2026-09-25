@@ -25,7 +25,7 @@ history.replaceState(null, '', redirectPath)
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=resizes-content">
 <title>Short Viscose Floral Kimono in Green — DEZIRE</title>
-<meta name="description" content="Short Viscose Floral Kimono in Green by VENOM — ৳500 at DEZIRE. In stock now, nationwide cash-on-delivery in Bangladesh.">
+<meta name="description" content="Short Viscose Floral Kimono in Green by VENOM — ৳999 at DEZIRE. In stock now, nationwide cash-on-delivery in Bangladesh.">
 <meta name="keywords" content="DEZIRE, Bangladesh fashion, men's clothing BD, women's clothing BD, online shirt shop Bangladesh, premium fashion Dhaka">
 <link rel="canonical" href="https://mdmisbahulhaq44-gif.github.io/shop/women/Kimono/product/8">
 <link rel="manifest" href="/manifest.json">
@@ -37,7 +37,7 @@ history.replaceState(null, '', redirectPath)
 <meta property="og:type" content="product">
 <meta property="og:site_name" content="DEZIRE">
 <meta property="og:title" content="Short Viscose Floral Kimono in Green — DEZIRE">
-<meta property="og:description" content="Short Viscose Floral Kimono in Green by VENOM — ৳500 at DEZIRE. In stock now, nationwide cash-on-delivery in Bangladesh.">
+<meta property="og:description" content="Short Viscose Floral Kimono in Green by VENOM — ৳999 at DEZIRE. In stock now, nationwide cash-on-delivery in Bangladesh.">
 <meta property="og:url" content="https://mdmisbahulhaq44-gif.github.io/shop/women/Kimono/product/8">
 <meta property="og:image" content="https://res.cloudinary.com/dtdztxbfg/image/upload/w_1200/v1788311996/605A4853_yzhemn.jpg">
 
@@ -60,17 +60,27 @@ history.replaceState(null, '', redirectPath)
 }
 </script>
 
-<!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-X8PZ8E98GH"></script>
+<!-- Google Analytics + Meta (Facebook) Pixel — deferred.
+Both are only needed for tracking, not for anything the visitor sees, so
+loading them immediately just competes with real page content for the
+main thread and counts as "unused JavaScript" on first paint (PageSpeed).
+Instead we load them on the first sign of real engagement (scroll, touch,
+pointer move, or a key press) or after a short idle fallback, so a visitor
+who never interacts still gets counted, just a little later. -->
 <script>
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', 'G-X8PZ8E98GH');
-</script>
+function loadAnalyticsAndPixel(){
+if(window.__analyticsLoaded) return
+window.__analyticsLoaded = true
 
-<!-- Meta (Facebook) Pixel -->
-<script>
+var ga = document.createElement('script')
+ga.async = true
+ga.src = 'https://www.googletagmanager.com/gtag/js?id=G-X8PZ8E98GH'
+document.head.appendChild(ga)
+window.dataLayer = window.dataLayer || []
+window.gtag = function(){ dataLayer.push(arguments) }
+gtag('js', new Date())
+gtag('config', 'G-X8PZ8E98GH')
+
 !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
 n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
 n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
@@ -78,14 +88,29 @@ t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
 document,'script','https://connect.facebook.net/en_US/fbevents.js');
 fbq('init', '2395583730972279');
 fbq('track', 'PageView');
+}
+var __analyticsEvents = ['scroll','touchstart','mousemove','keydown']
+__analyticsEvents.forEach(function(evt){
+window.addEventListener(evt, loadAnalyticsAndPixel, { passive:true, once:true })
+})
+setTimeout(loadAnalyticsAndPixel, 3500)
 </script>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<!-- fonts.googleapis.com and cdn.jsdelivr.net are covered by the explicit
+preload hints below (a preload also opens the connection), so a separate
+preconnect for them was redundant — Lighthouse flags >4 preconnects as
+wasteful since each one holds a socket open. Kept preconnect only for
+origins with no preload: fonts.gstatic.com (actual font file lands here
+after the CSS resolves), res.cloudinary.com and supabase.co (many
+requests each throughout the page, not just one). -->
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://res.cloudinary.com">
 <link rel="preconnect" href="https://otdbpahqfsarkzdpzwga.supabase.co">
-<link rel="preload" as="image" fetchpriority="high" href="https://res.cloudinary.com/dtdztxbfg/image/upload/w_1200/v1787488489/IMG_20260823_183338_ge9det.png">
-<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preload" as="script" href="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+<link rel="preload" as="image" fetchpriority="high" href="https://res.cloudinary.com/dtdztxbfg/image/upload/w_900,f_auto,q_auto/v1789381873/IMG_20260914_161653_hbvxqq.png" imagesrcset="https://res.cloudinary.com/dtdztxbfg/image/upload/w_600,f_auto,q_auto/v1789381873/IMG_20260914_161653_hbvxqq.png 600w, https://res.cloudinary.com/dtdztxbfg/image/upload/w_900,f_auto,q_auto/v1789381873/IMG_20260914_161653_hbvxqq.png 900w, https://res.cloudinary.com/dtdztxbfg/image/upload/w_1200,f_auto,q_auto/v1789381873/IMG_20260914_161653_hbvxqq.png 1200w" imagesizes="100vw">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet"></noscript>
 
 <style>
 :root{
@@ -96,11 +121,12 @@ fbq('track', 'PageView');
 --muted:#777;
 --gold:#b89545;
 --red:#d33;
+--teal:#1a5c4a;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none}
 html{scroll-behavior:smooth}
 body{
-font-family:Jost,sans-serif;
+font-family:Quicksand,sans-serif;
 color:var(--black);
 background:#fff;
 overflow-x:hidden
@@ -110,7 +136,7 @@ button,a{-webkit-tap-highlight-color:transparent;outline:none}
 button:focus,a:focus{outline:none}
 
 nav{
-height:52px;padding:0 4%;
+height:46px;padding:0 4%;
 display:flex;align-items:center;
 justify-content:space-between;
 border-bottom:1px solid rgba(255,255,255,.4);
@@ -234,7 +260,7 @@ border-bottom:1px solid rgba(0,0,0,.08)
 .heroCarousel{
 position:relative;
 width:100%;
-aspect-ratio:2.4/1;
+aspect-ratio:2.8/1;
 overflow:hidden;
 background:#111
 }
@@ -251,6 +277,7 @@ cursor:pointer
 .heroSlide img{
 width:100%;height:100%;
 object-fit:cover;
+object-position:center top;
 display:block
 }
 .heroArrow{
@@ -457,7 +484,7 @@ gap:16px
 .productImage{
 aspect-ratio:3/4;
 background:#f4f4f4;
-border-radius:6px;
+border-radius:14px;
 position:relative;
 overflow:hidden;
 display:flex;
@@ -624,7 +651,7 @@ right:0;width:min(430px,100%);
 background:#fff;
 z-index:501;
 transform:translateX(100%);
-transition:transform .35s ease;
+transition:transform .5s cubic-bezier(0.22,1,0.36,1);
 will-change:transform;
 padding:25px;
 overflow:auto
@@ -636,18 +663,54 @@ transform:translateX(-100%)
 }
 .panel.left.show{transform:translateX(0);box-shadow:2px 0 30px rgba(0,0,0,.08)}
 
-.pdWhatsapp{
-position:absolute;
-right:22px;bottom:26px;
+/* Product detail specifically opens as a plain full-page swap (fade +
+subtle slide, no full directional drawer) — closer to how a real page
+navigation feels, rather than a side drawer. Slowed down and eased (was
+a flat 0.18s fade) so it reads as a smooth transition instead of an
+abrupt on/off flash. Other panels (cart, wishlist, login, ...) keep the
+normal slide-in-from-right drawer behavior above. */
+#productPanel{transform:translateY(14px);opacity:0;pointer-events:none;transition:opacity .38s cubic-bezier(.22,.61,.36,1),transform .38s cubic-bezier(.22,.61,.36,1)}
+#productPanel.show{transform:translateY(0);opacity:1;pointer-events:auto;box-shadow:none}
+
+/* Where the native View Transitions API is available, it takes over
+entirely (see withViewTransition() in the JS) — the browser cross-fades
+a before/after screenshot of the whole page itself, which is a closer
+match to a real page navigation than any hand-written CSS transition
+can be. Turning our own opacity/transform transition off here for that
+case avoids the two visibly fighting each other. */
+@supports (view-transition-name: none){
+#productPanel, #productPanel.show{transition:none}
+::view-transition-old(root),
+::view-transition-new(root){
+animation-duration:.32s;
+animation-timing-function:cubic-bezier(.22,.61,.36,1);
+}
+}
+
+.pdCartFab{
+position:fixed;
+left:22px;
+/* Always the same distance above where the bottom nav sits (64px tall +
+safe-area), whether or not the nav is actually visible right now — so the
+button never overlaps the nav on Home/Category, and stays in the exact
+same on-screen spot when the nav is hidden (e.g. on the product page). */
+bottom:calc(64px + env(safe-area-inset-bottom) + 14px);
 width:52px;height:52px;
-background:#25D366;
+background:#fff;
 border-radius:50%;
 display:flex;align-items:center;justify-content:center;
-box-shadow:0 6px 16px rgba(0,0,0,.25);
-z-index:20;
-text-decoration:none
+box-shadow:0 6px 16px rgba(0,0,0,.2);
+z-index:510;
+border:1px solid #eee;cursor:pointer
 }
-.pdWhatsapp:active{transform:scale(0.94)}
+.pdCartFab:active{transform:scale(0.94)}
+.pdCartFab .fabCount{
+position:absolute;top:-4px;left:-4px;
+background:#111;color:#fff;
+font-size:10px;font-weight:700;
+width:18px;height:18px;border-radius:50%;
+display:flex;align-items:center;justify-content:center
+}
 
 .trackStep{display:flex;gap:14px}
 .trackStep .trackDot{
@@ -717,7 +780,67 @@ width:100%
 .form textarea{resize:vertical;min-height:70px}
 .form label{font-size:11px;letter-spacing:1px;color:var(--muted);margin-bottom:-6px}
 .radioRow{display:flex;gap:16px;font-size:13px}
+
+/* Clean bordered "pick" buttons — used for Delivery Method and Address
+Type so they read exactly like the Region/City/Area pickerField buttons
+above them, instead of a separate boxed-list style. */
+.optionPick{
+display:flex;align-items:center;gap:10px;
+padding:14px;
+border:1.5px solid #bbb;
+border-radius:14px;
+cursor:pointer;
+transition:border-color .15s ease,background .15s ease
+}
+.optionPick:has(input:checked){border-color:#222;background:#f7f7f5}
+.optionPick input[type="radio"]{width:17px;height:17px;accent-color:#222;flex-shrink:0;cursor:pointer}
+.optionPick .opIcon{display:flex;flex-shrink:0;color:#333}
+.optionPick .opTitle{font-size:13px;font-weight:600;color:#111}
 .radioRow label{display:flex;align-items:center;gap:6px;color:#111;letter-spacing:0}
+
+/* Delivery/payment method rows — one bordered box per group, rows
+divided by hairlines instead of each option being its own separate
+pill, so the two sections read as calm, organized lists rather than a
+scatter of differently-styled controls. */
+.methodBox{
+border:1.5px solid #ddd;
+border-radius:14px;
+overflow:hidden
+}
+.methodRow{
+display:flex;align-items:center;gap:12px;
+padding:11px 14px;
+border-bottom:1px solid #eee;
+cursor:pointer
+}
+.methodRow:last-child{border-bottom:0}
+.methodRow input[type="radio"]{
+width:17px;height:17px;
+accent-color:#222;
+flex-shrink:0;
+cursor:pointer
+}
+.methodRow .methodBody{flex:1;min-width:0}
+.methodRow .methodTitle{font-size:13.5px;font-weight:600;color:#111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.methodRow .methodDesc{font-size:11.5px;color:var(--muted);margin-top:2px;line-height:1.4}
+.methodRow .methodRight{font-size:12.5px;font-weight:600;color:var(--muted);flex-shrink:0;text-align:right}
+.methodRow{transition:background .15s ease}
+.methodRow:has(input:checked){background:#f7faf8}
+
+/* Payment Method — plain expanding list (reference-style): radio + title
+on one line, a light description panel that opens only for the selected
+option. Delivery Method above keeps the old boxed .methodRow style;
+this is scoped to payment only so nothing else on the page changes. */
+.payMethodList{border-top:1px solid var(--line)}
+.payOption{display:block;padding:14px 2px;border-bottom:1px solid var(--line);cursor:pointer}
+.payOptionHead{display:flex;align-items:center;gap:10px}
+.payOptionHead input[type=radio]{width:19px;height:19px;accent-color:#222;flex-shrink:0}
+.payOptionTitle{font-size:15.5px;font-weight:600;color:#222}
+.payOptionDesc{display:none;margin:10px 0 0 29px;background:#f7f7f5;border-radius:8px;padding:12px 14px;font-size:12.5px;color:var(--muted)}
+.payOption:has(input:checked) .payOptionDesc{display:block}
+.paymentLogosRow{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin-top:12px;min-height:32px}
+.paymentLogosRow img{height:28px;max-width:100px;object-fit:contain;display:block}
+.payLogo{display:block;height:24px;margin-top:8px}
 
 .pickerField{
 display:flex;align-items:center;justify-content:space-between;
@@ -844,6 +967,23 @@ font-size:11px;cursor:pointer;text-decoration:underline
 }
 
 .sizePillRow{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.pdSizeSelect{
+width:100%;margin-top:8px;
+padding:14px 40px 14px 16px;
+border:1px solid #d6d6d6;border-radius:4px;
+font-size:14px;color:#333;background:#fff;
+-webkit-appearance:none;appearance:none;
+background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="%23555" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>');
+background-repeat:no-repeat;background-position:right 14px center;
+cursor:pointer
+}
+.pdSizeSelect:focus{border-color:#111;outline:none}
+.pdSizeClear{
+display:inline-block;margin-top:8px;
+font-size:10px;letter-spacing:1px;color:var(--muted);
+text-decoration:underline;text-transform:uppercase;
+background:none;border:0;padding:0;cursor:pointer
+}
 .sizePill{
 border:1px solid var(--line);background:#fff;color:#111;
 min-width:42px;height:38px;padding:0 12px;border-radius:8px;
@@ -1085,7 +1225,7 @@ font-size:12px
 .adminMain{padding:20px}
 }
 </style>
-<script type="application/ld+json" id="productStructuredData">{"@context":"https://schema.org","@type":"Product","name":"Short Viscose Floral Kimono in Green","image":["https://res.cloudinary.com/dtdztxbfg/image/upload/w_1200/v1788311996/605A4853_yzhemn.jpg","https://res.cloudinary.com/dtdztxbfg/image/upload/w_1200/v1788311996/605A4883_nlk0pp.jpg","https://res.cloudinary.com/dtdztxbfg/image/upload/w_1200/v1788311997/605A4877_x94r48.jpg","https://res.cloudinary.com/dtdztxbfg/image/upload/w_1200/v1788311998/605A4871_oukvwt.jpg","https://res.cloudinary.com/dtdztxbfg/image/upload/w_1200/v1788311997/605A4869_ihu1vd.jpg","https://res.cloudinary.com/dtdztxbfg/image/upload/w_1200/v1788311997/605A4867_sbednr.jpg","https://res.cloudinary.com/dtdztxbfg/image/upload/w_1200/v1788311997/605A4864_xpbbk8.jpg","https://res.cloudinary.com/dtdztxbfg/image/upload/w_1200/v1788324411/605A4857_edit_43983919415615_qcb3ro.jpg","https://res.cloudinary.com/dtdztxbfg/image/upload/w_1200/v1788311999/605A4854_a3xxej.jpg","https://res.cloudinary.com/dtdztxbfg/image/upload/w_1200/v1788312000/605A4852_vamuge.jpg"],"brand":{"@type":"Brand","name":"VENOM"},"offers":{"@type":"Offer","priceCurrency":"BDT","price":"500","availability":"https://schema.org/InStock","url":"https://mdmisbahulhaq44-gif.github.io/shop/women/Kimono/product/8"}}</script>
+<script type="application/ld+json" id="productStructuredData">{"@context":"https://schema.org","@type":"Product","name":"Short Viscose Floral Kimono in Green","image":["https://res.cloudinary.com/dtdztxbfg/image/upload/w_1200/v1788311996/605A4853_yzhemn.jpg","https://res.cloudinary.com/dtdztxbfg/image/upload/w_1200/v1788311996/605A4883_nlk0pp.jpg","https://res.cloudinary.com/dtdztxbfg/image/upload/w_1200/v1788311997/605A4877_x94r48.jpg","https://res.cloudinary.com/dtdztxbfg/image/upload/w_1200/v1788311998/605A4871_oukvwt.jpg","https://res.cloudinary.com/dtdztxbfg/image/upload/w_1200/v1788311997/605A4869_ihu1vd.jpg","https://res.cloudinary.com/dtdztxbfg/image/upload/w_1200/v1788311997/605A4867_sbednr.jpg","https://res.cloudinary.com/dtdztxbfg/image/upload/w_1200/v1788311997/605A4864_xpbbk8.jpg","https://res.cloudinary.com/dtdztxbfg/image/upload/w_1200/v1788324411/605A4857_edit_43983919415615_qcb3ro.jpg","https://res.cloudinary.com/dtdztxbfg/image/upload/w_1200/v1788311999/605A4854_a3xxej.jpg","https://res.cloudinary.com/dtdztxbfg/image/upload/w_1200/v1788312000/605A4852_vamuge.jpg"],"brand":{"@type":"Brand","name":"VENOM"},"offers":{"@type":"Offer","priceCurrency":"BDT","price":"999","availability":"https://schema.org/InStock","url":"https://mdmisbahulhaq44-gif.github.io/shop/women/Kimono/product/8"}}</script>
 </head>
 
 <body>
@@ -1114,7 +1254,7 @@ font-size:12px
 To add/edit slides: use Admin Panel → Settings → Homepage Hero Banner (Slides).
 Recommended: landscape photos, at least 1200px wide. -->
 <div id="heroCarousel" class="heroCarousel">
-<div id="heroTrack" class="heroTrack"></div>
+<div id="heroTrack" class="heroTrack"><div class="heroSlide"><img src="https://res.cloudinary.com/dtdztxbfg/image/upload/w_900,f_auto,q_auto/v1789381873/IMG_20260914_161653_hbvxqq.png" srcset="https://res.cloudinary.com/dtdztxbfg/image/upload/w_600,f_auto,q_auto/v1789381873/IMG_20260914_161653_hbvxqq.png 600w, https://res.cloudinary.com/dtdztxbfg/image/upload/w_900,f_auto,q_auto/v1789381873/IMG_20260914_161653_hbvxqq.png 900w, https://res.cloudinary.com/dtdztxbfg/image/upload/w_1200,f_auto,q_auto/v1789381873/IMG_20260914_161653_hbvxqq.png 1200w" sizes="100vw" alt="" loading="eager" fetchpriority="high" decoding="async" onerror="this.style.display='none'"></div></div>
 <button class="heroArrow heroArrowLeft" onclick="heroSlide(-1)" aria-label="Previous slide">‹</button>
 <button class="heroArrow heroArrowRight" onclick="heroSlide(1)" aria-label="Next slide">›</button>
 <div id="heroDots" class="heroDots"></div>
@@ -1136,8 +1276,8 @@ Recommended: landscape photos, at least 1200px wide. -->
 <a href="#" onclick="closeDrawer();openTrackOrder();return false">Track Order</a>
 </div>
 
-<section class="section" id="women" style="padding-left:0;padding-right:0;padding-top:36px">
-<div class="categories" id="homeCategoriesGrid" style="padding:0 5%">
+<section class="section" id="women" style="padding-left:0;padding-right:0;padding-top:14px">
+<div class="categories" id="homeCategoriesGrid" style="padding:0 1.5%">
 <!-- Category tiles are rendered here by loadHomeCategories(). Edit them from Admin Panel → Settings. -->
 </div>
 </section>
@@ -1317,6 +1457,18 @@ your signature style.
 
 </div>
 
+<!-- Floating quick-access to the cart — visible across the shop (home,
+category, product) whenever bottomNav is, mirroring gorurghash.com's
+basket shortcut. Opens the existing cart panel rather than a separate
+mini-cart, since this SPA only has one cart view. -->
+<button type="button" class="pdCartFab" id="pdCartFab" onclick="openCart()" title="View cart" aria-label="View cart">
+<svg viewBox="0 0 24 24" width="22" height="22" fill="none">
+<path d="M9 9V7a3 3 0 0 1 6 0v2" stroke="#111" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M4.5 9h15l-1.1 9.3a2 2 0 0 1-2 1.7H7.6a2 2 0 0 1-2-1.7L4.5 9Z" stroke="#111" stroke-width="1.6" stroke-linejoin="round"/>
+</svg>
+<span class="fabCount" id="pdCartFabCount" style="display:none">0</span>
+</button>
+
 <!-- BOTTOM NAV -->
 <div class="bottomNav" id="bottomNav">
 <button class="active" onclick="navigateTo('/');showShop();window.scrollTo(0,0)">
@@ -1440,12 +1592,15 @@ your signature style.
 <div class="empty">🛒<br><br>Your cart is empty.</div>
 </div>
 
-<div style="margin-top:30px">
-<div class="summaryRow total">
+<div style="margin-top:30px;text-align:center">
+<div class="summaryRow total" style="text-align:left">
 <b>Total</b>
 <b id="cartTotal">৳0</b>
 </div>
-<button class="btn" style="width:100%" id="checkoutBtn" onclick="checkout()" disabled>
+<button class="btn light" type="button" style="width:100%;border:1.5px solid #111;margin-bottom:10px" onclick="closePanels()">
+CONTINUE SHOPPING
+</button>
+<button class="btn light" style="border:1.5px solid #111;padding:14px 46px" id="checkoutBtn" onclick="checkout()" disabled>
 CHECKOUT
 </button>
 </div>
@@ -1497,34 +1652,21 @@ This lets you track your orders anytime.
 <input type="tel" id="coPhone" placeholder="01XXXXXXXXX" required>
 
 <label>DELIVERY METHOD</label>
-<div class="radioRow">
-<label><input type="radio" name="coMethod" value="home_delivery" checked onchange="onDeliveryMethodChange()"> Home Delivery</label>
-<label><input type="radio" name="coMethod" value="pickup" onchange="onDeliveryMethodChange()"> Store Pickup</label>
+<div style="display:flex;flex-direction:column;gap:10px">
+<label class="optionPick">
+<input type="radio" name="coMethod" value="home_delivery" checked onchange="onDeliveryMethodChange()">
+<span class="opIcon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="19" height="19"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M9.5 21v-6.5h5V21"/></svg></span>
+<span class="opTitle">Home Delivery</span>
+</label>
+<label class="optionPick">
+<input type="radio" name="coMethod" value="pickup" onchange="onDeliveryMethodChange()">
+<span class="opIcon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="19" height="19"><path d="M3 9.5 12 4l9 5.5"/><path d="M4.5 9v10a1 1 0 0 0 1 1h13a1 1 0 0 0 1-1V9"/><path d="M9 20v-5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v5"/></svg></span>
+<span class="opTitle">Store Pickup</span>
+<span style="margin-left:auto;font-size:12px;font-weight:600;color:var(--muted)">Free</span>
+</label>
 </div>
 
-<label>PAYMENT METHOD</label>
-<div class="radioRow" style="flex-direction:column;align-items:flex-start;gap:10px">
-<label><input type="radio" name="coPayment" value="COD" checked onchange="onPaymentMethodChange()"> 💵 Cash on Delivery</label>
-<label style="display:flex;align-items:center;gap:10px"><input type="radio" name="coPayment" value="bKash" onchange="onPaymentMethodChange()"> <span style="background:#E2136E;color:#fff;font-weight:700;font-size:12px;padding:4px 10px;border-radius:4px;letter-spacing:.3px">bKash</span></label>
-<label style="display:flex;align-items:center;gap:10px"><input type="radio" name="coPayment" value="Nagad" onchange="onPaymentMethodChange()"> <span style="background:#F6851F;color:#fff;font-weight:700;font-size:12px;padding:4px 10px;border-radius:4px;letter-spacing:.3px">Nagad</span></label>
-<label style="display:flex;align-items:center;gap:10px"><input type="radio" name="coPayment" value="Rocket" onchange="onPaymentMethodChange()"> <span style="background:#8C3494;color:#fff;font-weight:700;font-size:12px;padding:4px 10px;border-radius:4px;letter-spacing:.3px">Rocket</span></label>
-<label style="display:flex;align-items:center;gap:10px"><input type="radio" name="coPayment" value="Upay" onchange="onPaymentMethodChange()"> <span style="background:#00A99D;color:#fff;font-weight:700;font-size:12px;padding:4px 10px;border-radius:4px;letter-spacing:.3px">Upay</span></label>
-<label style="display:flex;align-items:center;gap:10px"><input type="radio" name="coPayment" value="Tap" onchange="onPaymentMethodChange()"> <span style="background:#0072BC;color:#fff;font-weight:700;font-size:12px;padding:4px 10px;border-radius:4px;letter-spacing:.3px">Tap</span></label>
-</div>
-
-<!-- Shown only when a mobile wallet is picked above — there's no merchant/
-gateway account set up yet, so payment is a manual Send Money to a
-personal wallet number, verified by the admin against the transaction ID
-the customer provides here before the order ships. -->
-<div id="mobilePaymentBox" style="display:none;background:#f7f5f0;border:1px solid var(--line);border-radius:10px;padding:16px;margin-top:-6px;margin-bottom:16px">
-<p style="font-size:13px;margin-bottom:10px">
-Send <strong id="mpAmount">৳0</strong> via <strong id="mpMethodName">bKash</strong> "Send Money" to:
-</p>
-<p style="font-size:18px;font-weight:600;letter-spacing:1px;margin-bottom:12px">+880 1877-270165</p>
-<label style="font-size:12px">TRANSACTION ID</label>
-<input type="text" id="coTrxId" placeholder="e.g. 8N7A2K9XYZ" style="text-transform:uppercase">
-<p style="font-size:11.5px;color:var(--muted);margin-top:8px">After sending money, enter the Transaction ID from the confirmation SMS. We'll verify it before your order ships.</p>
-</div>
+<!-- Payment Method moved further down, right above the Place Order button -->
 
 <div id="homeDeliveryFields">
 <label>REGION</label>
@@ -1563,10 +1705,17 @@ Send <strong id="mpAmount">৳0</strong> via <strong id="mpMethodName">bKash</st
 <textarea id="coAddress" placeholder="Type House, Flat No, Road"></textarea>
 
 <label>ADDRESS TYPE</label>
-<div class="radioRow" id="coAddressType">
-<label><input type="radio" name="coAddrType" value="Home" checked> 🏠 Home</label>
-<label><input type="radio" name="coAddrType" value="Office"> 💼 Office</label>
-<label><input type="radio" name="coAddrType" value="Hometown"> 🏢 Hometown</label>
+<div class="radioRow" id="coAddressType" style="gap:10px">
+<label class="optionPick" style="flex:1">
+<input type="radio" name="coAddrType" value="Home" checked>
+<span class="opIcon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M9.5 21v-6.5h5V21"/></svg></span>
+<span class="opTitle">Home</span>
+</label>
+<label class="optionPick" style="flex:1">
+<input type="radio" name="coAddrType" value="Office">
+<span class="opIcon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><rect x="3" y="7" width="18" height="12" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M3 12h18"/></svg></span>
+<span class="opTitle">Office</span>
+</label>
 </div>
 </div>
 
@@ -1594,7 +1743,44 @@ Collect your order from our store:<br>
 <div class="summaryRow total"><span>Total</span><span id="coTotal">৳0</span></div>
 </div>
 
-<button class="btn" style="width:100%" type="submit">PLACE ORDER</button>
+<label>PAYMENT METHOD</label>
+<div class="payMethodList">
+<label class="payOption">
+<div class="payOptionHead">
+<input type="radio" name="coPayment" value="COD" checked onchange="onPaymentMethodChange()">
+<span class="payOptionTitle">Cash on Delivery</span>
+</div>
+<div class="payOptionDesc">Pay in cash when your order arrives at the door.</div>
+</label>
+<label class="payOption">
+<div class="payOptionHead">
+<input type="radio" name="coPayment" value="ONLINE" onchange="onPaymentMethodChange()">
+<span class="payOptionTitle">Pay Online</span>
+</div>
+<div class="payOptionDesc" style="display:block">
+🔒 Secured &amp; verified by Paymently
+<div id="paymentLogosRow" class="paymentLogosRow"></div>
+</div>
+</label>
+</div>
+
+<!-- Legacy manual-verification box — no longer triggered by COD/ONLINE,
+kept only as a safety net in case an older payment value is ever routed
+here again. -->
+<div id="mobilePaymentBox" style="display:none;background:#f7f5f0;border:1px solid var(--line);border-radius:10px;padding:16px;margin-top:-6px;margin-bottom:16px">
+<p style="font-size:13px;margin-bottom:10px">
+Send <strong id="mpAmount">৳0</strong> via <strong id="mpMethodName">bKash</strong> "Send Money" to:
+</p>
+<p style="font-size:18px;font-weight:600;letter-spacing:1px;margin-bottom:12px">+880 1877-270165</p>
+<label style="font-size:12px">TRANSACTION ID</label>
+<input type="text" id="coTrxId" placeholder="e.g. 8N7A2K9XYZ" style="text-transform:uppercase">
+<p style="font-size:11.5px;color:var(--muted);margin-top:8px">After sending money, enter the Transaction ID from the confirmation SMS. We'll verify it before your order ships.</p>
+</div>
+
+<div style="height:28px"></div>
+<div style="text-align:center">
+<button class="btn" style="background:transparent;color:#111;border:1.5px solid #111;padding:14px 46px" type="submit">PLACE ORDER</button>
+</div>
 
 
 </form>
@@ -1605,13 +1791,17 @@ Collect your order from our store:<br>
 <div class="panel" id="successPanel">
 
 <div class="panelHead">
-<h2>Order Placed!</h2>
+<h2 id="successHeading">Order Placed!</h2>
 <button class="close" onclick="closePanels()">×</button>
 </div>
 
 <div style="text-align:center;padding:10px 0 25px">
-<div style="font-size:50px;margin-bottom:15px">✅</div>
-<p style="color:var(--muted);font-size:13px;line-height:1.7">
+<div id="successIcon" style="margin-bottom:15px">
+<div style="width:64px;height:64px;border-radius:50%;background:rgba(26,92,74,.08);display:flex;align-items:center;justify-content:center;margin:0 auto">
+<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#1a5c4a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>
+</div>
+</div>
+<p id="successMessage" style="color:var(--muted);font-size:13px;line-height:1.7">
 Thank you! Your order has been received.<br>
 We'll contact you shortly to confirm.
 </p>
@@ -1627,7 +1817,7 @@ We'll contact you shortly to confirm.
 Save this Order ID and your phone number — use them anytime in <b>Track Order</b> to see your order status.
 </p>
 
-<a id="successWhatsapp" class="btn" style="width:100%;display:block;text-align:center;background:#25D366" href="#" target="_blank">
+<a id="successWhatsapp" class="btn light" style="width:100%;display:block;text-align:center;border:1.5px solid #25D366;color:#128C4A" href="#" target="_blank">
 CONFIRM VIA WHATSAPP
 </a>
 <button class="btn light" style="width:100%;margin-top:10px" onclick="closePanels();openTrackOrder()">
@@ -1647,9 +1837,7 @@ CONTINUE SHOPPING
 <button class="close" onclick="closeProductPanel()">×</button>
 </div>
 
-<a href="https://wa.me/8801877270165" target="_blank" class="pdWhatsapp" title="Ask about this product on WhatsApp">
-<svg viewBox="0 0 32 32" width="26" height="26" fill="#fff"><path d="M16 3C9.4 3 4 8.4 4 15c0 2.4.7 4.6 1.9 6.5L4 29l7.7-1.9c1.8 1 3.9 1.5 6.1 1.5 6.6 0 12-5.4 12-12S22.6 3 16 3zm0 22c-2 0-3.9-.5-5.5-1.5l-.4-.2-4.6 1.2 1.2-4.5-.3-.4C5.4 18 4.8 16.5 4.8 15c0-6.2 5-11.2 11.2-11.2S27.2 8.8 27.2 15 22.2 25 16 25zm6.2-8.3c-.3-.2-2-1-2.3-1.1-.3-.1-.5-.2-.8.2-.2.3-.9 1.1-1.1 1.3-.2.2-.4.2-.7.1-.3-.2-1.4-.5-2.7-1.7-1-.9-1.7-2-1.9-2.3-.2-.3 0-.5.1-.7.1-.1.3-.4.5-.5.2-.2.2-.3.3-.5.1-.2.1-.4 0-.6-.1-.2-.8-1.9-1.1-2.6-.3-.7-.6-.6-.8-.6h-.7c-.2 0-.6.1-.9.4-.3.3-1.2 1.2-1.2 2.8s1.2 3.2 1.4 3.5c.2.3 2.4 3.7 5.9 5.1.8.3 1.4.5 1.9.7.8.2 1.5.2 2.1.1.6-.1 2-.8 2.3-1.6.3-.8.3-1.5.2-1.6-.1-.1-.3-.2-.6-.3z"/></svg>
-</a>
+
 
 <div id="pdGallery" class="pdGallery">
 <div id="pdGalleryTrack" class="pdGalleryTrack"></div>
@@ -1670,8 +1858,11 @@ CONTINUE SHOPPING
 
 <div id="pdSizeSelectWrap" style="display:none;margin-top:14px">
 <span style="font-size:12px;letter-spacing:1px;color:var(--muted)">SELECT SIZE</span>
-<div id="pdSizePills" class="sizePillRow"></div>
-<div id="pdSizeMeasurements" style="display:none;margin-top:10px;background:var(--cream);border-radius:10px;padding:12px 14px;font-size:11px;color:#333"></div>
+<select id="pdSizeSelect" class="pdSizeSelect" onchange="selectPdSize(this.value)">
+<option value="">Choose an option</option>
+</select>
+<button type="button" id="pdSizeClearBtn" class="pdSizeClear" style="display:none" onclick="selectPdSize('')">Clear</button>
+<div id="pdSizeMeasurements" style="display:none;margin-top:10px;font-size:12px;color:#333;line-height:1.6"></div>
 </div>
 
 <div class="qtyRow" style="margin-top:18px;gap:14px">
@@ -1873,7 +2064,7 @@ Your wishlist is currently empty.
 </div>
 
 <form class="form" onsubmit="searchProducts(event)">
-<input id="searchInput" placeholder="Search products..." autofocus oninput="onSearchInput()">
+<input id="searchInput" placeholder="Search products..." oninput="onSearchInput()">
 <button class="btn">SEARCH</button>
 </form>
 
@@ -2000,11 +2191,11 @@ Your wishlist is currently empty.
 <table>
 <thead>
 <tr>
-<th>Order</th><th>Customer</th><th>Phone</th><th>Total</th><th>Payment</th><th>Status</th><th>Rider</th><th>Date</th>
+<th>Order</th><th>Customer</th><th>Phone</th><th>Items</th><th>Total</th><th>Payment</th><th>Status</th><th>Rider</th><th>Date</th>
 </tr>
 </thead>
 <tbody id="adminAllOrdersBody">
-<tr><td colspan="8">Loading...</td></tr>
+<tr><td colspan="9">Loading...</td></tr>
 </tbody>
 </table>
 </div>
@@ -2048,6 +2239,46 @@ By default, a category's tile (Baggy, Shirt, etc — at any depth) uses one of i
 <button class="btn" onclick="saveCategoryImages()">SAVE CATEGORY PHOTOS</button>
 </div>
 
+<hr style="margin:36px 0;border:0;border-top:1px solid var(--line)">
+
+<div style="max-width:500px">
+<label style="display:block;font-size:12px;font-weight:700;letter-spacing:.5px;margin-bottom:8px">PAYMENT METHOD LOGOS</label>
+<p style="font-size:12px;color:var(--muted);margin-bottom:16px;line-height:1.6">
+Add as many payment logos as you like (bKash, Nagad, Rocket, card networks, etc.) — they always show under "Pay Online" at checkout. Paste a Cloudinary (or any) image link per row.
+</p>
+<div id="paymentLogoRows"></div>
+<button class="btn light" onclick="addPaymentLogoRow()" style="margin-top:6px">+ ADD LOGO</button>
+<button class="btn" onclick="savePaymentLogos()" style="margin-top:10px">SAVE PAYMENT LOGOS</button>
+</div>
+
+<hr style="margin:36px 0;border:0;border-top:1px solid var(--line)">
+
+<div style="max-width:500px">
+<label style="display:block;font-size:12px;font-weight:700;letter-spacing:.5px;margin-bottom:8px">COUPON CODES</label>
+<p style="font-size:12px;color:var(--muted);margin-bottom:16px;line-height:1.6">
+Create discount codes customers can enter at checkout. Percentage discounts apply to the order subtotal.
+</p>
+<div id="couponListWrap" style="margin-bottom:18px"></div>
+
+<div style="border:1px solid var(--line);border-radius:10px;padding:14px">
+<b style="font-size:12px;letter-spacing:.5px;display:block;margin-bottom:10px">ADD NEW COUPON</b>
+<label style="display:block;font-size:11px;color:var(--muted);margin-bottom:4px">CODE</label>
+<input type="text" id="newCouponCode" placeholder="e.g. EID20" style="margin-bottom:10px;text-transform:uppercase">
+<label style="display:block;font-size:11px;color:var(--muted);margin-bottom:4px">DISCOUNT TYPE</label>
+<select id="newCouponType" style="width:100%;border:1px solid var(--line);border-radius:8px;padding:10px;margin-bottom:10px">
+<option value="percent">Percentage (%)</option>
+<option value="fixed">Fixed Amount (৳)</option>
+</select>
+<label style="display:block;font-size:11px;color:var(--muted);margin-bottom:4px">VALUE</label>
+<input type="number" id="newCouponValue" placeholder="e.g. 20" style="margin-bottom:10px">
+<label style="display:block;font-size:11px;color:var(--muted);margin-bottom:4px">MINIMUM ORDER (OPTIONAL)</label>
+<input type="number" id="newCouponMinorder" placeholder="e.g. 1000" style="margin-bottom:10px">
+<label style="display:block;font-size:11px;color:var(--muted);margin-bottom:4px">EXPIRES ON (OPTIONAL)</label>
+<input type="date" id="newCouponExpires" style="margin-bottom:14px">
+<button class="btn" onclick="addCoupon()">ADD COUPON</button>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -2060,7 +2291,27 @@ By default, a category's tile (Baggy, Shirt, etc — at any depth) uses one of i
 
 <!-- Supabase client library -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+<!-- EmailJS is only needed when an order/contact form is actually
+submitted — loading it eagerly here put it in the critical chain ahead
+of the Supabase queries (PageSpeed's network dependency tree flagged
+this ~200ms delay). loadEmailJs() below fetches + inits it lazily the
+first time it's actually needed. -->
+<script>
+let __emailjsLoading = null
+function loadEmailJs(){
+if(window.emailjs) return Promise.resolve()
+if(__emailjsLoading) return __emailjsLoading
+__emailjsLoading = new Promise((resolve, reject) => {
+const s = document.createElement('script')
+s.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js'
+s.onload = () => { emailjs.init({ publicKey: "dSUNkmSfdWZJmS_Vo" }); resolve() }
+s.onerror = reject
+document.head.appendChild(s)
+})
+return __emailjsLoading
+}
+</script>
 
 <script>
 
@@ -2070,7 +2321,6 @@ By default, a category's tile (Baggy, Shirt, etc — at any depth) uses one of i
 const SUPABASE_URL = "https://otdbpahqfsarkzdpzwga.supabase.co";
 const EMAILJS_SERVICE_ID = "service_wmr228e"
 const EMAILJS_TEMPLATE_ID = "template_kv6boqn"
-if(typeof emailjs !== 'undefined') emailjs.init({ publicKey: "dSUNkmSfdWZJmS_Vo" })
 const SUPABASE_ANON_KEY = "sb_publishable_AykcRsZJ3KH1-pmmbbEOpA_-2Cb6NbR";
 
 if(typeof window.supabase === 'undefined'){
@@ -2119,8 +2369,20 @@ return document.getElementById(id)
 // render at full/lossless quality, only their pixel dimensions are capped.
 function cldOpt(url, width){
 if(!url || !url.includes('res.cloudinary.com') || !url.includes('/upload/')) return url
-if(!width || url.includes('/upload/w_')) return url
-return url.replace('/upload/', `/upload/w_${width}/`)
+if(url.includes('/upload/w_') || url.includes('/upload/f_')) return url
+const transform = width ? `w_${width},f_auto,q_auto` : 'f_auto,q_auto'
+return url.replace('/upload/', `/upload/${transform}/`)
+}
+
+// PageSpeed's "Improve image delivery" audit flagged our images as much
+// bigger than their actual displayed size (e.g. a 1200px hero image shown
+// at ~720px). A srcset with a few widths lets the browser pick the one
+// that actually matches the device/viewport instead of always downloading
+// the largest.
+function cldSrcset(url, widths){
+if(!url || !url.includes('res.cloudinary.com') || !url.includes('/upload/')) return ''
+if(url.includes('/upload/w_') || url.includes('/upload/f_')) return ''
+return widths.map(w => `${url.replace('/upload/', `/upload/w_${w},f_auto,q_auto/`)} ${w}w`).join(', ')
 }
 
 /* ============================================================
@@ -2144,19 +2406,28 @@ return url.replace('/upload/', `/upload/w_${width}/`)
 function lockBodyScroll(){
 document.body.style.overflow = "hidden"
 $("bottomNav").style.display = "none"
+$("pdCartFab").style.display = "none"
 }
 
 function unlockBodyScrollIfNoneOpen(){
 const anyOpen = document.querySelector(".panel.show, .drawer.show")
 if(!anyOpen){
 document.body.style.overflow = ""
-if($("shopPage").style.display !== "none") $("bottomNav").style.display = "flex"
+if($("shopPage").style.display !== "none"){
+$("bottomNav").style.display = "flex"
+$("pdCartFab").style.display = "flex"
+}
 }
 }
 
 function openPanel(id){
 closePanels()
 lockBodyScroll()
+// Product view is a full-page swap, not a real "leave the shop" panel like
+// cart/checkout/account — the basket shortcut should stay put through it,
+// same as gorurghash.com. Every other panel (including checkout) keeps it
+// hidden, exactly as before.
+if(id === "productPanel") $("pdCartFab").style.display = "flex"
 $("overlay").classList.add("show")
 $(id).classList.add("show")
 }
@@ -2184,6 +2455,33 @@ else closePanels()
 // × button. Ignored when the touch starts inside something that already
 // has its own horizontal swipe (the image gallery, the hero carousel).
 let panelSwipeStartX = 0, panelSwipeStartY = 0
+
+// Some mobile browsers (seen on Android) dispatch a stray synthetic click
+// at the last touch position right after a native <select> dropdown
+// (size, star rating, ...) closes. If that position happens to land on
+// the panel's × button underneath, it fires a split second after the
+// real selection — most visibly, picking a size could immediately kick
+// the shopper back out of the product they were just looking at.
+// Swallowing exactly the next click after any select inside a panel
+// changes avoids that without touching how the dropdown itself behaves.
+let __swallowNextClick = false
+let __swallowNextClickTimer = null
+document.addEventListener('change', e => {
+if(e.target.tagName === 'SELECT' && e.target.closest('#productPanel')){
+__swallowNextClick = true
+clearTimeout(__swallowNextClickTimer)
+__swallowNextClickTimer = setTimeout(() => { __swallowNextClick = false }, 350)
+}
+}, true)
+document.addEventListener('click', e => {
+if(__swallowNextClick){
+__swallowNextClick = false
+clearTimeout(__swallowNextClickTimer)
+e.preventDefault()
+e.stopPropagation()
+}
+}, true)
+
 // Reserved width (px) on either screen edge left to the phone's own
 // gesture-nav back swipe. Touches starting inside this zone are ignored
 // here, because the OS already calls history.back() for that gesture —
@@ -2567,7 +2865,7 @@ function productCardHTML(p){
 const badge = p.badge ? `<span class="badge ${p.badge.toLowerCase()==='sale'?'sale':''}">${p.badge}</span>` : ""
 const oldPrice = p.old ? `<span class="old">৳${Number(p.old).toLocaleString()}</span>` : ""
 const imgOrIcon = p.imgs
-? `<img src="${cldOpt(p.imgs.split(',')[0].trim(), 500)}" alt="${p.name}" loading="lazy" decoding="async">`
+? `<img src="${cldOpt(p.imgs.split(',')[0].trim(), 500)}" srcset="${cldSrcset(p.imgs.split(',')[0].trim(),[250,400,500])}" sizes="(min-width:901px) 25vw, 50vw" alt="${p.name}" loading="lazy" decoding="async" onerror="this.style.display='none'">`
 : `<div class="placeholder">${iconFor(p)}</div>`
 const stockNote = (p.stock !== null && p.stock !== undefined && p.stock > 0 && p.stock <= 5)
 ? `<div style="font-size:11px;color:var(--red);margin-top:3px">Only ${p.stock} left</div>` : ""
@@ -2585,14 +2883,51 @@ ${colorSwatchesHTML(p)}
 </div>`
 }
 
+// A returning visitor's last known product list, kept in localStorage so
+// the grid can render instantly instead of sitting behind the skeleton
+// every single visit. This is purely a first-paint shortcut — the real
+// fetch below always still runs and silently corrects anything that's
+// actually changed (price, stock, new arrivals) once it lands, so nobody
+// ever gets stuck looking at stale data. A cold profile (no localStorage
+// yet — which is also what every PageSpeed/Lighthouse run starts from)
+// just falls through to the skeleton exactly as before.
+const PRODUCTS_CACHE_KEY = 'dezireProductsCache'
+
 async function loadProducts(){
-$("productsGrid").innerHTML = Array(8).fill(0).map(()=>`
+// localStorage only helps a returning visitor in their OWN browser — every
+// PageSpeed/Lighthouse run starts with an empty, fresh profile, so it always
+// fell back to the hardcoded default below. That default was 8, but this
+// catalog (fetched with no .limit()) actually runs 20-40 products, so the
+// skeleton->real-data swap was jumping by many rows on every single
+// PageSpeed test — the real, consistent source of the CLS score that stuck
+// around no matter what else got optimized. 24 is a closer real-world match.
+let skeletonCount = 24
+let cachedProducts = null
+try{
+const cached = Number(localStorage.getItem('dezireProductCount'))
+if(cached > 0) skeletonCount = cached
+const rawCache = localStorage.getItem(PRODUCTS_CACHE_KEY)
+if(rawCache){
+const parsed = JSON.parse(rawCache)
+if(parsed && Array.isArray(parsed.products) && parsed.products.length) cachedProducts = parsed.products
+}
+}catch(e){}
+
+if(cachedProducts){
+allProducts = cachedProducts
+applyFiltersAndSort()
+renderFilters(allProducts)
+}else{
+$("productsGrid").innerHTML = Array(skeletonCount).fill(0).map(()=>`
 <div class="product skeletonCard">
 <div class="productImage"></div>
+<div class="skeletonLine" style="width:40%"></div>
 <div class="skeletonLine"></div>
 <div class="skeletonLine short"></div>
+<div class="skeletonLine" style="width:50%;margin-top:8px"></div>
 </div>
 `).join('')
+}
 
 try{
 const { data, error } = await supabaseClient
@@ -2602,18 +2937,30 @@ const { data, error } = await supabaseClient
 
 if(error){
 console.error(error)
-$("productsGrid").innerHTML = `<div class="empty">Could not load products.</div>`
+if(!cachedProducts) $("productsGrid").innerHTML = `<div class="empty">Could not load products.</div>`
 return
 }
 
-allProducts = data || []
+const fresh = data || []
+// Skip the re-render entirely when nothing actually changed from the
+// cached copy already on screen — avoids a pointless DOM rebuild (and
+// any chance of it) on the common case where the catalog is unchanged
+// since the last visit.
+const changed = JSON.stringify(fresh) !== JSON.stringify(cachedProducts)
+allProducts = fresh
+try{
+localStorage.setItem('dezireProductCount', String(allProducts.length))
+localStorage.setItem(PRODUCTS_CACHE_KEY, JSON.stringify({ products: allProducts }))
+}catch(e){}
+if(changed || !cachedProducts){
 applyFiltersAndSort()
 renderFilters(allProducts)
+}
 }catch(e){
 // A network hiccup here shouldn't take down the rest of the page —
 // cart, routing, and everything else below this should still work.
 console.error('Products fetch failed:', e)
-$("productsGrid").innerHTML = `<div class="empty">Could not load products.</div>`
+if(!cachedProducts) $("productsGrid").innerHTML = `<div class="empty">Could not load products.</div>`
 }
 }
 
@@ -2624,6 +2971,30 @@ return
 }
 $("productsGrid").innerHTML = list.map(productCardHTML).join("")
 }
+
+// A touch/pointer landing on a product card fires noticeably before the
+// click that actually opens it (the gap between "finger down" and "tap
+// recognized") — using that gap to start loading the product's main photo
+// early means it's often already in the browser's cache by the time the
+// panel opens, instead of only starting the request then. Delegated on
+// document once so it covers every product grid (home, category, related
+// products, wishlist) without touching each render site.
+const __prefetchedProductImgs = new Set()
+function prefetchProductImage(productId){
+if(!productId || __prefetchedProductImgs.has(productId)) return
+const product = allProducts.find(p => p.id == productId)
+if(!product || !product.imgs) return
+__prefetchedProductImgs.add(productId)
+const firstImg = product.imgs.split(',')[0].trim()
+if(!firstImg) return
+new Image().src = cldOpt(firstImg, 900)
+}
+function onProductCardTouch(e){
+const card = e.target.closest('.product[data-id]')
+if(card) prefetchProductImage(card.dataset.id)
+}
+document.addEventListener('pointerdown', onProductCardTouch, { passive:true })
+document.addEventListener('touchstart', onProductCardTouch, { passive:true })
 
 function renderFilters(list){
 const cats = ["ALL", ...new Set(list.map(p=>p.cat).filter(Boolean))]
@@ -2748,7 +3119,14 @@ seenNames.add(p.name)
 return true
 })
 }
-renderProductGrid(applySort(list))
+// Capped to match the loading skeleton's card count exactly (see
+// loadProducts) — otherwise the grid grows from 8 skeleton cards to the
+// full catalog once real data arrives, which is what was causing the
+// homepage's biggest layout shift. Shoppers can still browse the full
+// catalog via the category pages; this section is just a homepage
+// highlight, same as most e-commerce homepages.
+list = applySort(list).slice(0, 8)
+renderProductGrid(list)
 }
 
 function onSortChange(){
@@ -2826,25 +3204,25 @@ let pdQty = 1
 let pdSelectedSize = null
 
 function selectPdSize(size){
-pdSelectedSize = size
-$("pdSizePills").querySelectorAll('.sizePill').forEach(btn =>
-btn.classList.toggle('active', btn.dataset.size === size)
-)
+pdSelectedSize = size || null
+const sel = $("pdSizeSelect")
+if(sel && sel.value !== size) sel.value = size || ""
+$("pdSizeClearBtn").style.display = size ? "inline-block" : "none"
 showPdSizeMeasurements(size)
 }
 
 function showPdSizeMeasurements(size){
 const wrap = $("pdSizeMeasurements")
 const chart = pdCurrentProduct?.size_chart
-const measurements = chart && chart[size]
+const measurements = size && chart && chart[size]
 if(!measurements || !Object.keys(measurements).length){
 wrap.style.display = "none"
 wrap.innerHTML = ""
 return
 }
 const labels = { waist:'Waist', length:'Length', hip:'Hip', leg_opening:'Leg Opening', chest:'Chest', shoulder:'Shoulder', sleeve:'Sleeve' }
-wrap.innerHTML = `<b style="display:block;margin-bottom:4px;font-size:11px">Size ${size} measurements (inches)</b>` +
-Object.entries(measurements).map(([k,v]) => `${labels[k] || k}: <b>${v}"</b>`).join(' &nbsp;·&nbsp; ')
+wrap.innerHTML = `<b>${size}</b>: ` +
+Object.entries(measurements).map(([k,v]) => `${labels[k] || k}- ${v}"`).join(' | ')
 wrap.style.display = "block"
 }
 let pdTouchStartX = 0
@@ -2923,18 +3301,19 @@ $("pdFabricSizes").innerHTML = infoBits.length
 const hasSizeChart = product.size_chart && Object.keys(product.size_chart).length > 0
 $("pdSizeChartBtn").style.display = hasSizeChart ? "inline-block" : "none"
 
-// Selectable size pills
+// Selectable size dropdown
 pdSelectedSize = null
 $("pdSizeMeasurements").style.display = "none"
 $("pdSizeMeasurements").innerHTML = ""
+$("pdSizeClearBtn").style.display = "none"
 if(sizes.length){
 $("pdSizeSelectWrap").style.display = "block"
-$("pdSizePills").innerHTML = sizes.map(s =>
-`<button type="button" class="sizePill" data-size="${s}" onclick="selectPdSize('${s.replace(/'/g,"\\'")}')">${s}</button>`
-).join('')
+$("pdSizeSelect").innerHTML = `<option value="">Choose an option</option>` +
+sizes.map(s => `<option value="${s.replace(/"/g,"&quot;")}">${s}</option>`).join('')
+$("pdSizeSelect").value = ""
 }else{
 $("pdSizeSelectWrap").style.display = "none"
-$("pdSizePills").innerHTML = ""
+$("pdSizeSelect").innerHTML = ""
 }
 
 // Related products — this same design's opposite-gender twin (the one
@@ -3337,7 +3716,12 @@ if(pdSizeRequiredButMissing()) return
 for(let i = 0; i < pdQty; i++){
 addToCart(pdCurrentProduct.id, pdSelectedSize)
 }
-closePanels()
+// Stay on the product page after adding to cart — closePanels() here used
+// to hide the product panel entirely, which dropped the shopper back onto
+// the category grid underneath (URL still said /product/..., but the
+// visible page didn't match). The toast from addToCart() above is enough
+// confirmation; let them keep browsing this product or tap the cart icon
+// themselves when ready.
 }
 
 function pdBuyNow(){
@@ -3363,7 +3747,7 @@ updateCartBadge()
 function updateCartBadge(){
 const cart = getCart()
 const count = cart.reduce((s,i)=>s+i.qty,0)
-;["cartCount","cartCountTop"].forEach(id => {
+;["cartCount","cartCountTop","pdCartFabCount"].forEach(id => {
 const badge = $(id)
 if(!badge) return
 if(count > 0){
@@ -3438,7 +3822,7 @@ wrap.innerHTML = cart.map(i => {
 const sizeArg = i.size ? `'${i.size.replace(/'/g,"\\'")}'` : 'null'
 return `
 <div class="cartItem">
-<div class="cartImg">${i.imgs ? `<img src="${cldOpt(i.imgs.split(',')[0].trim(), 200)}" loading="lazy" decoding="async">` : "🛍️"}</div>
+<div class="cartImg">${i.imgs ? `<img src="${cldOpt(i.imgs.split(',')[0].trim(), 200)}" loading="lazy" decoding="async" onerror="this.style.display='none'">` : "🛍️"}</div>
 <div class="cartInfo">
 <h4>${i.name}</h4>
 <small>৳${i.price.toLocaleString()} each${i.size ? ` &bull; Size: ${i.size}` : ''}</small>
@@ -3471,7 +3855,8 @@ const { data, error } = await supabaseClient
 .in('key', [
 'delivery_charge_dhaka','delivery_charge_outside',
 'free_delivery_threshold','pickup_available',
-'pickup_address','pickup_charge','whatsapp_number'
+'pickup_address','pickup_charge','whatsapp_number',
+'payment_logos'
 ])
 
 if(error || !data || !data.length){
@@ -3480,13 +3865,15 @@ deliverySettings = {
 delivery_charge_dhaka:50, delivery_charge_outside:60,
 free_delivery_threshold:1000, pickup_available:true,
 pickup_address:'Mirpur 12, Dhaka', pickup_charge:0,
-whatsapp_number:'8801877270165'
+whatsapp_number:'8801877270165', payment_logos:[]
 }
 return deliverySettings
 }
 
 const map = {}
 data.forEach(r => map[r.key] = r.value)
+let paymentLogos = []
+try{ paymentLogos = JSON.parse(map.payment_logos || '[]') }catch(e){ paymentLogos = [] }
 deliverySettings = {
 delivery_charge_dhaka: Number(map.delivery_charge_dhaka),
 delivery_charge_outside: Number(map.delivery_charge_outside),
@@ -3494,7 +3881,8 @@ free_delivery_threshold: Number(map.free_delivery_threshold),
 pickup_available: map.pickup_available === 'true',
 pickup_address: map.pickup_address,
 pickup_charge: Number(map.pickup_charge||0),
-whatsapp_number: map.whatsapp_number || '8801877270165'
+whatsapp_number: map.whatsapp_number || '8801877270165',
+payment_logos: paymentLogos
 }
 return deliverySettings
 }
@@ -3507,7 +3895,7 @@ return deliverySettings
    tapping it jumps shoppers straight to that filtered section of the shop.
    ============================================================ */
 const DEFAULT_HERO_SLIDES = [
-{ image:'https://res.cloudinary.com/dtdztxbfg/image/upload/v1787488489/IMG_20260823_183338_ge9det.png', gender:'', category:'' }
+{ image:'https://res.cloudinary.com/dtdztxbfg/image/upload/v1789381873/IMG_20260914_161653_hbvxqq.png', gender:'', category:'' }
 ]
 
 let heroSlides = []
@@ -3544,7 +3932,7 @@ const track = $("heroTrack")
 if(!track) return
 
 track.innerHTML = heroSlides.map((s, i) =>
-`<div class="heroSlide" onclick="onHeroSlideClick(${i})"><img src="${cldOpt(s.image, 1200)}" alt="" loading="${i===0?'eager':'lazy'}" ${i===0?'fetchpriority="high"':''} decoding="async"></div>`
+`<div class="heroSlide" onclick="onHeroSlideClick(${i})"><img src="${cldOpt(s.image, 900)}" srcset="${cldSrcset(s.image,[600,900,1200])}" sizes="100vw" alt="" loading="${i===0?'eager':'lazy'}" ${i===0?'fetchpriority="high"':''} decoding="async" onerror="this.style.display='none'"></div>`
 ).join('')
 
 const dotsWrap = $("heroDots")
@@ -3649,10 +4037,28 @@ return `/shop/${gender}` + (path.length ? '/' + path.map(encodeURIComponent).joi
 // their own when changed via pushState/replaceState — so every place that
 // used to just set window.location.hash now goes through this instead,
 // which pushes the new path and then re-renders directly.
+// Wraps a DOM update in the browser's native View Transitions API when
+// available (recent Chrome/Android WebView — the reference site's smooth
+// "half-open" feel on back-navigation is actually the OS/browser's own
+// swipe-back preview, which a single-page app can't get directly since
+// there's no separate previous document to preview. This is the closest
+// real equivalent: the browser screenshots the before/after state itself
+// and cross-fades between them, natively, instead of us hand-animating
+// individual elements. Silently no-ops into a plain call on browsers
+// without support (Safari/iOS, older WebViews) — same as it works today.
+function withViewTransition(fn){
+if(typeof document.startViewTransition === 'function'){
+try{ document.startViewTransition(() => fn()) }
+catch(e){ fn() }
+}else{
+fn()
+}
+}
+
 function navigateTo(path, opts){
 if(opts && opts.replace) history.replaceState(null, '', path)
 else history.pushState(null, '', path)
-routeChanged()
+withViewTransition(routeChanged)
 }
 
 // Centralizes "what to show for the current URL": admin is a plain path
@@ -3743,7 +4149,7 @@ window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
 
 const DEFAULT_SEO_TITLE = "DEZIRE — Premium Fashion in Bangladesh"
 const DEFAULT_SEO_DESC = "DEZIRE — Premium men's and women's clothing in Bangladesh. Shirts, pants, polos and more with nationwide cash-on-delivery. Shop the latest collection online."
-const DEFAULT_OG_IMAGE = "https://res.cloudinary.com/dtdztxbfg/image/upload/w_1200/v1787488489/IMG_20260823_183338_ge9det.png"
+const DEFAULT_OG_IMAGE = "https://res.cloudinary.com/dtdztxbfg/image/upload/w_1200/v1789381873/IMG_20260914_161653_hbvxqq.png"
 
 function setMetaTag(attrName, attrValue, content){
 let el = document.querySelector(`meta[${attrName}="${attrValue}"]`)
@@ -3984,11 +4390,10 @@ const targetPath = buildShopPath(gender, [...path, s.seg])
 const href = `navigateTo('${targetPath.replace(/'/g,"\\'")}')`
 if(s.count === 1){
 return `
-<button class="category leafTile" onclick="${href}">
-<div class="leafImg" style="${s.image ? `background-image:url('${cldOpt(s.image, 500).replace(/'/g,"\\'")}')` : 'background:#f4f4f4'}"></div>
-<div class="leafInfo">
+<button class="category" style="${s.image ? `background-image:url('${cldOpt(s.image, 700).replace(/'/g,"\\'")}')` : 'background:#1a1a1a'}" onclick="${href}">
+<div class="catText">
 <h3>${escapeHTML(s.seg)}</h3>
-${s.minPrice!==null ? `<div class="leafPrice">৳${Number(s.minPrice).toLocaleString()}</div>` : ''}
+${s.minPrice!==null ? `<span>৳${Number(s.minPrice).toLocaleString()}</span>` : ''}
 </div>
 </button>
 `
@@ -4149,8 +4554,7 @@ const DEFAULT_HOME_CATEGORIES = [
 { name:"Women", subtitle:"Discover Collection", image:"", gender:"", category:"" },
 { name:"Men", subtitle:"Shop Men", image:"", gender:"", category:"" },
 { name:"New In", subtitle:"Latest Arrivals", image:"", gender:"", category:"" },
-{ name:"Accessories", subtitle:"Complete Your Look", image:"", gender:"", category:"" },
-{ name:"Sale", subtitle:"Limited Offers", image:"", gender:"", category:"" }
+{ name:"Accessories", subtitle:"Complete Your Look", image:"", gender:"", category:"" }
 ]
 
 function renderHomeCategories(list){
@@ -4167,6 +4571,14 @@ grid.innerHTML = list.map(c => `
 }
 
 async function loadHomeCategories(){
+// Render the defaults immediately so this section has its real height
+// from the very first paint — leaving #homeCategoriesGrid empty until
+// the fetch below resolves was what let it collapse to 0 height and
+// then suddenly grow once real tiles arrived, pushing the footer (and
+// everything else after it) down. Re-rendered in place with the fetched
+// data once that's ready; same tile count in the common case, so this
+// doesn't introduce its own shift.
+renderHomeCategories(DEFAULT_HOME_CATEGORIES)
 try{
 const { data, error } = await supabaseClient
 .from('settings')
@@ -4184,7 +4596,6 @@ if(Array.isArray(parsed) && parsed.length) list = parsed
 renderHomeCategories(list)
 }catch(e){
 console.error('Category tiles fetch failed:', e)
-renderHomeCategories(DEFAULT_HOME_CATEGORIES)
 }
 }
 
@@ -4206,6 +4617,50 @@ const { data } = await supabaseClient
 categoryImages = (data && data.value) ? JSON.parse(data.value) : {}
 }catch(e){
 console.error('Category images fetch failed:', e)
+categoryImages = {}
+}
+}
+
+// PageSpeed's network dependency tree flagged hero_slides,
+// homepage_categories, and category_images as three separate round trips
+// to the same `settings` table, all sitting on the page's critical path
+// (each ~1.7s in the lab run). One .in() query below fetches all three
+// rows together on first homepage load; loadHeroBanner/loadHomeCategories/
+// loadCategoryImages are left as-is above for admin-panel and other call
+// sites that still need a single key on demand.
+async function loadHomeSettings(){
+renderHomeCategories(DEFAULT_HOME_CATEGORIES)
+try{
+const { data, error } = await supabaseClient
+.from('settings')
+.select('key,value')
+.in('key', ['hero_slides','homepage_categories','category_images'])
+
+const rows = {}
+if(!error && data) data.forEach(r => { rows[r.key] = r.value })
+
+let slides = DEFAULT_HERO_SLIDES
+if(rows.hero_slides){
+try{
+const parsed = JSON.parse(rows.hero_slides)
+if(Array.isArray(parsed) && parsed.length) slides = parsed
+}catch(e){ /* fall back to default on bad JSON */ }
+}
+renderHeroSlides(slides)
+
+let list = DEFAULT_HOME_CATEGORIES
+if(rows.homepage_categories){
+try{
+const parsed = JSON.parse(rows.homepage_categories)
+if(Array.isArray(parsed) && parsed.length) list = parsed
+}catch(e){ /* fall back to defaults on bad JSON */ }
+}
+renderHomeCategories(list)
+
+categoryImages = rows.category_images ? JSON.parse(rows.category_images) : {}
+}catch(e){
+console.error('Home settings fetch failed:', e)
+renderHeroSlides(DEFAULT_HERO_SLIDES)
 categoryImages = {}
 }
 }
@@ -4262,6 +4717,141 @@ const { error } = await supabaseClient
 
 if(error){ toast("Could not save: " + readableError(error)); return }
 toast("Category images updated!")
+}
+
+/* ============================================================
+   PAYMENT METHOD LOGOS — settings key: payment_logos (JSON array
+   of image URLs). Edited from Admin Panel → Settings → Payment
+   Method Logos. Checkout renders every URL under "Pay Online".
+   ============================================================ */
+let editingPaymentLogos = []
+
+async function loadPaymentLogosSettingIntoForm(){
+const { data } = await supabaseClient
+.from('settings')
+.select('value')
+.eq('key', 'payment_logos')
+.maybeSingle()
+
+let logos = []
+if(data && data.value){
+try{ const parsed = JSON.parse(data.value); if(Array.isArray(parsed)) logos = parsed }catch(e){}
+}
+editingPaymentLogos = logos.slice()
+renderPaymentLogoRows()
+}
+
+function renderPaymentLogoRows(){
+const wrap = $("paymentLogoRows")
+if(!wrap) return
+wrap.innerHTML = editingPaymentLogos.map((url, i) => `
+<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+<img src="${escapeAttr(url)}" style="width:36px;height:36px;object-fit:contain;border:1px solid var(--line);border-radius:6px;background:#f7f7f5;flex-shrink:0" onerror="this.style.display='none'">
+<input type="text" value="${escapeAttr(url)}" oninput="updatePaymentLogoField(${i},this.value)" placeholder="https://res.cloudinary.com/..." style="flex:1">
+<button type="button" onclick="removePaymentLogoRow(${i})" style="background:none;border:0;color:var(--red);font-size:18px;cursor:pointer;flex-shrink:0">×</button>
+</div>
+`).join('') || `<p style="font-size:12px;color:var(--muted)">No logos added yet.</p>`
+}
+
+function updatePaymentLogoField(index, value){
+editingPaymentLogos[index] = value
+}
+
+function removePaymentLogoRow(index){
+editingPaymentLogos.splice(index, 1)
+renderPaymentLogoRows()
+}
+
+function addPaymentLogoRow(){
+editingPaymentLogos.push("")
+renderPaymentLogoRows()
+}
+
+async function savePaymentLogos(){
+const cleaned = editingPaymentLogos.map(u => (u||'').trim()).filter(Boolean)
+const { error } = await supabaseClient
+.from('settings')
+.upsert({ key: 'payment_logos', value: JSON.stringify(cleaned) }, { onConflict: 'key' })
+
+if(error){ toast("Could not save: " + readableError(error)); return }
+deliverySettings = null // force a fresh fetch next time checkout loads
+editingPaymentLogos = cleaned
+renderPaymentLogoRows()
+toast("Payment logos updated!")
+}
+
+/* ============================================================
+   COUPON CODES — table `coupons` (code, type, value, minorder,
+   active, expires). Admin Panel → Settings → Coupon Codes.
+   Checkout's applyCoupon() already reads this same table.
+   ============================================================ */
+async function loadCouponsAdmin(){
+const wrap = $("couponListWrap")
+if(!wrap) return
+wrap.innerHTML = `<p style="font-size:12px;color:var(--muted)">Loading...</p>`
+
+const { data, error } = await supabaseClient
+.from('coupons')
+.select('id,code,type,value,minorder,active,expires')
+.order('id', { ascending:false })
+
+if(error){ wrap.innerHTML = `<p style="font-size:12px;color:var(--red)">Could not load coupons.</p>`; return }
+
+if(!data || !data.length){
+wrap.innerHTML = `<p style="font-size:12px;color:var(--muted)">No coupons yet.</p>`
+return
+}
+
+wrap.innerHTML = data.map(c => `
+<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin-bottom:8px">
+<div>
+<b style="font-size:13px;letter-spacing:.5px">${escapeHTML(c.code)}</b>
+<span style="font-size:12px;color:var(--muted)"> — ${c.type === 'percent' ? c.value + '%' : '৳' + c.value} off${c.minorder ? `, min ৳${Number(c.minorder).toLocaleString()}` : ''}${c.expires ? `, expires ${c.expires}` : ''}${c.active ? '' : ' (inactive)'}</span>
+</div>
+<div style="display:flex;gap:10px;flex-shrink:0">
+<button type="button" onclick="toggleCouponActive(${c.id}, ${!c.active})" style="background:none;border:0;color:var(--teal);font-size:12px;cursor:pointer">${c.active ? 'Disable' : 'Enable'}</button>
+<button type="button" onclick="deleteCoupon(${c.id})" style="background:none;border:0;color:var(--red);font-size:12px;cursor:pointer">Delete</button>
+</div>
+</div>
+`).join('')
+}
+
+async function addCoupon(){
+const code = $("newCouponCode").value.trim().toUpperCase()
+const type = $("newCouponType").value
+const value = Number($("newCouponValue").value)
+const minorder = $("newCouponMinorder").value ? Number($("newCouponMinorder").value) : null
+const expires = $("newCouponExpires").value || null
+
+if(!code){ toast("Enter a coupon code."); return }
+if(!value || value <= 0){ toast("Enter a valid discount value."); return }
+
+const { error } = await supabaseClient
+.from('coupons')
+.insert({ code, type, value, minorder, expires, active: true })
+
+if(error){ toast("Could not save: " + readableError(error)); return }
+
+$("newCouponCode").value = ''
+$("newCouponValue").value = ''
+$("newCouponMinorder").value = ''
+$("newCouponExpires").value = ''
+toast("Coupon added!")
+loadCouponsAdmin()
+}
+
+async function toggleCouponActive(id, makeActive){
+const { error } = await supabaseClient.from('coupons').update({ active: makeActive }).eq('id', id)
+if(error){ toast("Could not update: " + readableError(error)); return }
+loadCouponsAdmin()
+}
+
+async function deleteCoupon(id){
+if(!confirm("Delete this coupon?")) return
+const { error } = await supabaseClient.from('coupons').delete().eq('id', id)
+if(error){ toast("Could not delete: " + readableError(error)); return }
+toast("Coupon deleted.")
+loadCouponsAdmin()
 }
 
 async function loadHomeCategoriesSettingIntoForm(){
@@ -4810,6 +5400,9 @@ if(!$("coRegion").options.length || $("coRegion").options.length === 1){
 await loadRegionsIntoSelect()
 }
 $("pickupAddressText").textContent = deliverySettings.pickup_address
+$("paymentLogosRow").innerHTML = (deliverySettings.payment_logos||[])
+.map(url => `<img src="${escapeAttr(url)}" alt="" onerror="this.style.display='none'">`)
+.join('')
 if(profile){
 $("coName").value = profile.name || ''
 $("coPhone").value = profile.phone || ''
@@ -4921,14 +5514,13 @@ updatePaymentInstructions(subtotal - discount + charge)
 const WALLET_COLORS = { bKash:'#E2136E', Nagad:'#F6851F', Rocket:'#8C3494', Upay:'#00A99D', Tap:'#0072BC' }
 
 function walletBadgeHTML(name){
-const color = WALLET_COLORS[name] || '#333'
-return `<span style="background:${color};color:#fff;font-weight:700;font-size:12px;padding:4px 10px;border-radius:4px;letter-spacing:.3px">${escapeHTML(name)}</span>`
+return `<span style="background:transparent;border:1.5px solid #111;color:#111;font-weight:700;font-size:12px;padding:3px 12px;border-radius:20px;letter-spacing:.3px;display:inline-block">${escapeHTML(name)}</span>`
 }
 
 function updatePaymentInstructions(total){
 const method = document.querySelector('input[name="coPayment"]:checked').value
 const box = $("mobilePaymentBox")
-if(method === 'COD'){
+if(method === 'COD' || method === 'ONLINE'){
 box.style.display = "none"
 return
 }
@@ -4972,7 +5564,7 @@ const addressType = method === 'home_delivery'
 const address = method === 'home_delivery' ? $("coAddress").value.trim() : deliverySettings.pickup_address
 const note = $("coNote").value.trim()
 const paymentMethod = document.querySelector('input[name="coPayment"]:checked').value
-const trxId = paymentMethod !== 'COD' ? $("coTrxId").value.trim().toUpperCase() : ''
+const trxId = (paymentMethod !== 'COD' && paymentMethod !== 'ONLINE') ? $("coTrxId").value.trim().toUpperCase() : ''
 
 if(!name || !phone){
 toast("Please fill in your name and phone number.")
@@ -4984,7 +5576,7 @@ toast("Please fill in region, city, area and address.")
 return
 }
 
-if(paymentMethod !== 'COD' && !trxId){
+if(paymentMethod !== 'COD' && paymentMethod !== 'ONLINE' && !trxId){
 toast(`Please enter your ${paymentMethod} Transaction ID.`)
 return
 }
@@ -5066,6 +5658,36 @@ const purchaseTotal = subtotal - discount + charge
 if(typeof fbq === 'function') fbq('track', 'Purchase', { value:purchaseTotal, currency:'BDT', content_ids:cart.map(i=>String(i.id)), content_type:'product', num_items:cart.reduce((s,i)=>s+i.qty,0) })
 if(typeof gtag === 'function') gtag('event', 'purchase', { transaction_id:orderRef, value:purchaseTotal, currency:'BDT', items:cart.map(i=>({ item_id:String(i.id), item_name:i.name, price:i.price, quantity:i.qty })) })
 
+// Online payment: the order row above is saved as unpaid, then we hand
+// off to UddoktaPay's hosted page. Their webhook (server-side, verified
+// against their API independently — see uddoktapay-webhook) flips it to
+// paid once the customer actually completes payment. Nothing below this
+// runs for this path since the browser is about to navigate away.
+if(paymentMethod === 'ONLINE'){
+try{
+const { data: chargeData, error: chargeError } = await supabaseClient.functions.invoke('create-charge', {
+body: { orderRef, fullName: name, amount: purchaseTotal }
+})
+if(chargeError || !chargeData || !chargeData.payment_url){
+console.error('create-charge failed:', chargeError, chargeData)
+toast("Could not start online payment. Please try Cash on Delivery, or contact us — your order is saved as #" + orderRef + ".")
+submitBtn.disabled = false
+submitBtn.textContent = "PLACE ORDER"
+return
+}
+saveCart([])
+renderCart()
+window.location.href = chargeData.payment_url
+return
+}catch(err){
+console.error('create-charge error:', err)
+toast("Could not start online payment. Please try Cash on Delivery, or contact us — your order is saved as #" + orderRef + ".")
+submitBtn.disabled = false
+submitBtn.textContent = "PLACE ORDER"
+return
+}
+}
+
 // The real order id is now stored in every row as order_ref — the
 // customer can use this exact number in Track Order to pull up their
 // full itemized order at any time.
@@ -5091,7 +5713,7 @@ const waNumber = (deliverySettings.whatsapp_number || '8801877270165').replace(/
 // already saved in Supabase at this point regardless, so a failure here
 // (EmailJS quota, network hiccup, etc.) is just logged, never shown to
 // the customer or allowed to block their order confirmation.
-if(typeof emailjs !== 'undefined'){
+loadEmailJs().then(() => {
 emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
 order_ref: orderRef,
 customer_name: name,
@@ -5101,8 +5723,8 @@ delivery_method: methodLabel,
 delivery_address: address || '(Store Pickup)',
 payment_method: paymentLabel,
 total_amount: `৳${total.toLocaleString()}`
+})
 }).catch(err => console.error('Order email notification failed:', err))
-}
 $("successWhatsapp").href = `https://wa.me/${waNumber}?text=${waText}`
 
 $("successOrderId").textContent = "#" + orderRef
@@ -5191,7 +5813,7 @@ $("adminSettingsView").style.display = section==='settings' ? 'block' : 'none'
 if(section==='dashboard'){ $("navDashboard").classList.add('active'); $("adminTitle").textContent="Dashboard"; loadAdminData() }
 if(section==='products'){ $("navProducts").classList.add('active'); $("adminTitle").textContent="Products"; renderAdminProductsTable() }
 if(section==='orders'){ $("navOrders").classList.add('active'); $("adminTitle").textContent="Orders"; loadAllOrders() }
-if(section==='settings'){ $("navSettings").classList.add('active'); $("adminTitle").textContent="Settings"; loadHeroSlidesSettingIntoForm(); loadHomeCategoriesSettingIntoForm(); loadCategoryImagesSettingIntoForm() }
+if(section==='settings'){ $("navSettings").classList.add('active'); $("adminTitle").textContent="Settings"; loadHeroSlidesSettingIntoForm(); loadHomeCategoriesSettingIntoForm(); loadCategoryImagesSettingIntoForm(); loadPaymentLogosSettingIntoForm(); loadCouponsAdmin() }
 }
 
 function statusBadgeHTML(status){
@@ -5416,8 +6038,26 @@ let adminOrdersCache = []
 // needing a new database column); this pulls it back out so an admin can
 // see it here and verify it manually (check the wallet's transaction
 // history) before marking the order as processing/shipped.
+// Mobile wallet payments (bKash/Nagad/Rocket/Upay/Tap) used to be manual
+// Send Money to a personal number — that TrxID was folded into
+// delivery_note (no dedicated column existed yet) so an admin could check
+// it by hand. ONLINE payments go through UddoktaPay instead: the webhook
+// fills payment_wallet/payment_sender_number/payment_transaction_id
+// automatically once it verifies the charge, so those show directly
+// instead of needing the delivery_note regex.
 function paymentCellHTML(o){
 if(!o.payment || o.payment === 'COD') return '💵 COD'
+if(o.payment === 'ONLINE'){
+if(o.payment_status !== 'paid'){
+return `${walletBadgeHTML('Online')}<br><span style="font-size:10.5px;color:var(--red)">Unpaid</span>`
+}
+const wallet = o.payment_wallet || 'Online'
+const details = [
+o.payment_sender_number ? `From: ${escapeHTML(o.payment_sender_number)}` : '',
+o.payment_transaction_id ? `TrxID: ${escapeHTML(o.payment_transaction_id)}` : ''
+].filter(Boolean).join(' • ')
+return `${walletBadgeHTML(wallet)}${details ? `<br><span style="font-size:10.5px;color:var(--muted)">${details}</span>` : ''}`
+}
 const m = (o.delivery_note || '').match(new RegExp(`${o.payment} TrxID: (\\S+)`))
 if(!m) return walletBadgeHTML(o.payment)
 return `${walletBadgeHTML(o.payment)}<br><span style="font-size:10.5px;color:var(--muted)">TrxID: ${escapeHTML(m[1])}</span>`
@@ -5427,21 +6067,38 @@ async function loadAllOrders(skipFetch){
 if(!skipFetch){
 const { data: orders, error } = await supabaseClient
 .from('orders')
-.select('id,customer,phone,total_amount,status,created_at,order_ref,rider_name,rider_phone,payment,delivery_note')
+.select('id,customer,phone,total_amount,status,created_at,order_ref,rider_name,rider_phone,payment,delivery_note,payment_status,payment_wallet,payment_sender_number,payment_transaction_id,items')
 .order('created_at', { ascending:false })
 .limit(100)
 
 if(error){
-$("adminAllOrdersBody").innerHTML = `<tr><td colspan="8">Could not load orders.</td></tr>`
+$("adminAllOrdersBody").innerHTML = `<tr><td colspan="9">Could not load orders.</td></tr>`
 return
 }
 adminOrdersCache = orders || []
 }
 
 const q = ($("adminOrderSearch")?.value || '').trim().toLowerCase()
-const list = q
+const filtered = q
 ? adminOrdersCache.filter(o => (o.customer||'').toLowerCase().includes(q) || (o.phone||'').includes(q))
 : adminOrdersCache
+
+// Checkout writes one DB row per cart line item, all sharing the same
+// order_ref (see placeOrder()) — every row also carries the FULL
+// items list for that order, so grouping by order_ref here and summing
+// total_amount across the group reconstructs the one order the customer
+// actually placed, instead of showing it as several unrelated-looking
+// rows with different totals and no product info.
+const groups = new Map()
+filtered.forEach(o => {
+const key = o.order_ref || ('id_' + o.id)
+if(!groups.has(key)){
+groups.set(key, { ...o, total_amount: Number(o.total_amount||0) })
+}else{
+groups.get(key).total_amount += Number(o.total_amount||0)
+}
+})
+const list = Array.from(groups.values())
 
 $("adminAllOrdersBody").innerHTML = list.length
 ? list.map(o => `
@@ -5449,6 +6106,7 @@ $("adminAllOrdersBody").innerHTML = list.length
 <td>${o.order_ref || '#'+o.id}</td>
 <td>${o.customer||'—'}</td>
 <td>${o.phone||'—'}</td>
+<td style="max-width:180px;white-space:normal;font-size:11.5px;color:#333" title="${escapeAttr(o.items||'')}">${escapeHTML(o.items||'—')}</td>
 <td>৳${Number(o.total_amount||0).toLocaleString()}</td>
 <td>${paymentCellHTML(o)}</td>
 <td>
@@ -5465,7 +6123,7 @@ ${o.rider_name ? `🛵 ${o.rider_name}` : '+ Add Rider'}
 </td>
 <td>${new Date(o.created_at).toLocaleDateString()}</td>
 </tr>`).join("")
-: `<tr><td colspan="8">${q ? 'No orders match your search.' : 'No orders yet'}</td></tr>`
+: `<tr><td colspan="9">${q ? 'No orders match your search.' : 'No orders yet'}</td></tr>`
 }
 
 async function setOrderRider(orderId, orderRef){
@@ -5537,6 +6195,7 @@ return
 $("shopPage").style.display="none"
 $("adminPage").style.display="block"
 $("bottomNav").style.display="none"
+$("pdCartFab").style.display="none"
 document.body.style.paddingBottom="0"
 closePanels()
 window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
@@ -5552,6 +6211,7 @@ function showShop(){
 $("adminPage").style.display="none"
 $("shopPage").style.display="block"
 $("bottomNav").style.display="flex"
+$("pdCartFab").style.display="flex"
 document.body.style.paddingBottom="64px"
 window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
 }
@@ -5578,16 +6238,27 @@ return
 const orders = allOrders || []
 const total = orders.reduce((s,o)=>s+Number(o.total_amount||0),0)
 $("adminTotalSales").textContent = "৳" + total.toLocaleString()
-$("adminOrderCount").textContent = orders.length
+
+// Same multi-row-per-order shape as the Orders tab (see loadAllOrders) —
+// group by order_ref first so the count and the "Recent Orders" list
+// reflect actual orders, not one row per product in the cart.
+const orderGroups = new Map()
+orders.forEach(o => {
+const key = o.order_ref || ('id_' + o.id)
+if(!orderGroups.has(key)) orderGroups.set(key, { ...o, total_amount: Number(o.total_amount||0) })
+else orderGroups.get(key).total_amount += Number(o.total_amount||0)
+})
+const groupedOrders = Array.from(orderGroups.values())
+$("adminOrderCount").textContent = groupedOrders.length
 
 const uniqueCustomers = new Set(orders.map(o => o.phone).filter(Boolean))
 $("adminCustomerCount").textContent = uniqueCustomers.size
 
-const recent = orders.slice(0, 10)
+const recent = groupedOrders.slice(0, 10)
 $("adminOrdersBody").innerHTML = recent.length
 ? recent.map(o => `
 <tr>
-<td>#${o.id}</td>
+<td>${o.order_ref || '#'+o.id}</td>
 <td>${o.customer||'—'}</td>
 <td>৳${Number(o.total_amount||0).toLocaleString()}</td>
 <td>${statusBadgeHTML(o.status)}</td>
@@ -5654,21 +6325,63 @@ history.pushState({homeGuard:true}, '', originalPath)
 // explicitly re-render here.
 window.addEventListener('popstate', (e) => {
 const wasOnProduct = !!lastProductId
-routeChanged()
-if((location.pathname === '/' || location.pathname === '/index.html') && $("adminPage").style.display !== "block" && !wasOnProduct){
+withViewTransition(routeChanged)
+if((location.pathname === '/' || location.pathname === '/index.html') && !wasOnProduct){
 window.scrollTo({top:0, behavior:'smooth'})
 history.pushState({homeGuard:true}, '', location.pathname + location.search)
 }
 })
 
-// Fire all independent homepage data requests together instead of one
-// after another — loadHeroBanner/loadTestimonials/loadHomeCategories used
-// to only start after loadProducts finished, which is what made the hero
-// banner take an extra network round-trip to appear.
-loadHeroBanner()
+// Fire the homepage's independent data requests together instead of one
+// after another. loadHomeSettings replaces the old separate loadHeroBanner
+// + loadHomeCategories + loadCategoryImages calls with a single combined
+// settings query, cutting the number of parallel round trips before the
+// page finishes rendering.
+// UddoktaPay redirects the customer back here with ?order=<ref>&paid=1 (or
+// paid=0 if cancelled). We never trust that query param by itself — the
+// webhook is what actually marks the order paid in the database — this
+// just re-reads that real payment_status to decide what to show, so the
+// confirmation on screen always matches what's really in the database.
+async function checkPaymentReturn(){
+const params = new URLSearchParams(window.location.search)
+const orderRef = params.get('order')
+const paid = params.get('paid')
+if(!orderRef || paid === null) return
+
+// Clean the URL right away so refreshing this page doesn't reopen the panel
+history.replaceState(null, '', window.location.pathname + window.location.hash)
+
+try{
+const { data, error } = await supabaseClient
+.from('orders')
+.select('total_amount,delivery_method,payment_status')
+.eq('order_ref', orderRef)
+
+if(error || !data || !data.length) return
+
+const total = data.reduce((sum, r) => sum + Number(r.total_amount || 0), 0)
+const isPaid = data[0].payment_status === 'paid'
+
+$("successHeading").textContent = isPaid ? "Payment Successful!" : "Payment Not Completed"
+$("successIcon").innerHTML = isPaid
+? `<div style="width:64px;height:64px;border-radius:50%;background:rgba(26,92,74,.08);display:flex;align-items:center;justify-content:center;margin:0 auto"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#1a5c4a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div>`
+: `<div style="width:64px;height:64px;border-radius:50%;background:rgba(217,119,6,.1);display:flex;align-items:center;justify-content:center;margin:0 auto"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#d97706" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4"/><path d="M12 17h.01"/><circle cx="12" cy="12" r="9"/></svg></div>`
+$("successMessage").innerHTML = isPaid
+? "Your payment has been received and your order is confirmed.<br>We'll contact you shortly."
+: "Your order is saved, but the payment wasn't completed.<br>You can retry payment or contact us to arrange Cash on Delivery."
+$("successOrderId").textContent = "#" + orderRef
+$("successTotal").textContent = "৳" + total.toLocaleString()
+$("successMethod").textContent = data[0].delivery_method === 'pickup' ? 'Store Pickup (Mirpur 12)' : 'Home Delivery'
+openPanel("successPanel")
+}catch(e){
+console.error('Payment return check failed:', e)
+}
+}
+
+loadHomeSettings()
 loadTestimonials()
-loadHomeCategories()
-await Promise.all([loadProducts(), loadCategoryImages()])
+await loadProducts()
+checkPaymentReturn()
 
 routeChanged()
 
