@@ -700,7 +700,7 @@ background:#fff;
 border-radius:50%;
 display:flex;align-items:center;justify-content:center;
 box-shadow:0 6px 16px rgba(0,0,0,.2);
-z-index:210;
+z-index:510;
 border:1px solid #eee;cursor:pointer
 }
 .pdCartFab:active{transform:scale(0.94)}
@@ -2454,6 +2454,33 @@ else closePanels()
 // × button. Ignored when the touch starts inside something that already
 // has its own horizontal swipe (the image gallery, the hero carousel).
 let panelSwipeStartX = 0, panelSwipeStartY = 0
+
+// Some mobile browsers (seen on Android) dispatch a stray synthetic click
+// at the last touch position right after a native <select> dropdown
+// (size, star rating, ...) closes. If that position happens to land on
+// the panel's × button underneath, it fires a split second after the
+// real selection — most visibly, picking a size could immediately kick
+// the shopper back out of the product they were just looking at.
+// Swallowing exactly the next click after any select inside a panel
+// changes avoids that without touching how the dropdown itself behaves.
+let __swallowNextClick = false
+let __swallowNextClickTimer = null
+document.addEventListener('change', e => {
+if(e.target.tagName === 'SELECT' && e.target.closest('#productPanel')){
+__swallowNextClick = true
+clearTimeout(__swallowNextClickTimer)
+__swallowNextClickTimer = setTimeout(() => { __swallowNextClick = false }, 350)
+}
+}, true)
+document.addEventListener('click', e => {
+if(__swallowNextClick){
+__swallowNextClick = false
+clearTimeout(__swallowNextClickTimer)
+e.preventDefault()
+e.stopPropagation()
+}
+}, true)
+
 // Reserved width (px) on either screen edge left to the phone's own
 // gesture-nav back swipe. Touches starting inside this zone are ignored
 // here, because the OS already calls history.back() for that gesture —
