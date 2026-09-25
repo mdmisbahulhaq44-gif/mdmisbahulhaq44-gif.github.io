@@ -672,6 +672,21 @@ normal slide-in-from-right drawer behavior above. */
 #productPanel{transform:translateY(14px);opacity:0;pointer-events:none;transition:opacity .38s cubic-bezier(.22,.61,.36,1),transform .38s cubic-bezier(.22,.61,.36,1)}
 #productPanel.show{transform:translateY(0);opacity:1;pointer-events:auto;box-shadow:none}
 
+/* Where the native View Transitions API is available, it takes over
+entirely (see withViewTransition() in the JS) — the browser cross-fades
+a before/after screenshot of the whole page itself, which is a closer
+match to a real page navigation than any hand-written CSS transition
+can be. Turning our own opacity/transform transition off here for that
+case avoids the two visibly fighting each other. */
+@supports (view-transition-name: none){
+#productPanel, #productPanel.show{transition:none}
+::view-transition-old(root),
+::view-transition-new(root){
+animation-duration:.32s;
+animation-timing-function:cubic-bezier(.22,.61,.36,1);
+}
+}
+
 .pdCartFab{
 position:fixed;
 left:22px;
@@ -2840,6 +2855,16 @@ ${colorSwatchesHTML(p)}
 </div>`
 }
 
+// A returning visitor's last known product list, kept in localStorage so
+// the grid can render instantly instead of sitting behind the skeleton
+// every single visit. This is purely a first-paint shortcut — the real
+// fetch below always still runs and silently corrects anything that's
+// actually changed (price, stock, new arrivals) once it lands, so nobody
+// ever gets stuck looking at stale data. A cold profile (no localStorage
+// yet — which is also what every PageSpeed/Lighthouse run starts from)
+// just falls through to the skeleton exactly as before.
+const PRODUCTS_CACHE_KEY = 'dezireProductsCache'
+
 async function loadProducts(){
 // localStorage only helps a returning visitor in their OWN browser — every
 // PageSpeed/Lighthouse run starts with an empty, fresh profile, so it always
@@ -2849,11 +2874,22 @@ async function loadProducts(){
 // PageSpeed test — the real, consistent source of the CLS score that stuck
 // around no matter what else got optimized. 24 is a closer real-world match.
 let skeletonCount = 24
+let cachedProducts = null
 try{
 const cached = Number(localStorage.getItem('dezireProductCount'))
 if(cached > 0) skeletonCount = cached
+const rawCache = localStorage.getItem(PRODUCTS_CACHE_KEY)
+if(rawCache){
+const parsed = JSON.parse(rawCache)
+if(parsed && Array.isArray(parsed.products) && parsed.products.length) cachedProducts = parsed.products
+}
 }catch(e){}
 
+if(cachedProducts){
+allProducts = cachedProducts
+applyFiltersAndSort()
+renderFilters(allProducts)
+}else{
 $("productsGrid").innerHTML = Array(skeletonCount).fill(0).map(()=>`
 <div class="product skeletonCard">
 <div class="productImage"></div>
@@ -2863,6 +2899,7 @@ $("productsGrid").innerHTML = Array(skeletonCount).fill(0).map(()=>`
 <div class="skeletonLine" style="width:50%;margin-top:8px"></div>
 </div>
 `).join('')
+}
 
 try{
 const { data, error } = await supabaseClient
@@ -2872,19 +2909,30 @@ const { data, error } = await supabaseClient
 
 if(error){
 console.error(error)
-$("productsGrid").innerHTML = `<div class="empty">Could not load products.</div>`
+if(!cachedProducts) $("productsGrid").innerHTML = `<div class="empty">Could not load products.</div>`
 return
 }
 
-allProducts = data || []
-try{ localStorage.setItem('dezireProductCount', String(allProducts.length)) }catch(e){}
+const fresh = data || []
+// Skip the re-render entirely when nothing actually changed from the
+// cached copy already on screen — avoids a pointless DOM rebuild (and
+// any chance of it) on the common case where the catalog is unchanged
+// since the last visit.
+const changed = JSON.stringify(fresh) !== JSON.stringify(cachedProducts)
+allProducts = fresh
+try{
+localStorage.setItem('dezireProductCount', String(allProducts.length))
+localStorage.setItem(PRODUCTS_CACHE_KEY, JSON.stringify({ products: allProducts }))
+}catch(e){}
+if(changed || !cachedProducts){
 applyFiltersAndSort()
 renderFilters(allProducts)
+}
 }catch(e){
 // A network hiccup here shouldn't take down the rest of the page —
 // cart, routing, and everything else below this should still work.
 console.error('Products fetch failed:', e)
-$("productsGrid").innerHTML = `<div class="empty">Could not load products.</div>`
+if(!cachedProducts) $("productsGrid").innerHTML = `<div class="empty">Could not load products.</div>`
 }
 }
 
@@ -2895,6 +2943,30 @@ return
 }
 $("productsGrid").innerHTML = list.map(productCardHTML).join("")
 }
+
+// A touch/pointer landing on a product card fires noticeably before the
+// click that actually opens it (the gap between "finger down" and "tap
+// recognized") — using that gap to start loading the product's main photo
+// early means it's often already in the browser's cache by the time the
+// panel opens, instead of only starting the request then. Delegated on
+// document once so it covers every product grid (home, category, related
+// products, wishlist) without touching each render site.
+const __prefetchedProductImgs = new Set()
+function prefetchProductImage(productId){
+if(!productId || __prefetchedProductImgs.has(productId)) return
+const product = allProducts.find(p => p.id == productId)
+if(!product || !product.imgs) return
+__prefetchedProductImgs.add(productId)
+const firstImg = product.imgs.split(',')[0].trim()
+if(!firstImg) return
+new Image().src = cldOpt(firstImg, 900)
+}
+function onProductCardTouch(e){
+const card = e.target.closest('.product[data-id]')
+if(card) prefetchProductImage(card.dataset.id)
+}
+document.addEventListener('pointerdown', onProductCardTouch, { passive:true })
+document.addEventListener('touchstart', onProductCardTouch, { passive:true })
 
 function renderFilters(list){
 const cats = ["ALL", ...new Set(list.map(p=>p.cat).filter(Boolean))]
@@ -3932,10 +4004,28 @@ return `/shop/${gender}` + (path.length ? '/' + path.map(encodeURIComponent).joi
 // their own when changed via pushState/replaceState — so every place that
 // used to just set window.location.hash now goes through this instead,
 // which pushes the new path and then re-renders directly.
+// Wraps a DOM update in the browser's native View Transitions API when
+// available (recent Chrome/Android WebView — the reference site's smooth
+// "half-open" feel on back-navigation is actually the OS/browser's own
+// swipe-back preview, which a single-page app can't get directly since
+// there's no separate previous document to preview. This is the closest
+// real equivalent: the browser screenshots the before/after state itself
+// and cross-fades between them, natively, instead of us hand-animating
+// individual elements. Silently no-ops into a plain call on browsers
+// without support (Safari/iOS, older WebViews) — same as it works today.
+function withViewTransition(fn){
+if(typeof document.startViewTransition === 'function'){
+try{ document.startViewTransition(() => fn()) }
+catch(e){ fn() }
+}else{
+fn()
+}
+}
+
 function navigateTo(path, opts){
 if(opts && opts.replace) history.replaceState(null, '', path)
 else history.pushState(null, '', path)
-routeChanged()
+withViewTransition(routeChanged)
 }
 
 // Centralizes "what to show for the current URL": admin is a plain path
@@ -6173,8 +6263,8 @@ history.pushState({homeGuard:true}, '', originalPath)
 // explicitly re-render here.
 window.addEventListener('popstate', (e) => {
 const wasOnProduct = !!lastProductId
-routeChanged()
-if((location.pathname === '/' || location.pathname === '/index.html') && $("adminPage").style.display !== "block" && !wasOnProduct){
+withViewTransition(routeChanged)
+if((location.pathname === '/' || location.pathname === '/index.html') && !wasOnProduct){
 window.scrollTo({top:0, behavior:'smooth'})
 history.pushState({homeGuard:true}, '', location.pathname + location.search)
 }
