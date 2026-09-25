@@ -2190,11 +2190,11 @@ Your wishlist is currently empty.
 <table>
 <thead>
 <tr>
-<th>Order</th><th>Customer</th><th>Phone</th><th>Total</th><th>Payment</th><th>Status</th><th>Rider</th><th>Date</th>
+<th>Order</th><th>Customer</th><th>Phone</th><th>Items</th><th>Total</th><th>Payment</th><th>Status</th><th>Rider</th><th>Date</th>
 </tr>
 </thead>
 <tbody id="adminAllOrdersBody">
-<tr><td colspan="8">Loading...</td></tr>
+<tr><td colspan="9">Loading...</td></tr>
 </tbody>
 </table>
 </div>
@@ -3715,7 +3715,12 @@ if(pdSizeRequiredButMissing()) return
 for(let i = 0; i < pdQty; i++){
 addToCart(pdCurrentProduct.id, pdSelectedSize)
 }
-closePanels()
+// Stay on the product page after adding to cart — closePanels() here used
+// to hide the product panel entirely, which dropped the shopper back onto
+// the category grid underneath (URL still said /product/..., but the
+// visible page didn't match). The toast from addToCart() above is enough
+// confirmation; let them keep browsing this product or tap the cart icon
+// themselves when ready.
 }
 
 function pdBuyNow(){
@@ -6061,21 +6066,38 @@ async function loadAllOrders(skipFetch){
 if(!skipFetch){
 const { data: orders, error } = await supabaseClient
 .from('orders')
-.select('id,customer,phone,total_amount,status,created_at,order_ref,rider_name,rider_phone,payment,delivery_note,payment_status,payment_wallet,payment_sender_number,payment_transaction_id')
+.select('id,customer,phone,total_amount,status,created_at,order_ref,rider_name,rider_phone,payment,delivery_note,payment_status,payment_wallet,payment_sender_number,payment_transaction_id,items')
 .order('created_at', { ascending:false })
 .limit(100)
 
 if(error){
-$("adminAllOrdersBody").innerHTML = `<tr><td colspan="8">Could not load orders.</td></tr>`
+$("adminAllOrdersBody").innerHTML = `<tr><td colspan="9">Could not load orders.</td></tr>`
 return
 }
 adminOrdersCache = orders || []
 }
 
 const q = ($("adminOrderSearch")?.value || '').trim().toLowerCase()
-const list = q
+const filtered = q
 ? adminOrdersCache.filter(o => (o.customer||'').toLowerCase().includes(q) || (o.phone||'').includes(q))
 : adminOrdersCache
+
+// Checkout writes one DB row per cart line item, all sharing the same
+// order_ref (see placeOrder()) — every row also carries the FULL
+// items list for that order, so grouping by order_ref here and summing
+// total_amount across the group reconstructs the one order the customer
+// actually placed, instead of showing it as several unrelated-looking
+// rows with different totals and no product info.
+const groups = new Map()
+filtered.forEach(o => {
+const key = o.order_ref || ('id_' + o.id)
+if(!groups.has(key)){
+groups.set(key, { ...o, total_amount: Number(o.total_amount||0) })
+}else{
+groups.get(key).total_amount += Number(o.total_amount||0)
+}
+})
+const list = Array.from(groups.values())
 
 $("adminAllOrdersBody").innerHTML = list.length
 ? list.map(o => `
@@ -6083,6 +6105,7 @@ $("adminAllOrdersBody").innerHTML = list.length
 <td>${o.order_ref || '#'+o.id}</td>
 <td>${o.customer||'—'}</td>
 <td>${o.phone||'—'}</td>
+<td style="max-width:180px;white-space:normal;font-size:11.5px;color:#333" title="${escapeAttr(o.items||'')}">${escapeHTML(o.items||'—')}</td>
 <td>৳${Number(o.total_amount||0).toLocaleString()}</td>
 <td>${paymentCellHTML(o)}</td>
 <td>
@@ -6099,7 +6122,7 @@ ${o.rider_name ? `🛵 ${o.rider_name}` : '+ Add Rider'}
 </td>
 <td>${new Date(o.created_at).toLocaleDateString()}</td>
 </tr>`).join("")
-: `<tr><td colspan="8">${q ? 'No orders match your search.' : 'No orders yet'}</td></tr>`
+: `<tr><td colspan="9">${q ? 'No orders match your search.' : 'No orders yet'}</td></tr>`
 }
 
 async function setOrderRider(orderId, orderRef){
@@ -6214,16 +6237,27 @@ return
 const orders = allOrders || []
 const total = orders.reduce((s,o)=>s+Number(o.total_amount||0),0)
 $("adminTotalSales").textContent = "৳" + total.toLocaleString()
-$("adminOrderCount").textContent = orders.length
+
+// Same multi-row-per-order shape as the Orders tab (see loadAllOrders) —
+// group by order_ref first so the count and the "Recent Orders" list
+// reflect actual orders, not one row per product in the cart.
+const orderGroups = new Map()
+orders.forEach(o => {
+const key = o.order_ref || ('id_' + o.id)
+if(!orderGroups.has(key)) orderGroups.set(key, { ...o, total_amount: Number(o.total_amount||0) })
+else orderGroups.get(key).total_amount += Number(o.total_amount||0)
+})
+const groupedOrders = Array.from(orderGroups.values())
+$("adminOrderCount").textContent = groupedOrders.length
 
 const uniqueCustomers = new Set(orders.map(o => o.phone).filter(Boolean))
 $("adminCustomerCount").textContent = uniqueCustomers.size
 
-const recent = orders.slice(0, 10)
+const recent = groupedOrders.slice(0, 10)
 $("adminOrdersBody").innerHTML = recent.length
 ? recent.map(o => `
 <tr>
-<td>#${o.id}</td>
+<td>${o.order_ref || '#'+o.id}</td>
 <td>${o.customer||'—'}</td>
 <td>৳${Number(o.total_amount||0).toLocaleString()}</td>
 <td>${statusBadgeHTML(o.status)}</td>
