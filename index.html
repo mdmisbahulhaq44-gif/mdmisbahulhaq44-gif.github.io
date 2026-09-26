@@ -1105,7 +1105,8 @@ font-size:9px;background:#292929;color:#888;
 padding:2px 7px;border-radius:20px;letter-spacing:0.5px
 }
 .adminMain{
-flex:1;padding:35px
+flex:1;padding:35px;
+min-width:0;overflow-x:hidden
 }
 .adminTop{
 display:flex;
@@ -1124,7 +1125,8 @@ padding:22px 25px;
 border-radius:14px;
 border:1px solid #eee;
 display:flex;align-items:center;gap:16px;
-transition:box-shadow .2s ease
+transition:box-shadow .2s ease;
+min-width:0
 }
 .stat:hover{box-shadow:0 6px 20px rgba(0,0,0,.06)}
 .stat .statIcon{
@@ -1132,8 +1134,9 @@ width:44px;height:44px;border-radius:12px;
 display:flex;align-items:center;justify-content:center;
 font-size:19px;flex-shrink:0
 }
-.stat small{color:#888;letter-spacing:0.5px;font-size:10px}
-.stat h2{margin-top:4px;font-size:21px}
+.stat>div{min-width:0}
+.stat small{color:#888;letter-spacing:0.5px;font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+.stat h2{margin-top:4px;font-size:21px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .adminTable{
 margin-top:25px;
 background:white;
@@ -1184,6 +1187,8 @@ flex:1;padding:11px 15px;border:1px solid var(--line);
 border-radius:10px;font-size:13px;background:#fafafa
 }
 
+.admin{overflow-x:hidden}
+
 @media(min-width:901px){
 .products{grid-template-columns:repeat(4,1fr);gap:22px}
 }
@@ -1223,6 +1228,16 @@ padding:9px 16px;
 font-size:12px
 }
 .adminMain{padding:20px}
+.dashboard{gap:10px}
+.stat{padding:14px 12px;gap:10px}
+.stat .statIcon{width:36px;height:36px;font-size:15px;border-radius:10px}
+.stat h2{font-size:16px;margin-top:2px}
+.dashRecentOrders{padding:18px 14px}
+.dashRecentOrders table{table-layout:fixed}
+.dashRecentOrders th,.dashRecentOrders td{padding:10px 6px;font-size:11px}
+.dashRecentOrders th:nth-child(1),.dashRecentOrders td:nth-child(1){width:34%}
+.dashRecentOrders th:nth-child(2),.dashRecentOrders td:nth-child(2){width:36%}
+.dashRecentOrders th:nth-child(3),.dashRecentOrders td:nth-child(3){width:30%}
 }
 </style>
 </head>
@@ -2006,12 +2021,15 @@ Want to know more about our story, our factory, or the team behind DEZIRE? Reach
 <div id="trackOrderMyList"></div>
 
 <div id="trackOrderManualWrap" style="display:none">
+<p style="font-size:12px;color:var(--muted);margin-bottom:14px;line-height:1.6">
+Enter your Order ID (from your order confirmation) and phone number once to verify it's really you — after that, this device will remember you and show all your orders automatically.
+</p>
 <form class="form" id="trackOrderForm" onsubmit="submitTrackOrder(event)">
 <label>ORDER ID</label>
-<input type="text" id="trackOrderId" placeholder="e.g. LF12345678" required>
+<input type="text" id="trackOrderId" placeholder="e.g. VN12345678" required>
 <label>PHONE NUMBER USED FOR THE ORDER</label>
 <input type="tel" id="trackOrderPhone" placeholder="01XXXXXXXXX" required>
-<button class="btn" style="width:100%">TRACK ORDER</button>
+<button class="btn" style="width:100%">VERIFY & TRACK ORDER</button>
 </form>
 </div>
 
@@ -2082,13 +2100,13 @@ Your wishlist is currently empty.
 
 <div class="adminLogo">DEZIRE ADMIN</div>
 
-<button class="active" id="navDashboard" onclick="adminNav('dashboard')">📊 Dashboard</button>
+<button id="navDashboard" class="active" onclick="adminNav('dashboard')">📊 Dashboard</button>
 <button id="navProducts" onclick="adminNav('products')">🛍️ Products</button>
 <button id="navOrders" onclick="adminNav('orders')">📦 Orders</button>
+<button id="navCustomers" onclick="adminNav('customers')">👥 Customers</button>
 <button id="navSettings" onclick="adminNav('settings')">⚙️ Settings</button>
-<button class="soon">👥 Customers <span class="tag">Soon</span></button>
-<button class="soon">🏷️ Categories <span class="tag">Soon</span></button>
-<button class="soon">🎟️ Discounts <span class="tag">Soon</span></button>
+<button onclick="adminNav('settings');setTimeout(()=>$('categorySettingsAnchor')?.scrollIntoView({behavior:'smooth'}),150)">🏷️ Categories</button>
+<button onclick="adminNav('settings');setTimeout(()=>$('couponSettingsAnchor')?.scrollIntoView({behavior:'smooth'}),150)">🎟️ Discounts</button>
 
 <br><br>
 
@@ -2112,44 +2130,43 @@ Your wishlist is currently empty.
 
 <div class="dashboard">
 
-<div class="stat">
+<div class="stat" onclick="adminNav('orders')" style="cursor:pointer">
 <div class="statIcon" style="background:#e8f5ea;color:#1c8a45">৳</div>
 <div><small>TOTAL SALES</small><h2 id="adminTotalSales">৳0</h2></div>
 </div>
 
-<div class="stat">
+<div class="stat" onclick="adminNav('orders')" style="cursor:pointer">
 <div class="statIcon" style="background:#e6eefd;color:#1a5bb8">📦</div>
 <div><small>ORDERS</small><h2 id="adminOrderCount">0</h2></div>
 </div>
 
-<div class="stat">
+<div class="stat" onclick="adminNav('customers')" style="cursor:pointer">
 <div class="statIcon" style="background:#fbeadd;color:#c9701f">👥</div>
 <div><small>CUSTOMERS</small><h2 id="adminCustomerCount">—</h2></div>
 </div>
 
-<div class="stat">
+<div class="stat" onclick="adminNav('products')" style="cursor:pointer">
 <div class="statIcon" style="background:#f1e9fb;color:#6934c9">🛍️</div>
 <div><small>PRODUCTS</small><h2 id="adminProductCount">0</h2></div>
 </div>
 
 </div>
 
-<div class="adminTable">
+<div class="adminTable dashRecentOrders">
 
 <h2 style="margin-bottom:20px">Recent Orders</h2>
 
 <table>
 <thead>
 <tr>
-<th>Order</th>
 <th>Customer</th>
+<th>Product</th>
 <th>Total</th>
-<th>Status</th>
 </tr>
 </thead>
 
 <tbody id="adminOrdersBody">
-<tr><td colspan="4">Loading...</td></tr>
+<tr><td colspan="3">Loading...</td></tr>
 </tbody>
 </table>
 
@@ -2190,11 +2207,31 @@ Your wishlist is currently empty.
 <table>
 <thead>
 <tr>
-<th>Order</th><th>Customer</th><th>Phone</th><th>Items</th><th>Total</th><th>Payment</th><th>Status</th><th>Rider</th><th>Date</th>
+<th>Order</th><th>Customer</th><th>Phone</th><th>Product</th><th>Total</th><th>Payment</th><th>Status</th><th>Rider</th><th>Date</th>
 </tr>
 </thead>
 <tbody id="adminAllOrdersBody">
 <tr><td colspan="9">Loading...</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- CUSTOMERS VIEW -->
+<div id="adminCustomersView" style="display:none">
+<div class="adminTable">
+<h2 style="margin-bottom:20px">Customers</h2>
+<div class="adminSearchRow">
+<input id="adminCustomerSearch" placeholder="Search customers by name or phone..." oninput="renderAdminCustomersTable()">
+</div>
+<table>
+<thead>
+<tr>
+<th>Customer</th><th>Phone</th><th>Orders</th><th>Total Spent</th><th>Last Order</th>
+</tr>
+</thead>
+<tbody id="adminCustomersBody">
+<tr><td colspan="5">Loading...</td></tr>
 </tbody>
 </table>
 </div>
@@ -2217,7 +2254,7 @@ Add as many slides as you like — they auto-rotate on your homepage with swipe 
 
 <hr style="margin:36px 0;border:0;border-top:1px solid var(--line)">
 
-<div style="max-width:500px">
+<div style="max-width:500px" id="categorySettingsAnchor">
 <label style="display:block;font-size:12px;font-weight:700;letter-spacing:.5px;margin-bottom:8px">HOMEPAGE CATEGORIES</label>
 <p style="font-size:12px;color:var(--muted);margin-bottom:16px;line-height:1.6">
 These are the tiles shown below your banner (Women, Men, Sale, etc). Give each one a name, a subtitle, and an image link. Tapping any tile takes shoppers to the shop section — you can group your own products into these categories from the Products page.
@@ -2252,7 +2289,7 @@ Add as many payment logos as you like (bKash, Nagad, Rocket, card networks, etc.
 
 <hr style="margin:36px 0;border:0;border-top:1px solid var(--line)">
 
-<div style="max-width:500px">
+<div style="max-width:500px" id="couponSettingsAnchor">
 <label style="display:block;font-size:12px;font-weight:700;letter-spacing:.5px;margin-bottom:8px">COUPON CODES</label>
 <p style="font-size:12px;color:var(--muted);margin-bottom:16px;line-height:1.6">
 Create discount codes customers can enter at checkout. Percentage discounts apply to the order subtotal.
@@ -3473,6 +3510,48 @@ openPanel("aboutUsPanel")
 
 let lastOrderRef = null, lastOrderPhone = null
 
+// Shared by the logged-in "My Orders" list and the phone-only manual
+// search below — orders still in progress (not yet delivered/cancelled)
+// sort to the top; delivered/cancelled ones follow under a "RECENT
+// ORDERS" heading, since by then there's nothing left to act on.
+const ACTIVE_ORDER_STATUSES = new Set(['pending','processing','shipped'])
+
+function sortOrderRefEntries(groups){
+const entries = Object.entries(groups)
+entries.sort((a,b) => {
+const aActive = ACTIVE_ORDER_STATUSES.has((a[1][0].status||'').toLowerCase()) ? 0 : 1
+const bActive = ACTIVE_ORDER_STATUSES.has((b[1][0].status||'').toLowerCase()) ? 0 : 1
+if(aActive !== bActive) return aActive - bActive
+return new Date(b[1][0].created_at) - new Date(a[1][0].created_at)
+})
+return entries
+}
+
+function renderOrderGroupsList(entries){
+const fmtDate = iso => new Date(iso).toLocaleDateString('en-US', { month:'short', day:'2-digit', year:'numeric' })
+let html = ''
+let sawHistoryHeading = false
+entries.forEach(([ref, rows]) => {
+const o = rows[0]
+const isActive = ACTIVE_ORDER_STATUSES.has((o.status||'').toLowerCase())
+if(!isActive && !sawHistoryHeading){
+html += `<div style="font-size:11px;font-weight:700;letter-spacing:.5px;color:var(--muted);margin:${html ? '18px' : '0'} 0 8px">RECENT ORDERS</div>`
+sawHistoryHeading = true
+}
+const total = rows.reduce((s,r) => s + Number(r.total_amount||0), 0)
+const itemCount = rows.reduce((s,r) => s + Number(r.quantity||1), 0)
+html += `
+<div class="pickerRow" style="border:1px solid var(--line);margin-bottom:10px;padding:16px" onclick='viewOrderGroup(${JSON.stringify(ref)})'>
+<div>
+<div style="font-weight:700;font-size:13px">${ref}</div>
+<div style="font-size:11px;color:var(--muted);margin-top:3px">${fmtDate(o.created_at)} · ${itemCount} item${itemCount>1?'s':''} · ৳${total.toLocaleString()}</div>
+</div>
+${statusBadgeHTML(o.status)}
+</div>`
+})
+return html
+}
+
 async function openTrackOrder(){
 $("trackOrderResult").innerHTML = ""
 const profile = getCustomerProfile()
@@ -3482,15 +3561,24 @@ $("trackOrderManualWrap").style.display = "none"
 $("trackOrderMyList").innerHTML = `<div class="empty" style="padding:20px 10px">Loading your orders...</div>`
 openPanel("trackOrderPanel")
 await loadMyOrders(profile)
-}else{
-// No profile yet (shouldn't normally happen since ordering now
-// requires one) — fall back to manual Order ID + phone search.
+return
+}
+
+const savedPhone = getSavedTrackPhone()
+if(savedPhone){
+// Seen this phone before on this device — skip straight to their
+// orders instead of asking them to type the number in again.
+$("trackOrderPhone").value = savedPhone
+$("trackOrderManualWrap").style.display = "none"
+openPanel("trackOrderPanel")
+await searchOrdersByPhone(savedPhone)
+return
+}
+
+// Brand new visitor — no profile, no remembered phone yet.
 $("trackOrderMyList").innerHTML = ""
 $("trackOrderManualWrap").style.display = "block"
-if(lastOrderRef) $("trackOrderId").value = lastOrderRef
-if(lastOrderPhone) $("trackOrderPhone").value = lastOrderPhone
 openPanel("trackOrderPanel")
-}
 }
 
 async function loadMyOrders(profile){
@@ -3519,21 +3607,7 @@ if(!groups[key]) groups[key] = []
 groups[key].push(r)
 })
 
-const fmtDate = iso => new Date(iso).toLocaleDateString('en-US', { month:'short', day:'2-digit', year:'numeric' })
-
-$("trackOrderMyList").innerHTML = Object.entries(groups).map(([ref, rows]) => {
-const o = rows[0]
-const total = rows.reduce((s,r) => s + Number(r.total_amount||0), 0)
-const itemCount = rows.reduce((s,r) => s + Number(r.quantity||1), 0)
-return `
-<div class="pickerRow" style="border:1px solid var(--line);margin-bottom:10px;padding:16px" onclick='viewOrderGroup(${JSON.stringify(ref)})'>
-<div>
-<div style="font-weight:700;font-size:13px">${ref}</div>
-<div style="font-size:11px;color:var(--muted);margin-top:3px">${fmtDate(o.created_at)} · ${itemCount} item${itemCount>1?'s':''} · ৳${total.toLocaleString()}</div>
-</div>
-${statusBadgeHTML(o.status)}
-</div>`
-}).join('') + `
+$("trackOrderMyList").innerHTML = renderOrderGroupsList(sortOrderRefEntries(groups)) + `
 <div style="text-align:center;margin-top:14px">
 <a href="#" onclick="switchAccount();return false" style="color:var(--muted);text-decoration:underline;font-size:11px">Not you? Switch account</a>
 </div>`
@@ -3549,20 +3623,84 @@ $("trackOrderResult").scrollIntoView?.({ behavior:'smooth' })
 await renderOrderReceipt(rows)
 }
 
+// Phone-only convenience is ONLY for a phone this device has already
+// verified — never a general "type any number, see their orders" tool.
+// Anyone could otherwise pull a stranger's full order history (items,
+// delivery address, etc.) just by knowing or guessing their phone
+// number. First time on a device (or switching to a different number),
+// the customer must prove ownership with their Order ID + phone
+// together (see submitTrackOrder) — the same pairing the original
+// track_order() lookup required. Only after that proof do we store the
+// phone locally and skip straight to searchOrdersByPhone() next time.
+function getSavedTrackPhone(){
+try{ return localStorage.getItem('lf_track_phone') || null }catch{ return null }
+}
+
+function setSavedTrackPhone(phone){
+try{ localStorage.setItem('lf_track_phone', phone) }catch{}
+}
+
+function clearSavedTrackPhone(){
+try{ localStorage.removeItem('lf_track_phone') }catch{}
+$("trackOrderMyList").innerHTML = ""
+$("trackOrderResult").innerHTML = ""
+$("trackOrderManualWrap").style.display = "block"
+$("trackOrderId").value = ""
+$("trackOrderPhone").value = ""
+$("trackOrderId").focus()
+}
+
+// Loads every order for an ALREADY-VERIFIED phone number (this device
+// proved ownership via submitTrackOrder, or the phone came from the
+// checkout profile). Never call this directly from raw user input.
+async function searchOrdersByPhone(phone){
+$("trackOrderResult").innerHTML = ""
+$("trackOrderMyList").innerHTML = `<div class="empty" style="padding:20px 10px">Loading your orders...</div>`
+
+const { data, error } = await supabaseClient.rpc('get_orders_by_phone', { p_phone: phone })
+
+if(error || !data || !data.length){
+$("trackOrderMyList").innerHTML = `<div class="empty" style="padding:20px 10px">Could not load your orders. Please try again.</div>`
+return false
+}
+
+setSavedTrackPhone(phone)
+lastOrderPhone = phone
+
+const groups = {}
+data.forEach(r => {
+const key = r.order_ref || ('#' + r.id)
+if(!groups[key]) groups[key] = []
+groups[key].push(r)
+})
+window._myOrderGroups = groups
+$("trackOrderMyList").innerHTML = renderOrderGroupsList(sortOrderRefEntries(groups)) + `
+<div style="text-align:center;margin-top:14px">
+<a href="#" onclick="clearSavedTrackPhone();return false" style="color:var(--muted);text-decoration:underline;font-size:11px">Not your number? Search a different one</a>
+</div>`
+return true
+}
+
+// The ONLY entry point that accepts a phone number typed fresh by the
+// visitor — requires the matching Order ID too, so a phone number alone
+// (easy to know/guess) can never unlock someone else's order history.
 async function submitTrackOrder(e){
 e.preventDefault()
 const ref = $("trackOrderId").value.trim()
 const phone = $("trackOrderPhone").value.trim()
-$("trackOrderResult").innerHTML = `<div class="empty" style="padding:20px 10px">Searching...</div>`
+$("trackOrderMyList").innerHTML = `<div class="empty" style="padding:20px 10px">Verifying...</div>`
 
-const { data, error } = await supabaseClient.rpc('track_order', { p_ref:ref, p_phone:phone })
+const { data, error } = await supabaseClient.rpc('track_order', { p_ref: ref, p_phone: phone })
 
 if(error || !data || !data.length){
-$("trackOrderResult").innerHTML = `<div class="empty" style="padding:20px 10px">No matching order found. Please check the Order ID and phone number.</div>`
+$("trackOrderMyList").innerHTML = `<div class="empty" style="padding:20px 10px">No matching order found. Please check the Order ID and phone number.</div>`
 return
 }
 
-await renderOrderReceipt(data)
+// Verified — this phone is genuinely theirs. Now it's safe to show
+// (and remember on this device) every order under that number.
+const found = await searchOrdersByPhone(phone)
+if(found) $("trackOrderManualWrap").style.display = "none"
 }
 
 async function renderOrderReceipt(rows){
@@ -4067,7 +4205,22 @@ withViewTransition(routeChanged)
 // properly swaps the DOM back to the shop.
 function routeChanged(){
 if(location.pathname === "/admin"){
+// Coming back from a product opened over the admin panel (see the
+// "/admin/product/" branch below) — this path never goes through
+// renderRoute()'s own "close the panel" guard, so do it here too,
+// otherwise the panel is left stuck open on top of the dashboard.
+if(document.getElementById("productPanel").classList.contains("show")) closePanels()
 showAdmin()
+return
+}
+// Opening a product FROM the admin panel (see productChipsHTML) pushes
+// "/admin/product/<id>" — keep the admin screen underneath instead of
+// falling through to showShop() below, so the product panel opens over
+// the admin dashboard/orders view and the back button/gesture (which
+// pops back to plain "/admin", handled above) returns you to exactly
+// that same admin view instead of dumping you onto the storefront.
+if(location.pathname.startsWith("/admin/product/")){
+renderRoute()
 return
 }
 if($("adminPage").style.display === "block"){
@@ -5807,12 +5960,79 @@ document.querySelectorAll('.adminSide button').forEach(b=>b.classList.remove('ac
 $("adminDashboardView").style.display = section==='dashboard' ? 'block' : 'none'
 $("adminProductsView").style.display = section==='products' ? 'block' : 'none'
 $("adminOrdersView").style.display = section==='orders' ? 'block' : 'none'
+$("adminCustomersView").style.display = section==='customers' ? 'block' : 'none'
 $("adminSettingsView").style.display = section==='settings' ? 'block' : 'none'
 
 if(section==='dashboard'){ $("navDashboard").classList.add('active'); $("adminTitle").textContent="Dashboard"; loadAdminData() }
 if(section==='products'){ $("navProducts").classList.add('active'); $("adminTitle").textContent="Products"; renderAdminProductsTable() }
 if(section==='orders'){ $("navOrders").classList.add('active'); $("adminTitle").textContent="Orders"; loadAllOrders() }
+if(section==='customers'){ $("navCustomers").classList.add('active'); $("adminTitle").textContent="Customers"; loadAdminCustomers() }
 if(section==='settings'){ $("navSettings").classList.add('active'); $("adminTitle").textContent="Settings"; loadHeroSlidesSettingIntoForm(); loadHomeCategoriesSettingIntoForm(); loadCategoryImagesSettingIntoForm(); loadPaymentLogosSettingIntoForm(); loadCouponsAdmin() }
+}
+
+// Jump into Orders with the search box pre-filled to one customer's
+// phone — used from the Customers table so tapping a customer shows
+// exactly their orders instead of building a second orders view.
+function viewCustomerOrders(phone){
+adminNav('orders')
+setTimeout(() => {
+const input = $("adminOrderSearch")
+if(input){ input.value = phone; loadAllOrders(true) }
+}, 50)
+}
+
+let adminCustomersCache = []
+
+async function loadAdminCustomers(skipFetch){
+if(!skipFetch){
+$("adminCustomersBody").innerHTML = `<tr><td colspan="5">Loading...</td></tr>`
+const { data: orders, error } = await supabaseClient
+.from('orders')
+.select('customer,phone,total_amount,created_at,order_ref,id')
+.order('created_at', { ascending:false })
+
+if(error){
+$("adminCustomersBody").innerHTML = `<tr><td colspan="5">Could not load customers.</td></tr>`
+return
+}
+adminCustomersCache = orders || []
+}
+renderAdminCustomersTable()
+}
+
+// One row per phone number, however many order line-items they have —
+// same de-duplication idea as the Orders tab, just grouped by customer
+// instead of by order_ref, and each customer listed exactly once.
+function renderAdminCustomersTable(){
+const byPhone = new Map()
+adminCustomersCache.forEach(o => {
+if(!o.phone) return
+const key = o.phone
+const refKey = o.order_ref || ('id_' + o.id)
+if(!byPhone.has(key)){
+byPhone.set(key, { phone:o.phone, customer:o.customer, totalSpent:0, lastOrder:o.created_at, refs:new Set() })
+}
+const c = byPhone.get(key)
+c.totalSpent += Number(o.total_amount||0)
+c.refs.add(refKey)
+if(new Date(o.created_at) > new Date(c.lastOrder)){ c.lastOrder = o.created_at; c.customer = o.customer }
+})
+
+const q = ($("adminCustomerSearch")?.value || '').trim().toLowerCase()
+let list = Array.from(byPhone.values())
+if(q) list = list.filter(c => (c.customer||'').toLowerCase().includes(q) || c.phone.includes(q))
+list.sort((a,b) => new Date(b.lastOrder) - new Date(a.lastOrder))
+
+$("adminCustomersBody").innerHTML = list.length
+? list.map(c => `
+<tr onclick="viewCustomerOrders('${c.phone}')" style="cursor:pointer">
+<td>${c.customer||'—'}</td>
+<td>${c.phone}</td>
+<td>${c.refs.size}</td>
+<td>৳${c.totalSpent.toLocaleString()}</td>
+<td>${new Date(c.lastOrder).toLocaleDateString()}</td>
+</tr>`).join('')
+: `<tr><td colspan="5">${q ? 'No customers match your search.' : 'No customers yet.'}</td></tr>`
 }
 
 function statusBadgeHTML(status){
@@ -6066,7 +6286,7 @@ async function loadAllOrders(skipFetch){
 if(!skipFetch){
 const { data: orders, error } = await supabaseClient
 .from('orders')
-.select('id,customer,phone,total_amount,status,created_at,order_ref,rider_name,rider_phone,payment,delivery_note,payment_status,payment_wallet,payment_sender_number,payment_transaction_id,items')
+.select('id,customer,phone,total_amount,status,created_at,order_ref,rider_name,rider_phone,payment,delivery_note,payment_status,payment_wallet,payment_sender_number,payment_transaction_id,items,product_id,quantity')
 .order('created_at', { ascending:false })
 .limit(100)
 
@@ -6083,18 +6303,18 @@ const filtered = q
 : adminOrdersCache
 
 // Checkout writes one DB row per cart line item, all sharing the same
-// order_ref (see placeOrder()) — every row also carries the FULL
-// items list for that order, so grouping by order_ref here and summing
-// total_amount across the group reconstructs the one order the customer
-// actually placed, instead of showing it as several unrelated-looking
-// rows with different totals and no product info.
+// order_ref (see placeOrder()) — group by order_ref and collect each
+// row's product_id so we can show/link the actual products ordered,
+// instead of showing the same order as several disconnected rows.
 const groups = new Map()
 filtered.forEach(o => {
 const key = o.order_ref || ('id_' + o.id)
 if(!groups.has(key)){
-groups.set(key, { ...o, total_amount: Number(o.total_amount||0) })
+groups.set(key, { ...o, total_amount: Number(o.total_amount||0), _items: [{ product_id: o.product_id, qty: o.quantity||1 }] })
 }else{
-groups.get(key).total_amount += Number(o.total_amount||0)
+const g = groups.get(key)
+g.total_amount += Number(o.total_amount||0)
+g._items.push({ product_id: o.product_id, qty: o.quantity||1 })
 }
 })
 const list = Array.from(groups.values())
@@ -6105,7 +6325,7 @@ $("adminAllOrdersBody").innerHTML = list.length
 <td>${o.order_ref || '#'+o.id}</td>
 <td>${o.customer||'—'}</td>
 <td>${o.phone||'—'}</td>
-<td style="max-width:180px;white-space:normal;font-size:11.5px;color:#333" title="${escapeAttr(o.items||'')}">${escapeHTML(o.items||'—')}</td>
+<td>${productChipsHTML(o._items)}</td>
 <td>৳${Number(o.total_amount||0).toLocaleString()}</td>
 <td>${paymentCellHTML(o)}</td>
 <td>
@@ -6123,6 +6343,34 @@ ${o.rider_name ? `🛵 ${o.rider_name}` : '+ Add Rider'}
 <td>${new Date(o.created_at).toLocaleDateString()}</td>
 </tr>`).join("")
 : `<tr><td colspan="9">${q ? 'No orders match your search.' : 'No orders yet'}</td></tr>`
+}
+
+// Small clickable product preview used in the admin Orders table and the
+// Dashboard's Recent Orders widget — a photo + name per distinct product
+// in the order (like the customer's own order-detail view), so the admin
+// can see exactly what to pack. Opens the real product detail panel
+// (not the edit form — admin needs to *see* the item, not edit it).
+function productChipsHTML(items, compact){
+const seen = new Set()
+const unique = (items||[]).filter(it => {
+if(!it.product_id || seen.has(it.product_id)) return false
+seen.add(it.product_id)
+return true
+})
+if(!unique.length) return '—'
+const shown = compact ? unique.slice(0,1) : unique
+const thumb = compact ? 34 : 44
+const rows = shown.map(it => {
+const p = allProducts.find(x => x.id === it.product_id)
+const name = p ? p.name : 'Product'
+const img = p ? (p.imgs||'').split(',')[0]?.trim() : ''
+return `<div onclick="event.stopPropagation();openProductDetail(${it.product_id})" style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:2px 0">
+<div style="width:${thumb}px;height:${thumb+8}px;border-radius:6px;overflow:hidden;background:var(--cream);flex-shrink:0">${img ? `<img src="${cldOpt(img,100)}" loading="lazy" style="width:100%;height:100%;object-fit:cover">` : ''}</div>
+<span style="font-size:${compact?11:12}px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:${compact?86:140}px;line-height:1.3">${escapeHTML(name)}</span>
+</div>`
+}).join('')
+const more = unique.length > shown.length ? `<div style="font-size:10px;color:var(--muted);margin-top:2px">+${unique.length-shown.length} more</div>` : ''
+return rows + more
 }
 
 async function setOrderRider(orderId, orderRef){
@@ -6222,12 +6470,12 @@ $("adminProductCount").textContent = allProducts.length
 // 10 most recent (previously this silently limited sales figures).
 const { data: allOrders, error: allErr } = await supabaseClient
 .from('orders')
-.select('id,customer,phone,total_amount,status,created_at,order_ref')
+.select('id,customer,phone,total_amount,status,created_at,order_ref,product_id,quantity')
 .order('created_at', { ascending:false })
 
 if(allErr){
 console.error(allErr)
-$("adminOrdersBody").innerHTML = `<tr><td colspan="4">Could not load orders (are you logged in as admin?)</td></tr>`
+$("adminOrdersBody").innerHTML = `<tr><td colspan="3">Could not load orders (are you logged in as admin?)</td></tr>`
 $("adminTotalSales").textContent = "৳0"
 $("adminOrderCount").textContent = "0"
 $("adminCustomerCount").textContent = "—"
@@ -6240,12 +6488,18 @@ $("adminTotalSales").textContent = "৳" + total.toLocaleString()
 
 // Same multi-row-per-order shape as the Orders tab (see loadAllOrders) —
 // group by order_ref first so the count and the "Recent Orders" list
-// reflect actual orders, not one row per product in the cart.
+// reflect actual orders, not one row per product in the cart, and carry
+// each row's product_id along so we can show/link the ordered product.
 const orderGroups = new Map()
 orders.forEach(o => {
 const key = o.order_ref || ('id_' + o.id)
-if(!orderGroups.has(key)) orderGroups.set(key, { ...o, total_amount: Number(o.total_amount||0) })
-else orderGroups.get(key).total_amount += Number(o.total_amount||0)
+if(!orderGroups.has(key)){
+orderGroups.set(key, { ...o, total_amount: Number(o.total_amount||0), _items: [{ product_id: o.product_id, qty: o.quantity||1 }] })
+}else{
+const g = orderGroups.get(key)
+g.total_amount += Number(o.total_amount||0)
+g._items.push({ product_id: o.product_id, qty: o.quantity||1 })
+}
 })
 const groupedOrders = Array.from(orderGroups.values())
 $("adminOrderCount").textContent = groupedOrders.length
@@ -6257,10 +6511,9 @@ const recent = groupedOrders.slice(0, 10)
 $("adminOrdersBody").innerHTML = recent.length
 ? recent.map(o => `
 <tr>
-<td>${o.order_ref || '#'+o.id}</td>
-<td>${o.customer||'—'}</td>
-<td>৳${Number(o.total_amount||0).toLocaleString()}</td>
-<td>${statusBadgeHTML(o.status)}</td>
+<td><div style="font-weight:600">${o.customer||'—'}</div><div style="font-size:10px;color:var(--muted);margin-top:2px">${o.order_ref || '#'+o.id}</div></td>
+<td>${productChipsHTML(o._items, true)}</td>
+<td><div>৳${Number(o.total_amount||0).toLocaleString()}</div><div style="margin-top:4px">${statusBadgeHTML(o.status)}</div></td>
 </tr>`).join("")
 : `<tr><td colspan="4">No orders yet</td></tr>`
 }
